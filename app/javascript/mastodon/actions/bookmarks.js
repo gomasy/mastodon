@@ -30,7 +30,6 @@ export function fetchBookmarkedStatuses() {
 export function fetchBookmarkedStatusesRequest() {
   return {
     type: BOOKMARKED_STATUSES_FETCH_REQUEST,
-    skipLoading: true,
   };
 };
 
@@ -39,7 +38,6 @@ export function fetchBookmarkedStatusesSuccess(statuses, next) {
     type: BOOKMARKED_STATUSES_FETCH_SUCCESS,
     statuses,
     next,
-    skipLoading: true,
   };
 };
 
@@ -47,7 +45,6 @@ export function fetchBookmarkedStatusesFail(error) {
   return {
     type: BOOKMARKED_STATUSES_FETCH_FAIL,
     error,
-    skipLoading: true,
   };
 };
 
