@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { fetchBookmarkedStatuses, expandBookmarkedStatuses } from '../../actions/bookmarks';
-import Column from '../ui/components/column';
+import Column from '../../components/column';
 import ColumnHeader from '../../components/column_header';
 import { addColumn, removeColumn, moveColumn } from '../../actions/columns';
 import StatusList from '../../components/status_list';
@@ -63,7 +63,7 @@ class Bookmarks extends ImmutablePureComponent {
     this.column = c;
   }
 
-  handleLoadMore = debounce(() => {
+  handleScrollToBottom = debounce(() => {
     this.props.dispatch(expandBookmarkedStatuses());
   }, 300, { leading: true })
 
@@ -74,7 +74,7 @@ class Bookmarks extends ImmutablePureComponent {
     const emptyMessage = <FormattedMessage id='empty_column.bookmarked_statuses' defaultMessage="You don't have any bookmark toots yet. When you bookmark one, it will show up here." />;
 
     return (
-      <Column ref={this.setRef} label={intl.formatMessage(messages.heading)}>
+      <Column ref={this.setRef} name='bookmarks'>
         <ColumnHeader
           icon='bookmark'
           title={intl.formatMessage(messages.heading)}
@@ -92,7 +92,7 @@ class Bookmarks extends ImmutablePureComponent {
           scrollKey={`bookmarked_statuses-${columnId}`}
           hasMore={hasMore}
           isLoading={isLoading}
-          onLoadMore={this.handleLoadMore}
+          onScrollToBottom={this.handleScrollToBottom}
           shouldUpdateScroll={shouldUpdateScroll}
           emptyMessage={emptyMessage}
         />
