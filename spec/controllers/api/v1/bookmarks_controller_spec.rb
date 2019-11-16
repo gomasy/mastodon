@@ -4,7 +4,7 @@ RSpec.describe Api::V1::BookmarksController, type: :controller do
   render_views
 
   let(:user)  { Fabricate(:user) }
-  let(:token) { Fabricate(:accessible_access_token, resource_owner_id: user.id, scopes: 'read:bookmarks') }
+  let(:token) { Fabricate(:accessible_access_token, resource_owner_id: user.id, scopes: 'read') }
 
   describe 'GET #index' do
     context 'without token' do
