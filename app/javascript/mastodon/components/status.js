@@ -149,7 +149,7 @@ class Status extends ImmutablePureComponent {
       this.context.router.history.push(`/statuses/${status.getIn(['reblog', 'id'], status.get('id'))}`);
     }
   }
-  
+
   handleQuoteClick = () => {
     if (!this.context.router) {
       return;
@@ -276,7 +276,7 @@ class Status extends ImmutablePureComponent {
 
   render () {
     let media = null;
-    let statusAvatar, prepend, rebloggedByText, unlistedQuoteText;
+    let statusAvatar, prepend, rebloggedByText;
 
     const { intl, hidden, featured, otherAccounts, unread, showThread, contextType } = this.props;
 
@@ -456,29 +456,18 @@ class Status extends ImmutablePureComponent {
         }
       }
 
-      if (quote_status.get('visibility') === 'unlisted' && contextType !== 'home') {
-        unlistedQuoteText = intl.formatMessage({ id: 'status.unlisted_quote', defaultMessage: 'Unlisted quote' });
-        quote = (
-          <div className={classNames('quote-status', `status-${quote_status.get('visibility')}`, { muted: this.props.muted })} data-id={quote_status.get('id')}>
-            <div className={classNames('status__content unlisted-quote', {'status__content--with-action': this.context.router})}>
-              <strong onClick={this.handleQuoteClick}>{unlistedQuoteText}</strong>
-	    </div>
-	  </div>
-	);
-      } else {
-        quote = (
-          <div className={classNames('quote-status', `status-${quote_status.get('visibility')}`, { muted: this.props.muted })} data-id={quote_status.get('id')}>
-	    <div className='status__info'>
-              <a onClick={this.handleAccountClick} target='_blank' data-id={quote_status.getIn(['account', 'id'])} href={quote_status.getIn(['account', 'url'])} title={quote_status.getIn(['account', 'acct'])} className='status__display-name'>
-                <div className='status__avatar'><Avatar account={quote_status.get('account')} size={18} /></div>
-                <DisplayName account={quote_status.get('account')} />
-              </a>
-            </div>
-            <StatusContent status={quote_status} onClick={this.handleQuoteClick} expanded={!status.get('quote_hidden')} onExpandedToggle={this.handleExpandedQuoteToggle} />
-            {quote_media}
+      quote = (
+        <div className={classNames('quote-status', `status-${quote_status.get('visibility')}`, { muted: this.props.muted })} data-id={quote_status.get('id')}>
+          <div className='status__info'>
+            <a onClick={this.handleAccountClick} target='_blank' data-id={quote_status.getIn(['account', 'id'])} href={quote_status.getIn(['account', 'url'])} title={quote_status.getIn(['account', 'acct'])} className='status__display-name'>
+              <div className='status__avatar'><Avatar account={quote_status.get('account')} size={18} /></div>
+              <DisplayName account={quote_status.get('account')} />
+            </a>
           </div>
-        );
-      }
+          <StatusContent status={quote_status} onClick={this.handleQuoteClick} expanded={!status.get('quote_hidden')} onExpandedToggle={this.handleExpandedQuoteToggle} />
+          {quote_media}
+        </div>
+      );
     }
 
     return (
