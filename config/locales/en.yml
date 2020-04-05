@@ -202,20 +202,24 @@ en:
         create_account_warning: Create Warning
         create_announcement: Create Announcement
         create_custom_emoji: Create Custom Emoji
+        create_custom_template: Create Custom Template
         create_domain_allow: Create Domain Allow
         create_domain_block: Create Domain Block
         create_email_domain_block: Create E-mail Domain Block
         demote_user: Demote User
         destroy_announcement: Delete Announcement
         destroy_custom_emoji: Delete Custom Emoji
+        destroy_custom_template: Delete Custom Template
         destroy_domain_allow: Delete Domain Allow
         destroy_domain_block: Delete Domain Block
         destroy_email_domain_block: Delete e-mail domain block
         destroy_status: Delete Status
         disable_2fa_user: Disable 2FA
         disable_custom_emoji: Disable Custom Emoji
+        disable_custom_template: Disable Custom Emoji
         disable_user: Disable User
         enable_custom_emoji: Enable Custom Emoji
+        enable_custom_template: Enable Custom Emoji
         enable_user: Enable User
         memorialize_account: Memorialize Account
         promote_user: Promote User
