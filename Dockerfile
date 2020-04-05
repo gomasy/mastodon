@@ -84,6 +84,9 @@ COPY --from=build-dep /opt/jemalloc /opt/jemalloc
 # Add more PATHs to the PATH
 ENV PATH="${PATH}:/opt/ruby/bin:/opt/node/bin:/opt/mastodon/bin"
 
+# Prioritize IPv6
+RUN echo 'label ::1/128 0' > /etc/gai.conf
+
 # Create the mastodon user
 ARG UID=991
 ARG GID=991
