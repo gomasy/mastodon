@@ -96,6 +96,7 @@ class Status extends ImmutablePureComponent {
     cacheMediaWidth: PropTypes.func,
     cachedMediaWidth: PropTypes.number,
     contextType: PropTypes.string,
+    scrollKey: PropTypes.string,
   };
 
   // Avoid checking props that are functions (and whose equality will always
@@ -285,7 +286,7 @@ class Status extends ImmutablePureComponent {
     let media = null;
     let statusAvatar, prepend, rebloggedByText;
 
-    const { intl, hidden, featured, otherAccounts, unread, showThread, contextType } = this.props;
+    const { intl, hidden, featured, otherAccounts, unread, showThread, contextType, scrollKey } = this.props;
 
     let { status, account, ...other } = this.props;
 
@@ -517,7 +518,7 @@ class Status extends ImmutablePureComponent {
             {media}
             {quote}
 
-            <StatusActionBar status={status} account={account} {...other} />
+            <StatusActionBar scrollKey={scrollKey} status={status} account={account} {...other} />
           </div>
         </div>
       </HotKeys>
