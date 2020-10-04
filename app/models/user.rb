@@ -115,6 +115,7 @@ class User < ApplicationRecord
            :reduce_motion, :system_font_ui, :noindex, :theme, :display_media, :hide_network,
            :expand_spoilers, :default_language, :aggregate_reblogs, :show_application,
            :advanced_layout, :use_blurhash, :use_pending_items, :trends, :crop_images,
+           :disable_swiping,
            to: :settings, prefix: :setting, allow_nil: false
 
   attr_reader :invite_code, :sign_in_token_attempt
@@ -168,7 +169,7 @@ class User < ApplicationRecord
   end
 
   def active_for_authentication?
-    true
+    !account.memorial?
   end
 
   def suspicious_sign_in?(ip)
@@ -176,7 +177,7 @@ class User < ApplicationRecord
   end
 
   def functional?
-    confirmed? && approved? && !disabled? && !account.suspended? && account.moved_to_account_id.nil?
+    confirmed? && approved? && !disabled? && !account.suspended? && !account.memorial? && account.moved_to_account_id.nil?
   end
 
   def unconfirmed_or_pending?
@@ -253,16 +254,16 @@ class User < ApplicationRecord
     @shows_application ||= settings.show_application
   end
 
+  # rubocop:disable Naming/MethodParameterName
   def token_for_app(a)
     return nil if a.nil? || a.owner != self
-    Doorkeeper::AccessToken
-      .find_or_create_by(application_id: a.id, resource_owner_id: id) do |t|
-
+    Doorkeeper::AccessToken.find_or_create_by(application_id: a.id, resource_owner_id: id) do |t|
       t.scopes = a.scopes
       t.expires_in = Doorkeeper.configuration.access_token_expires_in
       t.use_refresh_token = Doorkeeper.configuration.refresh_token_enabled?
     end
   end
+  # rubocop:enable Naming/MethodParameterName
 
   def activate_session(request)
     session_activations.activate(session_id: SecureRandom.hex,
@@ -413,7 +414,7 @@ class User < ApplicationRecord
   end
 
   def notify_staff_about_pending_account!
-    User.staff.includes(:account).each do |u|
+    User.staff.includes(:account).find_each do |u|
       next unless u.allows_pending_account_emails?
       AdminMailer.new_pending_account(u.account, self).deliver_later
     end

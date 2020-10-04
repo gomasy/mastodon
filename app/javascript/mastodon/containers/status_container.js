@@ -40,6 +40,7 @@ import { initMuteModal } from '../actions/mutes';
 import { initBlockModal } from '../actions/blocks';
 import { initReport } from '../actions/reports';
 import { openModal } from '../actions/modal';
+import { deployPictureInPicture } from '../actions/picture_in_picture';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { boostModal, deleteModal } from '../initial_state';
 import { showAlertForError } from '../actions/alerts';
@@ -59,6 +60,7 @@ const makeMapStateToProps = () => {
 
   const mapStateToProps = (state, props) => ({
     status: getStatus(state, props),
+    usingPiP: state.get('picture_in_picture').statusId === props.id,
   });
 
   return mapStateToProps;
@@ -220,6 +222,10 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     } else {
       dispatch(hideQuote(status.get('id')));
     }
+  },
+
+  deployPictureInPicture (status, type, mediaProps) {
+    dispatch(deployPictureInPicture(status.get('id'), status.getIn(['account', 'id']), type, mediaProps));
   },
 
 });

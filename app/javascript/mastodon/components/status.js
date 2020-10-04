@@ -17,6 +17,7 @@ import { HotKeys } from 'react-hotkeys';
 import classNames from 'classnames';
 import Icon from 'mastodon/components/icon';
 import { displayMedia } from '../initial_state';
+import PictureInPicturePlaceholder from 'mastodon/components/picture_in_picture_placeholder';
 
 // We use the component (and not the container) since we do not want
 // to use the progress bar to show download progress
@@ -97,6 +98,8 @@ class Status extends ImmutablePureComponent {
     cachedMediaWidth: PropTypes.number,
     contextType: PropTypes.string,
     scrollKey: PropTypes.string,
+    deployPictureInPicture: PropTypes.func,
+    usingPiP: PropTypes.bool,
   };
 
   // Avoid checking props that are functions (and whose equality will always
@@ -106,6 +109,8 @@ class Status extends ImmutablePureComponent {
     'account',
     'muted',
     'hidden',
+    'unread',
+    'usingPiP',
   ];
 
   state = {
@@ -220,6 +225,13 @@ class Status extends ImmutablePureComponent {
     }
   }
 
+  handleDeployPictureInPicture = (type, mediaProps) => {
+    const { deployPictureInPicture } = this.props;
+    const status = this._properStatus();
+
+    deployPictureInPicture(status, type, mediaProps);
+  }
+
   handleHotkeyReply = e => {
     e.preventDefault();
     this.props.onReply(this._properStatus(), this.context.router.history);
@@ -286,7 +298,7 @@ class Status extends ImmutablePureComponent {
     let media = null;
     let statusAvatar, prepend, rebloggedByText;
 
-    const { intl, hidden, featured, otherAccounts, unread, showThread, contextType, scrollKey } = this.props;
+    const { intl, hidden, featured, otherAccounts, unread, showThread, contextType, scrollKey, usingPiP } = this.props;
 
     let { status, account, ...other } = this.props;
 
@@ -357,7 +369,9 @@ class Status extends ImmutablePureComponent {
       status  = status.get('reblog');
     }
 
-    if (status.get('media_attachments').size > 0) {
+    if (usingPiP) {
+      media = <PictureInPicturePlaceholder width={this.props.cachedMediaWidth} />;
+    } else if (status.get('media_attachments').size > 0) {
       if (this.props.muted) {
         media = (
           <AttachmentList
@@ -382,6 +396,7 @@ class Status extends ImmutablePureComponent {
                 width={this.props.cachedMediaWidth}
                 height={110}
                 cacheWidth={this.props.cacheMediaWidth}
+                deployPictureInPicture={this.handleDeployPictureInPicture}
               />
             )}
           </Bundle>
@@ -403,6 +418,7 @@ class Status extends ImmutablePureComponent {
                 sensitive={status.get('sensitive')}
                 onOpenVideo={this.handleOpenVideo}
                 cacheWidth={this.props.cacheMediaWidth}
+                deployPictureInPicture={this.handleDeployPictureInPicture}
                 visible={this.state.showMedia}
                 onToggleVisibility={this.handleToggleMediaVisibility}
               />
@@ -495,10 +511,10 @@ class Status extends ImmutablePureComponent {
 
     return (
       <HotKeys handlers={handlers}>
-        <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id'), read: unread === false, focusable: !this.props.muted })} tabIndex={this.props.muted ? null : 0} data-featured={featured ? 'true' : null} aria-label={textForScreenReader(intl, status, rebloggedByText)} ref={this.handleRef}>
+        <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id'), unread, focusable: !this.props.muted })} tabIndex={this.props.muted ? null : 0} data-featured={featured ? 'true' : null} aria-label={textForScreenReader(intl, status, rebloggedByText)} ref={this.handleRef}>
           {prepend}
 
-          <div className={classNames('status', `status-${status.get('visibility')}`, { 'status-reply': !!status.get('in_reply_to_id'), muted: this.props.muted, read: unread === false })} data-id={status.get('id')}>
+          <div className={classNames('status', `status-${status.get('visibility')}`, { 'status-reply': !!status.get('in_reply_to_id'), muted: this.props.muted })} data-id={status.get('id')}>
             <div className='status__expand' onClick={this.handleExpandClick} role='presentation' />
             <div className='status__info'>
               <a href={status.get('url')} className='status__relative-time' target='_blank' rel='noopener noreferrer'><RelativeTimestamp timestamp={status.get('created_at')} /></a>
