@@ -10,6 +10,9 @@ import {
   NOTIFICATIONS_MOUNT,
   NOTIFICATIONS_UNMOUNT,
   NOTIFICATIONS_MARK_AS_READ,
+  NOTIFICATIONS_SET_BROWSER_SUPPORT,
+  NOTIFICATIONS_SET_BROWSER_PERMISSION,
+  NOTIFICATIONS_DISMISS_BROWSER_PERMISSION,
 } from '../actions/notifications';
 import {
   ACCOUNT_BLOCK_SUCCESS,
@@ -40,6 +43,8 @@ const initialState = ImmutableMap({
   readMarkerId: '0',
   isTabVisible: true,
   isLoading: false,
+  browserSupport: false,
+  browserPermission: 'default',
 });
 
 const notificationToMap = notification => ImmutableMap({
@@ -242,6 +247,12 @@ export default function notifications(state = initialState, action) {
   case NOTIFICATIONS_MARK_AS_READ:
     const lastNotification = state.get('items').find(item => item !== null);
     return lastNotification ? recountUnread(state, lastNotification.get('id')) : state;
+  case NOTIFICATIONS_SET_BROWSER_SUPPORT:
+    return state.set('browserSupport', action.value);
+  case NOTIFICATIONS_SET_BROWSER_PERMISSION:
+    return state.set('browserPermission', action.value);
+  case NOTIFICATIONS_DISMISS_BROWSER_PERMISSION:
+    return state.set('browserPermission', 'denied');
   default:
     return state;
   }

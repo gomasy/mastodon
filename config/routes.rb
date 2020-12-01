@@ -83,6 +83,7 @@ Rails.application.routes.draw do
     resource :inbox, only: [:create], module: :activitypub
     resource :claim, only: [:create], module: :activitypub
     resources :collections, only: [:show], module: :activitypub
+    resource :followers_synchronization, only: [:show], module: :activitypub
   end
 
   resource :inbox, only: [:create], module: :activitypub
@@ -124,6 +125,7 @@ Rails.application.routes.draw do
       resources :mutes, only: :index, controller: :muted_accounts
       resources :lists, only: :index, controller: :lists
       resources :domain_blocks, only: :index, controller: :blocked_domains
+      resources :bookmarks, only: :index, controller: :bookmarks
     end
 
     resources :two_factor_authentication_methods, only: [:index] do
@@ -235,6 +237,7 @@ Rails.application.routes.draw do
     resources :accounts, only: [:index, :show, :destroy] do
       member do
         post :enable
+        post :unsensitive
         post :unsilence
         post :unsuspend
         post :redownload
@@ -287,6 +290,12 @@ Rails.application.routes.draw do
       member do
         post :enable
         post :disable
+      end
+    end
+
+    resources :ip_blocks, only: [:index, :new, :create] do
+      collection do
+        post :batch
       end
     end
 
@@ -477,6 +486,7 @@ Rails.application.routes.draw do
         resources :accounts, only: [:index, :show, :destroy] do
           member do
             post :enable
+            post :unsensitive
             post :unsilence
             post :unsuspend
             post :approve
