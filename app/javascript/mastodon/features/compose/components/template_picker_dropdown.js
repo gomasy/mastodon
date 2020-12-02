@@ -5,17 +5,16 @@ import Overlay from 'react-overlays/lib/Overlay';
 import emojify from '../../emoji/emoji';
 import classNames from 'classnames';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import detectPassiveEvents from 'detect-passive-events';
+import { supportsPassiveEvents } from 'detect-passive-events';
 import escapeTextContentForBrowser from 'escape-html';
+import { assetHost } from 'mastodon/utils/config';
 
 const messages = defineMessages({
   template: { id: 'template_button.label', defaultMessage: 'Insert template' },
 
 });
 
-const assetHost = process.env.CDN_HOST || '';
-
-const listenerOptions = detectPassiveEvents.hasSupport ? { passive: true } : false;
+const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
 @injectIntl
 class TemplatePicker extends React.PureComponent {
