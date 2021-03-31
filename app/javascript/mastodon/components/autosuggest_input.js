@@ -7,7 +7,6 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import classNames from 'classnames';
-import { List as ImmutableList } from 'immutable';
 
 const textAtCursorMatchesToken = (str, caretPosition, searchTokens) => {
   let word;
@@ -59,7 +58,7 @@ export default class AutosuggestInput extends ImmutablePureComponent {
 
   static defaultProps = {
     autoFocus: true,
-    searchTokens: ImmutableList(['@', ':', '#']),
+    searchTokens: ['@', ':', '#'],
   };
 
   state = {
