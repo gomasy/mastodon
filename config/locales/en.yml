@@ -244,10 +244,10 @@ en:
         destroy_unavailable_domain: Delete Unavailable Domain
         disable_2fa_user: Disable 2FA
         disable_custom_emoji: Disable Custom Emoji
-        disable_custom_template: Disable Custom Emoji
+        disable_custom_template: Disable Custom Template
         disable_user: Disable User
         enable_custom_emoji: Enable Custom Emoji
-        enable_custom_template: Enable Custom Emoji
+        enable_custom_template: Enable Custom Template
         enable_user: Enable User
         memorialize_account: Memorialize Account
         promote_user: Promote User
