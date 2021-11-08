@@ -75,6 +75,9 @@ class MediaModal extends ImmutablePureComponent {
   }
 
   handleKeyDown = (e) => {
+    if (e.altKey) {
+      return
+    }
     switch(e.key) {
     case 'ArrowLeft':
       this.handlePrevClick();
