@@ -537,6 +537,7 @@ en:
       delivery:
         all: All
         clear: Clear delivery errors
+        failing: Failing
         restart: Restart delivery
         stop: Stop delivery
         unavailable: Unavailable
@@ -821,6 +822,7 @@ en:
           other: Shared by %{count} people over the last week
         title: Trending links
         usage_comparison: Shared %{today} times today, compared to %{yesterday} yesterday
+      only_allowed: Only allowed
       pending_review: Pending review
       preview_card_providers:
         allowed: Links from this publisher can trend
@@ -862,6 +864,7 @@ en:
           one: Used by one person over the last week
           other: Used by %{count} people over the last week
       title: Trends
+      trending: Trending
     warning_presets:
       add_new: Add new
       delete: Delete
@@ -1053,10 +1056,12 @@ en:
       appealed_msg: Your appeal has been submitted. If it is approved, you will be notified.
       appeals:
         submit: Submit appeal
+      approve_appeal: Approve appeal
       associated_report: Associated report
       created_at: Dated
       description_html: These are actions taken against your account and warnings that have been sent to you by the staff of %{instance}.
       recipient: Addressed to
+      reject_appeal: Reject appeal
       status: 'Post #%{id}'
       status_removed: Post already removed from system
       title: "%{action} from %{date}"

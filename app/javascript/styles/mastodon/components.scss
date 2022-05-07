@@ -2475,6 +2475,10 @@ a.account__display-name {
   .columns-area__panels__pane--compositional {
     display: none;
   }
+
+  .with-fab .scrollable .item-list:last-child {
+    padding-bottom: 5.25rem;
+  }
 }
 
 @media screen and (min-width: 600px + (285px * 1) + (10px * 1)) {
@@ -4059,7 +4063,7 @@ a.status-card.compact:hover {
   }
 
   & > span {
-    max-width: 400px;
+    max-width: 500px;
   }
 
   a {
@@ -5647,7 +5651,7 @@ a.status-card.compact:hover {
 .loading-bar {
   background-color: $highlight-text-color;
   height: 3px;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 9999;
