@@ -633,6 +633,8 @@ ja:
         manage_blocks_description: ユーザーがメールプロバイダとIPアドレスをブロックできるようにします
         manage_custom_emojis: カスタム絵文字を管理
         manage_custom_emojis_description: ユーザーがサーバー上のカスタム絵文字を管理できるようにします
+        manage_custom_templates: カスタムテンプレートを追加
+        manage_custom_templates_description: ユーザーがサーバー上のカスタムテンプレートを管理できるようにします
         manage_federation: 連合の管理
         manage_federation_description: ユーザーが他のドメインとの連合をブロックまたは許可したり、配信を制御したりできます。
         manage_invites: 招待を管理

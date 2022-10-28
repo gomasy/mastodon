@@ -2,22 +2,22 @@
 
 class CustomTemplatePolicy < ApplicationPolicy
   def index?
-    staff?
+    role.can?(:manage_custom_templates)
   end
 
   def create?
-    admin?
+    role.can?(:manage_custom_templates)
   end
 
   def enable?
-    staff?
+    role.can?(:manage_custom_templates)
   end
 
   def disable?
-    staff?
+    role.can?(:manage_custom_templates)
   end
 
   def destroy?
-    admin?
+    role.can?(:manage_custom_templates)
   end
 end

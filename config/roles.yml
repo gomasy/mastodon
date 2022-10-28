@@ -26,6 +26,7 @@ admin:
     - manage_invites
     - manage_announcements
     - manage_custom_emojis
+    - manage_custom_templates
     - manage_webhooks
     - manage_roles
 owner:

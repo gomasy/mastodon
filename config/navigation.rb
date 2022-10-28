@@ -57,7 +57,7 @@ SimpleNavigation::Configuration.run do |navigation|
       s.item :roles, safe_join([fa_icon('vcard fw'), t('admin.roles.title')]), admin_roles_path, highlights_on: %r{/admin/roles}, if: -> { current_user.can?(:manage_roles) }
       s.item :announcements, safe_join([fa_icon('bullhorn fw'), t('admin.announcements.title')]), admin_announcements_path, highlights_on: %r{/admin/announcements}, if: -> { current_user.can?(:manage_announcements) }
       s.item :custom_emojis, safe_join([fa_icon('smile-o fw'), t('admin.custom_emojis.title')]), admin_custom_emojis_path, highlights_on: %r{/admin/custom_emojis}, if: -> { current_user.can?(:manage_custom_emojis) }
-      s.item :custom_templates, safe_join([fa_icon('picture-o fw'), t('admin.custom_templates.title')]), admin_custom_templates_url, highlights_on: %r{/admin/custom_templates}
+      s.item :custom_templates, safe_join([fa_icon('picture-o fw'), t('admin.custom_templates.title')]), admin_custom_templates_url, highlights_on: %r{/admin/custom_templates}, if: -> { current_user.can?(:manage_custom_templates) }
       s.item :webhooks, safe_join([fa_icon('inbox fw'), t('admin.webhooks.title')]), admin_webhooks_path, highlights_on: %r{/admin/webhooks}, if: -> { current_user.can?(:manage_webhooks) }
       s.item :relays, safe_join([fa_icon('exchange fw'), t('admin.relays.title')]), admin_relays_path, highlights_on: %r{/admin/relays}, if: -> { !whitelist_mode? && current_user.can?(:manage_federation) }
     end

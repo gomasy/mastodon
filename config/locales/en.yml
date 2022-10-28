@@ -652,6 +652,8 @@ en:
         manage_blocks_description: Allows users to block e-mail providers and IP addresses
         manage_custom_emojis: Manage Custom Emojis
         manage_custom_emojis_description: Allows users to manage custom emojis on the server
+        manage_custom_templates: Manage Custom Templates
+        manage_custom_templates_description: Allows users to manage custom templates on the server
         manage_federation: Manage Federation
         manage_federation_description: Allows users to block or allow federation with other domains, and control deliverability
         manage_invites: Manage Invites
