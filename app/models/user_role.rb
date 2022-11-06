@@ -36,7 +36,7 @@ class UserRole < ApplicationRecord
     manage_roles: (1 << 17),
     manage_user_access: (1 << 18),
     delete_user_data: (1 << 19),
-    manage_custom_templates: (1 << 63),
+    manage_custom_templates: (1 << 31),
   }.freeze
 
   module Flags
