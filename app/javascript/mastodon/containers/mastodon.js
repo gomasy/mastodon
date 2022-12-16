@@ -26,8 +26,8 @@ const hydrateAction = hydrateStore(initialState);
 store.dispatch(hydrateAction);
 if (initialState.meta.me) {
   store.dispatch(fetchCustomEmojis());
+  store.dispatch(fetchCustomTemplates());
 }
-store.dispatch(fetchCustomTemplates());
 
 const createIdentityContext = state => ({
   signedIn: !!state.meta.me,
