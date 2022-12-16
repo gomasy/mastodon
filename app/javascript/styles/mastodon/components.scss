@@ -166,6 +166,30 @@
     &:disabled {
       opacity: 0.5;
     }
+
+    &.button--confirmation {
+      color: $valid-value-color;
+      border-color: $valid-value-color;
+
+      &:active,
+      &:focus,
+      &:hover {
+        background: $valid-value-color;
+        color: $primary-text-color;
+      }
+    }
+
+    &.button--destructive {
+      color: $error-value-color;
+      border-color: $error-value-color;
+
+      &:active,
+      &:focus,
+      &:hover {
+        background: $error-value-color;
+        color: $primary-text-color;
+      }
+    }
   }
 
   &.button--block {
@@ -2223,6 +2247,7 @@ $ui-header-height: 55px;
   z-index: 2;
   justify-content: space-between;
   align-items: center;
+  overflow: hidden;
 
   &__logo {
     display: inline-flex;
@@ -2239,9 +2264,14 @@ $ui-header-height: 55px;
     align-items: center;
     gap: 10px;
     padding: 0 10px;
+    overflow: hidden;
 
     .button {
       flex: 0 0 auto;
+    }
+
+    .button-tertiary {
+      flex-shrink: 1;
     }
   }
 }
@@ -2474,8 +2504,7 @@ $ui-header-height: 55px;
     height: calc(100% - 10px) !important;
   }
 
-  .getting-started__wrapper,
-  .search {
+  .getting-started__wrapper {
     margin-bottom: 10px;
   }
 
@@ -2528,7 +2557,7 @@ $ui-header-height: 55px;
     }
   }
 
-  .ui__header {
+  .layout-single-column .ui__header {
     display: flex;
     background: $ui-base-color;
     border-bottom: 1px solid lighten($ui-base-color, 8%);
@@ -4714,6 +4743,7 @@ a.status-card.compact:hover {
 }
 
 .search {
+  margin-bottom: 10px;
   position: relative;
 }
 
@@ -6765,7 +6795,8 @@ noscript {
   }
 }
 
-.moved-account-banner {
+.moved-account-banner,
+.follow-request-banner {
   padding: 20px;
   background: lighten($ui-base-color, 4%);
   display: flex;
@@ -6788,11 +6819,16 @@ noscript {
     justify-content: space-between;
     align-items: center;
     gap: 15px;
+    width: 100%;
   }
 
   .detailed-status__display-name {
     margin-bottom: 0;
   }
+}
+
+.follow-request-banner .button {
+  width: 100%;
 }
 
 .column-inline-form {
@@ -7064,7 +7100,6 @@ noscript {
       display: block;
       flex: 0 0 auto;
       width: 94px;
-      margin-left: -2px;
 
       .account__avatar {
         background: darken($ui-base-color, 8%);
@@ -7081,6 +7116,7 @@ noscript {
     padding-top: 10px;
     gap: 8px;
     overflow: hidden;
+    margin-left: -2px; // aligns the pfp with content below
 
     &__buttons {
       display: flex;
@@ -7135,6 +7171,10 @@ noscript {
           font-weight: 400;
           overflow: hidden;
           text-overflow: ellipsis;
+
+          span {
+            user-select: all;
+          }
         }
       }
     }
@@ -7187,10 +7227,12 @@ noscript {
 
       .verified {
         border: 1px solid rgba($valid-value-color, 0.5);
+        margin-top: -1px;
 
         &:first-child {
           border-top-left-radius: 4px;
           border-top-right-radius: 4px;
+          margin-top: 0;
         }
 
         &:last-child {
@@ -7703,7 +7745,7 @@ noscript {
       left: 0;
       width: 100%;
       height: 100%;
-      border-left: 2px solid $highlight-text-color;
+      border-left: 4px solid $highlight-text-color;
       pointer-events: none;
     }
   }
@@ -8022,7 +8064,8 @@ noscript {
   width: 600px;
   background: $ui-base-color;
   border-radius: 8px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   position: relative;
   display: block;
   padding: 20px;
