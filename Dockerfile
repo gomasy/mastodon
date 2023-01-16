@@ -73,7 +73,8 @@ RUN apt-get update && \
         tzdata \
         libreadline8 \
         tini && \
-    ln -s /opt/mastodon /mastodon
+    ln -s /opt/mastodon /mastodon && \
+    echo "label ::1/128 0" > /etc/gai.conf
 
 # Note: no, cleaning here since Debian does this automatically
 # See the file /etc/apt/apt.conf.d/docker-clean within the Docker image's filesystem
