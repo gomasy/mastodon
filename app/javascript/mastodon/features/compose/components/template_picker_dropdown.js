@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl } from 'react-intl';
-import Overlay from 'react-overlays/lib/Overlay';
+import Overlay from 'react-overlays/Overlay';
 import emojify from '../../emoji/emoji';
 import classNames from 'classnames';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -76,10 +76,6 @@ class TemplatePickerMenu extends React.PureComponent {
     onClose: PropTypes.func.isRequired,
   };
 
-  state = {
-    placement: null,
-  };
-
   handleDocumentClick = e => {
     if (this.node && !this.node.contains(e.target)) {
       this.props.onClose();
@@ -136,11 +132,8 @@ class TemplatePickerDropdown extends React.PureComponent {
     this.dropdown = c;
   }
 
-  onShowDropdown = ({ target }) => {
+  onShowDropdown = () => {
     this.setState({ active: true });
-
-    const { top } = target.getBoundingClientRect();
-    this.setState({ placement: top * 2 < innerHeight ? 'bottom' : 'top' });
   }
 
   onHideDropdown = () => {
@@ -152,7 +145,7 @@ class TemplatePickerDropdown extends React.PureComponent {
       if (this.state.active) {
         this.onHideDropdown();
       } else {
-        this.onShowDropdown(e);
+        this.onShowDropdown();
       }
     }
   }
@@ -174,7 +167,7 @@ class TemplatePickerDropdown extends React.PureComponent {
   render () {
     const { intl, onPickTemplate } = this.props;
     const title = intl.formatMessage(messages.template);
-    const { active, placement } = this.state;
+    const { active } = this.state;
 
     return (
       <div className='template-picker-dropdown' onKeyDown={this.handleKeyDown}>
@@ -186,12 +179,18 @@ class TemplatePickerDropdown extends React.PureComponent {
           />
         </div>
 
-        <Overlay show={active} placement={placement} target={this.findTarget}>
-          <TemplatePickerMenu
-            custom_templates={this.props.custom_templates}
-            onPick={onPickTemplate}
-            onClose={this.onHideDropdown}
-          />
+        <Overlay show={active} placement={'bottom'} target={this.findTarget}>
+          {({ props, placement }) => (
+            <div {...props} style={{ ...props.style }}>
+              <div className={`dropdown-animation ${placement}`}>
+                <TemplatePickerMenu
+                  custom_templates={this.props.custom_templates}
+                  onPick={onPickTemplate}
+                  onClose={this.onHideDropdown}
+                />
+              </div>
+            </div>
+          )}
         </Overlay>
       </div>
     );
