@@ -27,7 +27,7 @@ class Vacuum::MediaAttachmentsVacuum
   end
 
   def media_attachments_past_retention_period
-    MediaAttachment.unscoped.remote.cached.where(MediaAttachment.arel_table[:created_at].lt(@retention_period.ago)).where(MediaAttachment.arel_table[:updated_at].lt(@retention_period.ago))
+    MediaAttachment.unscoped.remote.cached.where(MediaAttachment.arel_table[:created_at].lt(@retention_period.ago)).where(MediaAttachment.arel_table[:updated_at].lt(@retention_period.ago)).where.not(status_id: Bookmark.select(:status_id))
   end
 
   def orphaned_media_attachments

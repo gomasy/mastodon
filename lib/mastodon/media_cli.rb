@@ -72,6 +72,7 @@ module Mastodon
       unless options[:prune_profiles] || options[:remove_headers]
         processed, aggregate = parallelize_with_progress(MediaAttachment.cached.where.not(remote_url: '').where(created_at: ..time_ago)) do |media_attachment|
           next if media_attachment.file.blank?
+          next if Bookmark.where(status_id: media_attachment.status_id).exists?
 
           size = (media_attachment.file_file_size || 0) + (media_attachment.thumbnail_file_size || 0)
 
