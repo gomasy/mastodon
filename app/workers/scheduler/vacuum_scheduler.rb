@@ -19,7 +19,6 @@ class Scheduler::VacuumScheduler
     [
       statuses_vacuum,
       media_attachments_vacuum,
-      preview_cards_vacuum,
       backups_vacuum,
       access_tokens_vacuum,
       feeds_vacuum,
@@ -32,10 +31,6 @@ class Scheduler::VacuumScheduler
 
   def media_attachments_vacuum
     Vacuum::MediaAttachmentsVacuum.new(content_retention_policy.media_cache_retention_period)
-  end
-
-  def preview_cards_vacuum
-    Vacuum::PreviewCardsVacuum.new(content_retention_policy.media_cache_retention_period)
   end
 
   def backups_vacuum
