@@ -61,7 +61,11 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_out_path_for(_resource_or_scope)
-    new_user_session_path
+    if ENV['OMNIAUTH_ONLY'] == 'true' && ENV['OIDC_ENABLED'] == 'true'
+      '/auth/auth/openid_connect/logout'
+    else
+      new_user_session_path
+    end
   end
 
   protected
@@ -128,6 +132,7 @@ class ApplicationController < ActionController::Base
 
   def current_theme
     return Setting.theme unless Themes.instance.names.include? current_user&.setting_theme
+
     current_user.setting_theme
   end
 
