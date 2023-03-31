@@ -17,7 +17,11 @@ jobs:
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
-        runner: [ ubuntu-latest, self-hosted ]
+        include:
+          - runner: ubuntu-latest
+            arch: amd64
+          - runner: self-hosted
+            arch: arm64
 
     steps:
       - uses: actions/checkout@v3
@@ -48,7 +52,8 @@ jobs:
           flavor: |
             latest=auto
           tags: |
-            type=ref,event=branch
+            type=raw,value=latest-${{ matrix.arch }},enable={{is_default_branch}}
+            type=raw,value={{branch}}-${{ matrix.arch }},enable=${{ github.ref != format('refs/heads/{0}', 'master') }}
 
       - uses: docker/build-push-action@v4
         with:
