@@ -9,4 +9,4 @@ export default function custom_templates(state = initialState, action) {
   }
 
   return state;
-};
+}
