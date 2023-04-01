@@ -16,8 +16,7 @@ const messages = defineMessages({
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
-@injectIntl
-class TemplatePicker extends React.PureComponent {
+class TemplatePickerImpl extends React.PureComponent {
 
   static propTypes = {
     custom_templates: ImmutablePropTypes.list,
@@ -66,8 +65,7 @@ class TemplatePicker extends React.PureComponent {
   }
 }
 
-@injectIntl
-class TemplatePickerMenu extends React.PureComponent {
+class TemplatePickerMenuImpl extends React.PureComponent {
 
   static propTypes = {
     custom_templates: ImmutablePropTypes.list,
@@ -115,7 +113,9 @@ class TemplatePickerMenu extends React.PureComponent {
   }
 }
 
-export default @injectIntl
+const TemplatePicker = injectIntl(TemplatePickerImpl);
+const TemplatePickerMenu = injectIntl(TemplatePickerMenuImpl);
+
 class TemplatePickerDropdown extends React.PureComponent {
 
   static propTypes = {
@@ -196,3 +196,5 @@ class TemplatePickerDropdown extends React.PureComponent {
     );
   }
 }
+
+export default injectIntl(TemplatePickerDropdown);
