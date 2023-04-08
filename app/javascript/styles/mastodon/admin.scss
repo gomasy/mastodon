@@ -643,7 +643,7 @@ body,
     .button {
       overflow: visible;
       margin: 0 0 5px 5px;
-      float: inline-end;
+      float: right;
     }
   }
 }
@@ -791,7 +791,7 @@ a.name-tag,
 
 .speech-bubble {
   margin-bottom: 20px;
-  border-inset-inline-start: 4px solid $ui-highlight-color;
+  border-inline-start: 4px solid $ui-highlight-color;
 
   &.positive {
     border-left-color: $success-green;
@@ -1670,7 +1670,7 @@ a.sparkline {
 }
 
 .section-skip-link {
-  float: inline-end;
+  float: right;
 
   a {
     color: $ui-highlight-color;
