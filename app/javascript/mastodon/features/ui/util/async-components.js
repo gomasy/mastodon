@@ -22,6 +22,10 @@ export function CommunityTimeline () {
   return import(/* webpackChunkName: "features/community_timeline" */'../../community_timeline');
 }
 
+export function Firehose () {
+  return import(/* webpackChunkName: "features/firehose" */'../../firehose');
+}
+
 export function HashtagTimeline () {
   return import(/* webpackChunkName: "features/hashtag_timeline" */'../../hashtag_timeline');
 }
@@ -150,8 +154,8 @@ export function Directory () {
   return import(/* webpackChunkName: "features/directory" */'../../directory');
 }
 
-export function FollowRecommendations () {
-  return import(/* webpackChunkName: "features/follow_recommendations" */'../../follow_recommendations');
+export function Onboarding () {
+  return import(/* webpackChunkName: "features/onboarding" */'../../onboarding');
 }
 
 export function CompareHistoryModal () {

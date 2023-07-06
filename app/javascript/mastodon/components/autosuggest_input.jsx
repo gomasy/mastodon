@@ -1,12 +1,15 @@
-import React from 'react';
+import PropTypes from 'prop-types';
+
+import classNames from 'classnames';
+
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+
 import AutosuggestAccountContainer from '../features/compose/containers/autosuggest_account_container';
+
 import AutosuggestAlphabet from './autosuggest_alphabet';
 import AutosuggestEmoji from './autosuggest_emoji';
-import AutosuggestHashtag from './autosuggest_hashtag';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import classNames from 'classnames';
+import { AutosuggestHashtag } from './autosuggest_hashtag';
 
 const textAtCursorMatchesToken = (str, caretPosition, searchTokens) => {
   let word;
@@ -158,7 +161,7 @@ export default class AutosuggestInput extends ImmutablePureComponent {
     this.input.focus();
   };
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (nextProps.suggestions !== this.props.suggestions && nextProps.suggestions.size > 0 && this.state.suggestionsHidden && this.state.focused) {
       this.setState({ suggestionsHidden: false });
     }
