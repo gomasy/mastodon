@@ -1,13 +1,17 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import { PureComponent } from 'react';
+
 import { defineMessages, injectIntl } from 'react-intl';
-import Overlay from 'react-overlays/Overlay';
-import emojify from '../../emoji/emoji';
-import classNames from 'classnames';
+
 import ImmutablePropTypes from 'react-immutable-proptypes';
+
 import { supportsPassiveEvents } from 'detect-passive-events';
-import escapeTextContentForBrowser from 'escape-html';
+import Overlay from 'react-overlays/Overlay';
+
 import { assetHost } from 'mastodon/utils/config';
+
+import emojify from '../../emoji/emoji';
+import escapeTextContentForBrowser from 'escape-html';
 
 const messages = defineMessages({
   template: { id: 'template_button.label', defaultMessage: 'Insert template' },
@@ -16,7 +20,7 @@ const messages = defineMessages({
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
-class TemplatePickerImpl extends React.PureComponent {
+class TemplatePickerImpl extends PureComponent {
 
   static propTypes = {
     custom_templates: ImmutablePropTypes.list,

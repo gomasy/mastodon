@@ -1,7 +1,7 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import { PureComponent } from 'react';
 
-export default class AutosuggestAlphabet extends React.PureComponent {
+export default class AutosuggestAlphabet extends PureComponent {
 
   static propTypes = {
     alphabet: PropTypes.shape({
