@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe ActivityPub::Activity::Announce do
-  subject { described_class.new(json, sender) }
+  subject { described_class.new(json, sender, delivery: true) }
 
   let(:sender)    { Fabricate(:account, followers_url: 'http://example.com/followers', uri: 'https://example.com/actor', domain: 'example.com') }
   let(:recipient) { Fabricate(:account) }
@@ -112,7 +112,7 @@ RSpec.describe ActivityPub::Activity::Announce do
     end
 
     context 'when the sender is relayed' do
-      subject { described_class.new(json, sender, relayed_through_actor: relay_account) }
+      subject { described_class.new(json, sender, relayed_through_actor: relay_account, delivery: true) }
 
       let!(:relay_account) { Fabricate(:account, inbox_url: 'https://relay.example.com/inbox', domain: 'relay.example.com') }
       let!(:relay) { Fabricate(:relay, inbox_url: 'https://relay.example.com/inbox') }
@@ -168,6 +168,28 @@ RSpec.describe ActivityPub::Activity::Announce do
 
       it 'does not create anything' do
         expect(sender.statuses.count).to eq 0
+      end
+    end
+
+    context 'when fetched actively' do
+      subject { described_class.new(json, sender) }
+
+      before do
+        subject.perform
+      end
+
+      let(:object_json) do
+        {
+          id: 'https://example.com/actor#bar',
+          type: 'Note',
+          content: 'Lorem ipsum',
+          to: 'http://example.com/followers',
+          attributedTo: 'https://example.com/actor',
+        }
+      end
+
+      it 'fetches remote status and creates a reblog' do
+        expect(sender.statuses.count).to eq 2
       end
     end
   end
