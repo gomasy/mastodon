@@ -13,7 +13,7 @@ import { me } from 'mastodon/initial_state';
 import { normalizeForLookup } from 'mastodon/reducers/accounts_map';
 import { getAccountHidden } from 'mastodon/selectors';
 
-import { lookupAccount, fetchAccount } from '../../actions/accounts';
+import { lookupAccount, fetchAccount, fetchRemoteOutbox } from '../../actions/accounts';
 import { fetchFeaturedTags } from '../../actions/featured_tags';
 import { expandAccountFeaturedTimeline, expandAccountTimeline, connectTimeline, disconnectTimeline } from '../../actions/timelines';
 import ColumnBackButton from '../../components/column_back_button';
@@ -59,12 +59,16 @@ const mapStateToProps = (state, { params: { acct, id, tagged }, withReplies = fa
   };
 };
 
-const RemoteHint = ({ url }) => (
+const RemoteHint = ({ url, refresh }) => (<div>
   <TimelineHint url={url} resource={<FormattedMessage id='timeline_hint.resources.statuses' defaultMessage='Older posts' />} />
-);
+  <div className='timeline-hint'>
+    <button onClick={refresh}>Outbox をよみにいってみる</button>
+  </div>
+</div>);
 
 RemoteHint.propTypes = {
   url: PropTypes.string.isRequired,
+  refresh: PropTypes.func.isRequired,
 };
 
 class AccountTimeline extends ImmutablePureComponent {
@@ -149,6 +153,12 @@ class AccountTimeline extends ImmutablePureComponent {
     this.props.dispatch(expandAccountTimeline(this.props.accountId, { maxId, withReplies: this.props.withReplies, tagged: this.props.params.tagged }));
   };
 
+  handleRefresh = () => {
+    this.props.dispatch(fetchRemoteOutbox(this.props.accountId, () => {
+      this.props.dispatch(expandAccountTimeline(this.props.accountId, { withReplies: this.props.withReplies, tagged: this.props.params.tagged }));
+    }));
+  };
+
   render () {
     const { accountId, statusIds, featuredStatusIds, isLoading, hasMore, blockedBy, suspended, isAccount, hidden, multiColumn, remote, remoteUrl } = this.props;
 
@@ -175,19 +185,19 @@ class AccountTimeline extends ImmutablePureComponent {
     } else if (blockedBy) {
       emptyMessage = <FormattedMessage id='empty_column.account_unavailable' defaultMessage='Profile unavailable' />;
     } else if (remote && statusIds.isEmpty()) {
-      emptyMessage = <RemoteHint url={remoteUrl} />;
+      emptyMessage = <RemoteHint url={remoteUrl} refresh={this.handleRefresh} />;
     } else {
       emptyMessage = <FormattedMessage id='empty_column.account_timeline' defaultMessage='No posts found' />;
     }
 
-    const remoteMessage = remote ? <RemoteHint url={remoteUrl} /> : null;
+    const remoteMessage = remote ? <RemoteHint url={remoteUrl} refresh={this.handleRefresh} /> : null;
 
     return (
       <Column>
         <ColumnBackButton multiColumn={multiColumn} />
 
         <StatusList
-          prepend={<HeaderContainer accountId={this.props.accountId} hideTabs={forceEmptyState} tagged={this.props.params.tagged} />}
+          prepend={<HeaderContainer accountId={this.props.accountId} hideTabs={forceEmptyState} tagged={this.props.params.tagged} onFetchRemoteOutbox={this.handleRefresh} />}
           alwaysPrepend
           append={remoteMessage}
           scrollKey='account_timeline'

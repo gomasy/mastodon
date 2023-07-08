@@ -31,6 +31,7 @@ export default class Header extends ImmutablePureComponent {
     onInteractionModal: PropTypes.func.isRequired,
     onOpenAvatar: PropTypes.func.isRequired,
     onOpenURL: PropTypes.func.isRequired,
+    onFetchRemoteOutbox: PropTypes.func.isRequired,
     hideTabs: PropTypes.bool,
     domain: PropTypes.string.isRequired,
     hidden: PropTypes.bool,
@@ -112,6 +113,10 @@ export default class Header extends ImmutablePureComponent {
     this.props.onOpenAvatar(this.props.account);
   };
 
+  onFetchRemoteOutbox = () => {
+    this.props.onFetchRemoteOutbox(this.props.account);
+  };
+
   render () {
     const { account, hidden, hideTabs } = this.props;
 
@@ -143,6 +148,7 @@ export default class Header extends ImmutablePureComponent {
           onInteractionModal={this.handleInteractionModal}
           onOpenAvatar={this.handleOpenAvatar}
           onOpenURL={this.props.onOpenURL}
+          onFetchRemoteOutbox={this.onFetchRemoteOutbox}
           domain={this.props.domain}
           hidden={hidden}
         />

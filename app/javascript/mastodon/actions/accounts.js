@@ -34,6 +34,10 @@ export const ACCOUNT_UNMUTE_REQUEST = 'ACCOUNT_UNMUTE_REQUEST';
 export const ACCOUNT_UNMUTE_SUCCESS = 'ACCOUNT_UNMUTE_SUCCESS';
 export const ACCOUNT_UNMUTE_FAIL    = 'ACCOUNT_UNMUTE_FAIL';
 
+export const ACCOUNT_FETCH_REMOTE_OUTBOX_REQUEST = 'ACCOUNT_FETCH_REMOTE_OUTBOX_REQUEST';
+export const ACCOUNT_FETCH_REMOTE_OUTBOX_SUCCESS = 'ACCOUNT_FETCH_REMOTE_OUTBOX_SUCCESS';
+export const ACCOUNT_FETCH_REMOTE_OUTBOX_FAIL    = 'ACCOUNT_FETCH_REMOTE_OUTBOX_FAIL';
+
 export const ACCOUNT_PIN_REQUEST = 'ACCOUNT_PIN_REQUEST';
 export const ACCOUNT_PIN_SUCCESS = 'ACCOUNT_PIN_SUCCESS';
 export const ACCOUNT_PIN_FAIL    = 'ACCOUNT_PIN_FAIL';
@@ -356,6 +360,43 @@ export function unmuteAccountSuccess(relationship) {
 export function unmuteAccountFail(error) {
   return {
     type: ACCOUNT_UNMUTE_FAIL,
+    error,
+  };
+}
+
+const noOp = () => {};
+
+export function fetchRemoteOutbox(id, done = noOp) {
+  return (dispatch, getState) => {
+    dispatch(fetchRemoteOutboxRequest(id));
+
+    api(getState).post(`/api/v1/accounts/${id}/fetch_remote`).then(response => {
+      dispatch(fetchRemoteOutboxSuccess(response.data));
+      done();
+    }).catch(error => {
+      dispatch(fetchRemoteOutboxFail(id, error));
+    });
+  };
+}
+
+// Would this be any useful??
+export function fetchRemoteOutboxRequest(id) {
+  return {
+    type: ACCOUNT_FETCH_REMOTE_OUTBOX_REQUEST,
+    id,
+  };
+}
+
+export function fetchRemoteOutboxSuccess(account) {
+  return {
+    type: ACCOUNT_FETCH_REMOTE_OUTBOX_SUCCESS,
+    account,
+  };
+}
+
+export function fetchRemoteOutboxFail(error) {
+  return {
+    type: ACCOUNT_FETCH_REMOTE_OUTBOX_FAIL,
     error,
   };
 }
