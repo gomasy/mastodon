@@ -26,7 +26,6 @@ import lists from './lists';
 import markers from './markers';
 import media_attachments from './media_attachments';
 import meta from './meta';
-import { missedUpdatesReducer } from './missed_updates';
 import { modalReducer } from './modal';
 import mutes from './mutes';
 import notifications from './notifications';
@@ -83,7 +82,6 @@ const reducers = {
   suggestions,
   polls,
   trends,
-  missed_updates: missedUpdatesReducer,
   markers,
   picture_in_picture,
   history,
@@ -102,7 +100,7 @@ const initialRootState = Object.fromEntries(
     reducer(undefined, {
       // empty action
     }),
-  ])
+  ]),
 );
 
 const RootStateRecord = ImmutableRecord(initialRootState, 'RootState');
