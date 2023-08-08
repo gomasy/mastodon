@@ -10,6 +10,7 @@ import alerts from './alerts';
 import announcements from './announcements';
 import blocks from './blocks';
 import boosts from './boosts';
+import contexts from './contexts';
 import compose from './compose';
 import conversations from './conversations';
 import custom_emojis from './custom_emojis';
