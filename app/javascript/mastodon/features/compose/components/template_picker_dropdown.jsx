@@ -69,7 +69,7 @@ class TemplatePickerImpl extends PureComponent {
   }
 }
 
-class TemplatePickerMenuImpl extends React.PureComponent {
+class TemplatePickerMenuImpl extends PureComponent {
 
   static propTypes = {
     custom_templates: ImmutablePropTypes.list,
@@ -120,7 +120,7 @@ class TemplatePickerMenuImpl extends React.PureComponent {
 const TemplatePicker = injectIntl(TemplatePickerImpl);
 const TemplatePickerMenu = injectIntl(TemplatePickerMenuImpl);
 
-class TemplatePickerDropdown extends React.PureComponent {
+class TemplatePickerDropdown extends PureComponent {
 
   static propTypes = {
     custom_templates: ImmutablePropTypes.list,
