@@ -18,7 +18,7 @@ const messages = defineMessages({
 
 });
 
-const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
+const listenerOptions = supportsPassiveEvents ? { passive: true, capture: true } : true;
 
 class TemplatePickerImpl extends PureComponent {
 
@@ -85,12 +85,12 @@ class TemplatePickerMenuImpl extends PureComponent {
   }
 
   componentDidMount () {
-    document.addEventListener('click', this.handleDocumentClick, false);
+    document.addEventListener('click', this.handleDocumentClick, { capture: true });
     document.addEventListener('touchend', this.handleDocumentClick, listenerOptions);
   }
 
   componentWillUnmount () {
-    document.removeEventListener('click', this.handleDocumentClick, false);
+    document.removeEventListener('click', this.handleDocumentClick, { capture: true });
     document.removeEventListener('touchend', this.handleDocumentClick, listenerOptions);
   }
 
