@@ -18,7 +18,6 @@ module MarkdownHelper
       strikethrough: true,
       space_after_headers: true,
       underline: true,
-      highlight: true,
     }
   end
 
