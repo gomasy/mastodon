@@ -12,10 +12,6 @@ module MarkdownHelper
 
   def parse_markdown(text)
     markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(renderer_options))
-    markdown.render(text).delete("\n")
-  end
-
-  def h(text)
-    text.gsub('&', '&amp;').gsub('"', '&quot;').gsub('<', '&lt;')
+    markdown.render(text.gsub('&gt;', '>')).delete("\n")
   end
 end
