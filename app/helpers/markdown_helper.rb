@@ -10,8 +10,21 @@ module MarkdownHelper
     }
   end
 
+  def renderer_extensions
+    {
+      no_intra_emphasis: true,
+      fenced_code_blocks: true,
+      disable_indented_code_blocks: true,
+      strikethrough: true,
+      space_after_headers: true,
+      underline: true,
+      highlight: true,
+    }
+  end
+
   def parse_markdown(text)
-    markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(renderer_options))
+    renderer = Redcarpet::Render::HTML.new(renderer_options)
+    markdown = Redcarpet::Markdown.new(renderer, renderer_extensions)
     markdown.render(text.gsub('&gt;', '>')).delete("\n")
   end
 end
