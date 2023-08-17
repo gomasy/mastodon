@@ -4,6 +4,7 @@ class TextFormatter
   include ActionView::Helpers::TextHelper
   include ERB::Util
   include RoutingHelper
+  include MarkdownHelper
 
   URL_PREFIX_REGEX = %r{\A(https?://(www\.)?|xmpp:)}
 
@@ -43,7 +44,11 @@ class TextFormatter
       end
     end
 
-    html = simple_format(html, {}, sanitize: false).delete("\n") if multiline?
+    if status?
+      html = parse_markdown(html)
+    elsif multiline?
+      html = simple_format(html, {}, sanitize: false).delete("\n")
+    end
 
     html.html_safe # rubocop:disable Rails/OutputSafety
   end
@@ -143,6 +148,10 @@ class TextFormatter
   end
 
   delegate :local_domain?, to: :tag_manager
+
+  def status?
+    options[:status]
+  end
 
   def multiline?
     options[:multiline]
