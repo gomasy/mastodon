@@ -3,10 +3,8 @@
 module MarkdownHelper
   def renderer_options
     {
-      no_images: true,
-      no_styles: true,
-      safe_links_only: true,
       hard_wrap: true,
+      xhtml: true,
     }
   end
 
@@ -18,12 +16,12 @@ module MarkdownHelper
       strikethrough: true,
       space_after_headers: true,
       underline: true,
+      highlight: true,
     }
   end
 
   def parse_markdown(text)
-    renderer = Redcarpet::Render::HTML.new(renderer_options)
-    markdown = Redcarpet::Markdown.new(renderer, renderer_extensions)
-    markdown.render(text.gsub('&gt;', '>')).delete("\n")
+    markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(renderer_options), renderer_extensions)
+    markdown.render(text.gsub("&gt;", ">")).delete("\n")
   end
 end
