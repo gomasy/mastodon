@@ -348,7 +348,7 @@ body > [data-popper-placement] {
 }
 
 .compose-form {
-  padding: 15px;
+  padding: 14px 10px;
 
   &__sensitive-button {
     padding: 10px;
@@ -1190,6 +1190,10 @@ body > [data-popper-placement] {
 
 .status__visibility-icon {
   padding: 0 4px;
+
+  & > .fa-globe {
+    display: none;
+  }
 }
 
 .status__display-name {
@@ -1316,7 +1320,7 @@ body > [data-popper-placement] {
 
 .detailed-status {
   background: lighten($ui-base-color, 4%);
-  padding: 16px;
+  padding: 14px 10px;
   border-top: 1px solid lighten($ui-base-color, 8%);
 
   &--flex {
@@ -2106,6 +2110,20 @@ a.account__display-name {
 
   &.unscrollable {
     overflow-x: hidden;
+  }
+
+  .account {
+    padding: 10px;
+
+    .account__avatar-wrapper {
+      margin-left: 12px;
+      margin-right: 2px;
+
+      .account__avatar {
+        width: 36px !important;
+        height: 36px !important;
+      }
+    }
   }
 
   &__panels {
@@ -8986,12 +9004,12 @@ noscript {
 
     a {
       color: $dark-text-color;
-      text-decoration: underline;
+      text-decoration: none;
 
       &:hover,
       &:focus,
       &:active {
-        text-decoration: none;
+        text-decoration: underline;
       }
     }
   }
