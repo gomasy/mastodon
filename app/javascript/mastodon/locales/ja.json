@@ -30,7 +30,7 @@
   "account.featured_tags.last_status_at": "最終投稿 {date}",
   "account.featured_tags.last_status_never": "投稿がありません",
   "account.featured_tags.title": "{name}の注目ハッシュタグ",
-  "account.fetch_remote_outbox": "@{name}さんのOutboxを確認する（ローカルにないトゥートがあるかも！）",
+  "account.fetch_remote_outbox": "@{name}さんのOutboxを確認する",
   "account.follow": "フォロー",
   "account.followers": "フォロワー",
   "account.followers.empty": "まだ誰もフォローしていません。",

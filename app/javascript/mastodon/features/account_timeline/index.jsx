@@ -62,7 +62,7 @@ const mapStateToProps = (state, { params: { acct, id, tagged }, withReplies = fa
 const RemoteHint = ({ url, refresh }) => (<div>
   <TimelineHint url={url} resource={<FormattedMessage id='timeline_hint.resources.statuses' defaultMessage='Older posts' />} />
   <div className='timeline-hint'>
-    <button onClick={refresh}>Outbox をよみにいってみる</button>
+    <button className='button' onClick={refresh}>Outbox をよみにいってみる</button>
   </div>
 </div>);
 
