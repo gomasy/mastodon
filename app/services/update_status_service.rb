@@ -16,6 +16,7 @@ class UpdateStatusService < BaseService
   # @option options [String] :spoiler_text
   # @option options [Boolean] :sensitive
   # @option options [String] :language
+  # @option options [Boolean] :markdown
   def call(status, account_id, options = {})
     @status                    = status
     @options                   = options
@@ -130,6 +131,11 @@ class UpdateStatusService < BaseService
   def update_metadata!
     ProcessHashtagsService.new.call(@status)
     ProcessMentionsService.new.call(@status)
+    if @options[:markdown]
+      StatusMarkdown.create(status_id: @status.id)
+    else
+      StatusMarkdown.find_by(status: @status)&.destroy
+    end
   end
 
   def broadcast_updates!

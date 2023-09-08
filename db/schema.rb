@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_04_134623) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_09_020000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -935,6 +935,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_04_134623) do
     t.index ["status_id"], name: "index_status_edits_on_status_id"
   end
 
+  create_table "status_markdowns", force: :cascade do |t|
+    t.bigint "status_id", null: false
+    t.datetime "created_at", precision: nil, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: nil, default: -> { "now()" }, null: false
+    t.index ["status_id"], name: "index_status_markdowns_on_status_id", unique: true
+  end
+
   create_table "status_pins", force: :cascade do |t|
     t.bigint "account_id", null: false
     t.bigint "status_id", null: false
@@ -1260,6 +1267,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_04_134623) do
   add_foreign_key "session_activations", "users", name: "fk_e5fda67334", on_delete: :cascade
   add_foreign_key "status_edits", "accounts", on_delete: :nullify
   add_foreign_key "status_edits", "statuses", on_delete: :cascade
+  add_foreign_key "status_markdowns", "statuses", on_delete: :cascade
   add_foreign_key "status_pins", "accounts", name: "fk_d4cb435b62", on_delete: :cascade
   add_foreign_key "status_pins", "statuses", on_delete: :cascade
   add_foreign_key "status_stats", "statuses", on_delete: :cascade

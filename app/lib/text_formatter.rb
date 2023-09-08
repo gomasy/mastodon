@@ -18,6 +18,7 @@ class TextFormatter
 
   # @param [String] text
   # @param [Hash] options
+  # @option options [Boolean] :markdown
   # @option options [Boolean] :multiline
   # @option options [Boolean] :with_domains
   # @option options [Boolean] :with_rel_me
@@ -44,7 +45,7 @@ class TextFormatter
       end
     end
 
-    if status?
+    if markdown?
       html = parse_markdown(html)
     elsif multiline?
       html = simple_format(html, {}, sanitize: false).delete("\n")
@@ -149,8 +150,8 @@ class TextFormatter
 
   delegate :local_domain?, to: :tag_manager
 
-  def status?
-    options[:status]
+  def markdown?
+    options[:markdown]
   end
 
   def multiline?

@@ -33,6 +33,7 @@ import {
   COMPOSE_VISIBILITY_CHANGE,
   COMPOSE_LANGUAGE_CHANGE,
   COMPOSE_COMPOSING_CHANGE,
+  COMPOSE_MARKDOWN_CHANGE,
   COMPOSE_EMOJI_INSERT,
   COMPOSE_TEMPLATE_INSERT,
   COMPOSE_UPLOAD_CHANGE_REQUEST,
@@ -521,6 +522,7 @@ export default function compose(state = initialState, action) {
       map.set('idempotencyKey', uuid());
       map.set('sensitive', action.status.get('sensitive'));
       map.set('language', action.status.get('language'));
+      map.set('markdown', action.status.get('markdown'));
 
       if (action.spoiler_text.length > 0) {
         map.set('spoiler', true);
@@ -552,6 +554,8 @@ export default function compose(state = initialState, action) {
     return state.update('poll', poll => poll.set('expires_in', action.expiresIn).set('multiple', action.isMultiple));
   case COMPOSE_LANGUAGE_CHANGE:
     return state.set('language', action.language);
+  case COMPOSE_MARKDOWN_CHANGE:
+    return state.set('markdown', !state.get('markdown'));
   case COMPOSE_FOCUS:
     return state.set('focusDate', new Date()).update('text', text => text.length > 0 ? text : action.defaultText);
   default:

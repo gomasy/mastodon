@@ -24,6 +24,7 @@ class PostStatusService < BaseService
   # @option [String] :visibility
   # @option [String] :spoiler_text
   # @option [String] :language
+  # @option [Boolean] :markdown
   # @option [String] :scheduled_at
   # @option [Hash] :poll Optional poll to attach
   # @option [Enumerable] :media_ids Optional array of media IDs to attach
@@ -81,6 +82,7 @@ class PostStatusService < BaseService
     # the media attachments when the status is created
     ApplicationRecord.transaction do
       @status.save!
+      StatusMarkdown.create(status_id: @status.id) if @options[:markdown]
     end
   end
 

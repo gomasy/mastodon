@@ -58,6 +58,7 @@ export const COMPOSE_SPOILER_TEXT_CHANGE = 'COMPOSE_SPOILER_TEXT_CHANGE';
 export const COMPOSE_VISIBILITY_CHANGE   = 'COMPOSE_VISIBILITY_CHANGE';
 export const COMPOSE_COMPOSING_CHANGE    = 'COMPOSE_COMPOSING_CHANGE';
 export const COMPOSE_LANGUAGE_CHANGE     = 'COMPOSE_LANGUAGE_CHANGE';
+export const COMPOSE_MARKDOWN_CHANGE     = 'COMPOSE_MARKDOWN_CHANGE';
 
 export const COMPOSE_EMOJI_INSERT = 'COMPOSE_EMOJI_INSERT';
 
@@ -211,6 +212,7 @@ export function submitCompose(routerHistory) {
         visibility: getState().getIn(['compose', 'privacy']),
         poll: getState().getIn(['compose', 'poll'], null),
         language: getState().getIn(['compose', 'language']),
+        markdown: getState().getIn(['compose', 'markdown']),
       },
       headers: {
         'Idempotency-Key': getState().getIn(['compose', 'idempotencyKey']),
@@ -752,6 +754,12 @@ export const changeComposeLanguage = language => ({
   type: COMPOSE_LANGUAGE_CHANGE,
   language,
 });
+
+export function changeComposeMarkdown() {
+  return {
+    type: COMPOSE_MARKDOWN_CHANGE,
+  };
+}
 
 export function changeComposeSpoilerness() {
   return {
