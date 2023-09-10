@@ -97,12 +97,13 @@ export const ensureComposeIsVisible = (getState, routerHistory) => {
   }
 };
 
-export function setComposeToStatus(status, text, spoiler_text) {
+export function setComposeToStatus(status, text, spoiler_text, markdown) {
   return{
     type: COMPOSE_SET_STATUS,
     status,
     text,
     spoiler_text,
+    markdown,
   };
 }
 

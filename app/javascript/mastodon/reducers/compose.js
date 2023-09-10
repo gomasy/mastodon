@@ -86,6 +86,7 @@ const initialState = ImmutableMap({
   default_privacy: 'public',
   default_sensitive: false,
   default_language: 'en',
+  default_markdown: false,
   resetFileKey: Math.floor((Math.random() * 0x10000)),
   idempotencyKey: null,
   tagHistory: ImmutableList(),
@@ -126,6 +127,7 @@ function clearAll(state) {
     map.set('privacy', state.get('default_privacy'));
     map.set('sensitive', state.get('default_sensitive'));
     map.set('language', state.get('default_language'));
+    map.set('markdown', state.get('default_markdown'));
     map.update('media_attachments', list => list.clear());
     map.set('poll', null);
     map.set('idempotencyKey', uuid());
@@ -522,7 +524,7 @@ export default function compose(state = initialState, action) {
       map.set('idempotencyKey', uuid());
       map.set('sensitive', action.status.get('sensitive'));
       map.set('language', action.status.get('language'));
-      map.set('markdown', action.status.get('markdown'));
+      map.set('markdown', action.markdown);
 
       if (action.spoiler_text.length > 0) {
         map.set('spoiler', true);
