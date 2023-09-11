@@ -143,6 +143,8 @@
   "compose_form.hashtag_warning": "この投稿は公開設定ではないのでハッシュタグの一覧に表示されません。公開投稿だけがハッシュタグで検索できます。",
   "compose_form.lock_disclaimer": "あなたのアカウントは{locked}になっていません。誰でもあなたをフォローすることができ、フォロワー限定の投稿を見ることができます。",
   "compose_form.lock_disclaimer.lock": "承認制",
+  "compose_form.markdown.marked": "Markdown入力モード",
+  "compose_form.markdown.unmarked": "プレーンテキスト入力モード",
   "compose_form.placeholder": "今なにしてる？",
   "compose_form.poll.add_option": "追加",
   "compose_form.poll.duration": "アンケート期間",
