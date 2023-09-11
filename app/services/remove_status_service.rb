@@ -23,7 +23,6 @@ class RemoveStatusService < BaseService
       @status.discard_with_reblogs
 
       StatusPin.find_by(status: @status)&.destroy
-      StatusMarkdown.find_by(status: @status)&.destroy
 
       remove_from_self if @account.local?
       remove_from_followers
