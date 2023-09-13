@@ -115,4 +115,16 @@ module Extractor
 
     possible_entries
   end
+
+  def extract_urls_with_indices(text, options = {:extract_url_without_protocol => true})
+    possible_entries = []
+
+    super(text, options).each do |entry|
+      next if text[entry[:indices][0] - 1] == "(" && text[entry[:indices][1]] == ")"
+
+      possible_entries << entry
+    end
+
+    possible_entries
+  end
 end
