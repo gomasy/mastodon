@@ -5,6 +5,7 @@ module MarkdownHelper
     {
       hard_wrap: true,
       xhtml: true,
+      link_attributes: { target: "_blank", rel: "nofollow noopener noreferrer" },
     }
   end
 
