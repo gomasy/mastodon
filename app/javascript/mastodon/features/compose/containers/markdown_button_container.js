@@ -11,9 +11,8 @@ const messages = defineMessages({
 });
 
 const mapStateToProps = (state, { intl }) => ({
-  label: 'MD',
+  label: state.getIn(['compose', 'markdown']) ? 'MD' : 'PL',
   title: intl.formatMessage(state.getIn(['compose', 'markdown']) ? messages.marked : messages.unmarked),
-  active: state.getIn(['compose', 'markdown']),
   ariaControls: 'markdown-input',
 });
 
