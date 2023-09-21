@@ -3,6 +3,9 @@
 module MarkdownHelper
   def renderer_options
     {
+      no_images: true,
+      no_styles: true,
+      safe_links_only: true,
       hard_wrap: true,
       xhtml: true,
       link_attributes: { target: "_blank", rel: "nofollow noopener noreferrer" },
@@ -21,8 +24,17 @@ module MarkdownHelper
     }
   end
 
+  def unescape(text)
+    text
+      .gsub("&amp;", "&")
+      .gsub("&lt;", "<")
+      .gsub("&gt;", ">")
+      .gsub("&quot;", "\"")
+      .gsub("&#39;", "'")
+  end
+
   def parse_markdown(text)
     markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(renderer_options), renderer_extensions)
-    markdown.render(text.gsub("&gt;", ">")).delete("\n")
+    markdown.render(unescape(text)).delete("\n")
   end
 end
