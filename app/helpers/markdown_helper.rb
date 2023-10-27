@@ -35,6 +35,6 @@ module MarkdownHelper
 
   def parse_markdown(text)
     markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML.new(renderer_options), renderer_extensions)
-    markdown.render(unescape(text)).delete("\n")
+    markdown.render(unescape(text))
   end
 end
