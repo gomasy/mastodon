@@ -6,7 +6,6 @@ module MarkdownHelper
       no_images: true,
       no_styles: true,
       safe_links_only: true,
-      hard_wrap: true,
       xhtml: true,
       link_attributes: { target: "_blank", rel: "nofollow noopener noreferrer" },
     }
