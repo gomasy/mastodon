@@ -208,6 +208,7 @@ class MediaAttachment < ApplicationRecord
   scope :cached, -> { remote.where.not(file_file_name: nil) }
   scope :created_before, ->(value) { where(arel_table[:created_at].lt(value)) }
   scope :local, -> { where(remote_url: '') }
+  scope :not_bookmarked, -> { where.not(status_id: Bookmark.select(:status_id)) }
   scope :ordered, -> { order(id: :asc) }
   scope :remote, -> { where.not(remote_url: '') }
   scope :unattached, -> { where(status_id: nil, scheduled_status_id: nil) }

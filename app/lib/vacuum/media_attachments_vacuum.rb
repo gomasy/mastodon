@@ -30,6 +30,7 @@ class Vacuum::MediaAttachmentsVacuum
     MediaAttachment
       .remote
       .cached
+      .not_bookmarked
       .created_before(@retention_period.ago)
       .updated_before(@retention_period.ago)
   end
