@@ -16,7 +16,6 @@ import escapeTextContentForBrowser from 'escape-html';
 
 const messages = defineMessages({
   template: { id: 'template_button.label', defaultMessage: 'Insert template' },
-
 });
 
 const listenerOptions = supportsPassiveEvents ? { passive: true, capture: true } : true;
@@ -27,6 +26,7 @@ class TemplatePickerImpl extends PureComponent {
     custom_templates: ImmutablePropTypes.list,
     intl: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
+    pickerButtonRef: PropTypes.func.isRequired,
   };
 
   handleClick = e => {
@@ -80,7 +80,7 @@ class TemplatePickerMenuImpl extends PureComponent {
   };
 
   handleDocumentClick = e => {
-    if (this.node && !this.node.contains(e.target)) {
+    if (this.node && !this.node.contains(e.target) && !this.props.pickerButtonRef.contains(e.target)) {
       this.props.onClose();
     }
   }
@@ -193,6 +193,7 @@ class TemplatePickerDropdown extends PureComponent {
                   custom_templates={this.props.custom_templates}
                   onPick={onPickTemplate}
                   onClose={this.onHideDropdown}
+                  pickerButtonRef={this.target}
                 />
               </div>
             </div>
