@@ -8,7 +8,8 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import Overlay from 'react-overlays/Overlay';
 
-import { assetHost } from 'mastodon/utils/config';
+import ContentPasteIcon from 'mastodon/../material-icons/400-24px/content_paste.svg?react';
+import { IconButton } from 'mastodon/components/icon_button';
 
 import emojify from '../../emoji/emoji';
 import escapeTextContentForBrowser from 'escape-html';
@@ -174,14 +175,15 @@ class TemplatePickerDropdown extends PureComponent {
     const { active } = this.state;
 
     return (
-      <div className='template-picker-dropdown' onKeyDown={this.handleKeyDown}>
-        <div ref={this.setTargetRef} className='emoji-button' title={title} aria-label={title} aria-expanded={active} role='button' onClick={this.onToggle} onKeyDown={this.onToggle} tabIndex={0}>
-          <img
-            className='emojione'
-            alt='📋'
-            src={`${assetHost}/emoji/1f4cb.svg`}
-          />
-        </div>
+      <div className='template-picker-dropdown' onKeyDown={this.handleKeyDown} ref={this.setTargetRef}>
+        <IconButton
+          title={title}
+          aria-expanded={active}
+          active={active}
+          iconComponent={ContentPasteIcon}
+          onClick={this.onToggle}
+          inverted
+        />
 
         <Overlay show={active} placement={'bottom'} target={this.findTarget}>
           {({ props, placement }) => (

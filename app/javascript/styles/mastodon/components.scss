@@ -5135,8 +5135,7 @@ a.status-card {
 
 .template-picker {
   width: 350px;
-  background: #ffffff;
-  color: #282c37;
+  background: var(--dropdown-background-color);
   border-radius: 4px;
 
   .template-picker-title {
