@@ -3,16 +3,17 @@ import { injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { changeComposeMarkdown } from '../../../actions/compose';
-import TextIconButton from '../components/text_icon_button';
+import MarkdownIndicator from '../components/markdown_indicator';
 
 const messages = defineMessages({
-  marked: { id: 'compose_form.markdown.marked', defaultMessage: 'Markdown input mode' },
-  unmarked: { id: 'compose_form.markdown.unmarked', defaultMessage: 'Plain-text input mode' },
+  changeMode: { id: 'compose_form.markdown.change', defaultMessage: 'Change input mode' },
+  marked: { id: 'compose_form.markdown.marked', defaultMessage: 'Input mode: Markdown' },
+  unmarked: { id: 'compose_form.markdown.unmarked', defaultMessage: 'Input mode: Plain-text' },
 });
 
 const mapStateToProps = (state, { intl }) => ({
-  label: state.getIn(['compose', 'markdown']) ? 'MD' : 'PL',
-  title: intl.formatMessage(state.getIn(['compose', 'markdown']) ? messages.marked : messages.unmarked),
+  label: intl.formatMessage(state.getIn(['compose', 'markdown']) ? messages.marked : messages.unmarked),
+  title: intl.formatMessage(messages.changeMode),
   ariaControls: 'markdown-input',
 });
 
@@ -24,4 +25,4 @@ const mapDispatchToProps = dispatch => ({
 
 });
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(TextIconButton));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(MarkdownIndicator));

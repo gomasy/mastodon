@@ -602,6 +602,7 @@ body > [data-popper-placement] {
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-wrap: wrap;
 
     & > div {
       overflow: hidden;
