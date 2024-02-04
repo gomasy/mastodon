@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 
+import TextFieldsIcon from 'mastodon/../material-icons/400-24px/text_fields.svg?react';
+import { Icon } from 'mastodon/components/icon';
+
 export default class MarkdownIndicator extends PureComponent {
 
   static propTypes = {
@@ -25,7 +28,8 @@ export default class MarkdownIndicator extends PureComponent {
           onClick={this.props.onClick}
           aria-controls={ariaControls}
         >
-          {label}
+          <Icon icon={TextFieldsIcon} />
+          <span className='dropdown-button__label'>{label}</span>
         </button>
       </div>
     );
