@@ -497,6 +497,10 @@ body > [data-popper-placement] {
     padding: 10px;
   }
 
+  .account {
+    padding: 0;
+  }
+
   &__highlightable {
     display: flex;
     flex-direction: column;
@@ -2419,17 +2423,13 @@ a.account__display-name {
     overflow-x: hidden;
   }
 
-  .account {
-    padding: 0;
+  .account__avatar-wrapper {
+    margin-left: 12px;
+    margin-right: 2px;
 
-    .account__avatar-wrapper {
-      margin-left: 12px;
-      margin-right: 2px;
-
-      .account__avatar {
-        width: 36px !important;
-        height: 36px !important;
-      }
+    .account__avatar {
+      width: 36px !important;
+      height: 36px !important;
     }
   }
 
