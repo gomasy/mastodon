@@ -497,10 +497,6 @@ body > [data-popper-placement] {
     padding: 10px;
   }
 
-  .account {
-    padding: 0;
-  }
-
   &__highlightable {
     display: flex;
     flex-direction: column;
@@ -2687,6 +2683,10 @@ $ui-header-height: 55px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+
+  .account {
+    padding: 10px;
+  }
 
   > .scrollable {
     border: 1px solid var(--background-border-color);
