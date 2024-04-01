@@ -1260,17 +1260,17 @@ sl:
   exports:
     archive_takeout:
       date: Datum
-      download: Prenesi svoj arhiv
-      hint_html: Zahtevate lahko arhiv vaših <strong>objav in naloženih medijev</strong>. Izvoženi podatki bodo v zapisu ActivityPub, ki ga bo mogoče brati s poljubno skladno programsko opremo. Arhiv lahko zahtevate vsakih 7 dni.
-      in_progress: Prevajanje arhiva...
+      download: Prenesite svoj arhiv
+      hint_html: Zahtevate lahko arhiv svojih <strong>objav in naloženih medijev</strong>. Izvoženi podatki bodo v zapisu ActivityPub, ki ga bo mogoče brati s poljubno skladno programsko opremo. Arhiv lahko zahtevate vsakih 7 dni.
+      in_progress: Pripravljanje vašega arhiva …
       request: Zahtevajte svoj arhiv
       size: Velikost
-    blocks: Blokirate
+    blocks: Blokirani
     bookmarks: Zaznamki
     csv: CSV
-    domain_blocks: Bloki domene
+    domain_blocks: Blokirane domene
     lists: Seznami
-    mutes: Utišate
+    mutes: Utišani
     storage: Shranjeni mediji
   featured_tags:
     add_new: Dodaj novo
@@ -1614,17 +1614,17 @@ sl:
     confirm_follow_selected_followers: Ali ste prepričani, da želite slediti izbranim sledilcem?
     confirm_remove_selected_followers: Ali ste prepričani, da želite odstraniti izbrane sledilce?
     confirm_remove_selected_follows: Ali ste prepričani, da želite odstraniti izbrana sledenja?
-    dormant: Skrit
+    dormant: Nedejavno
     follow_failure: Nekaterim od izbranih računov ni bilo mogoče slediti.
     follow_selected_followers: Sledi izbranim sledilcem
     followers: Sledilci
-    following: Sledi
+    following: Sledeni
     invited: Vabljeni
     last_active: Zadnja dejavnost
-    most_recent: Najnovejša
+    most_recent: Najnovejše
     moved: Prestavljeno
-    mutual: Vzajemna
-    primary: Primarna
+    mutual: Vzajemno
+    primary: Primarno
     relationship: Razmerje
     remove_selected_domains: Odstrani vse sledilce iz izbranih domen
     remove_selected_followers: Odstrani izbrane sledilce
@@ -1833,6 +1833,7 @@ sl:
     contrast: Mastodon (Visok kontrast)
     default: Mastodon (Temna)
     mastodon-light: Mastodon (Svetla)
+    system: Samodejno (uporabi sistemsko temo)
   time:
     formats:
       default: "%b %d %Y, %H:%M"
@@ -1945,6 +1946,11 @@ sl:
       follows_subtitle: Sledite dobro znanim računom
       follows_title: Komu slediti
       follows_view_more: Pokaži več oseb za sledenje
+      hashtags_recent_count:
+        few: "%{people} osebe v zadnjih dveh dneh"
+        one: "%{people} oseba v zadnjih dveh dneh"
+        other: "%{people} oseb v zadnjih dveh dneh"
+        two: "%{people} osebi v zadnjih dveh dneh"
       hashtags_subtitle: Raziščite, kaj je v trendu zadnja dva dni
       hashtags_title: Ključniki v trendu
       hashtags_view_more: Pokaži več ključnikov v trendu
