@@ -104,8 +104,16 @@ ENV RAILS_ENV="production" \
 USER mastodon
 WORKDIR /opt/mastodon
 
-# Precompile assets
-RUN OTP_SECRET=precompile_placeholder SECRET_KEY_BASE=precompile_placeholder rails assets:precompile
+RUN \
+# Use Ruby on Rails to create Mastodon assets
+  ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY=precompile_placeholder \
+  ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT=precompile_placeholder \
+  ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY=precompile_placeholder \
+  OTP_SECRET=precompile_placeholder \
+  SECRET_KEY_BASE=precompile_placeholder \
+  bundle exec rails assets:precompile; \
+# Cleanup temporary files
+  rm -fr /opt/mastodon/tmp;
 
 # Set the work dir and the container entry point
 ENTRYPOINT ["/usr/bin/tini", "--"]
