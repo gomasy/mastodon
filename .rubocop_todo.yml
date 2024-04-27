@@ -54,15 +54,6 @@ Rails/OutputSafety:
   Exclude:
     - 'config/initializers/simple_form.rb'
 
-# Configuration parameters: Include.
-# Include: app/models/**/*.rb
-Rails/UniqueValidationWithoutIndex:
-  Exclude:
-    - 'app/models/account_alias.rb'
-    - 'app/models/custom_filter_status.rb'
-    - 'app/models/identity.rb'
-    - 'app/models/webauthn_credential.rb'
-
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 # AllowedMethods: ==, equal?, eql?
@@ -136,19 +127,6 @@ Style/GuardClause:
     - 'lib/mastodon/cli/maintenance.rb'
     - 'lib/mastodon/cli/media.rb'
     - 'lib/tasks/repo.rake'
-
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: braces, no_braces
-Style/HashAsLastArrayItem:
-  Exclude:
-    - 'app/controllers/admin/statuses_controller.rb'
-    - 'app/controllers/api/v1/statuses_controller.rb'
-    - 'app/models/concerns/account/counters.rb'
-    - 'app/models/concerns/status/threading_concern.rb'
-    - 'app/models/status.rb'
-    - 'app/services/batched_remove_status_service.rb'
-    - 'app/services/notify_service.rb'
 
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/HashTransformValues:
