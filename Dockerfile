@@ -2,7 +2,7 @@
 # This needs to be bookworm-slim because the Ruby image is built on bookworm-slim
 ARG NODE_VERSION="20-bookworm-slim"
 
-FROM ghcr.io/moritzheiber/ruby-jemalloc:3.3.2-slim as ruby
+FROM ghcr.io/moritzheiber/ruby-jemalloc:3.3.1-slim as ruby
 FROM node:${NODE_VERSION} as build
 
 COPY --link --from=ruby /opt/ruby /opt/ruby
