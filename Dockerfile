@@ -4,6 +4,8 @@ ARG NODE_MAJOR_VERSION="20"
 ARG DEBIAN_VERSION="bookworm"
 
 FROM docker.io/ruby:${RUBY_VERSION}-slim-${DEBIAN_VERSION} as ruby
+RUN rm -fr /usr/local/lib/ruby/gems/*/cache
+
 FROM docker.io/node:${NODE_MAJOR_VERSION}-${DEBIAN_VERSION}-slim as build
 
 COPY --link --from=ruby /usr/local/bin/ /usr/local/bin/
@@ -49,6 +51,7 @@ RUN yarn workspaces focus --all --production && \
     yarn cache clean
 
 FROM docker.io/node:${NODE_MAJOR_VERSION}-${DEBIAN_VERSION}-slim
+RUN rm -fr /usr/local/include/*
 
 # Use those args to specify your own version flags & suffixes
 ARG MASTODON_VERSION_PRERELEASE=""
@@ -121,7 +124,10 @@ RUN \
   SECRET_KEY_BASE=precompile_placeholder \
   bundle exec rails assets:precompile; \
 # Cleanup temporary files
-  rm -fr /opt/mastodon/tmp;
+  rm -fr /opt/mastodon/tmp; \
+  rm -fr /opt/mastodon/.cache; \
+  rm -fr /opt/mastodon/node_modules/.cache; \
+  rm -fr /opt/mastodon/vendor/bundle/ruby/*/cache;
 
 # Set the work dir and the container entry point
 ENTRYPOINT ["/usr/bin/tini", "--"]
