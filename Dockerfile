@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.7
+# syntax=docker/dockerfile:1.8
 ARG RUBY_VERSION="3.3.3"
 ARG NODE_MAJOR_VERSION="20"
 ARG DEBIAN_VERSION="bookworm"

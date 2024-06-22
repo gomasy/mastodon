@@ -137,7 +137,7 @@ class AccountTimeline extends ImmutablePureComponent {
     }
 
     if (prevProps.accountId === me && accountId !== me) {
-      dispatch(disconnectTimeline(`account:${me}`));
+      dispatch(disconnectTimeline({ timeline: `account:${me}` }));
     }
   }
 
@@ -145,7 +145,7 @@ class AccountTimeline extends ImmutablePureComponent {
     const { dispatch, accountId } = this.props;
 
     if (accountId === me) {
-      dispatch(disconnectTimeline(`account:${me}`));
+      dispatch(disconnectTimeline({ timeline: `account:${me}` }));
     }
   }
 
