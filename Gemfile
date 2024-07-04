@@ -25,7 +25,7 @@ gem 'active_model_serializers', '~> 0.10'
 gem 'addressable', '~> 2.8'
 gem 'bootsnap', '~> 1.16.0', require: false
 gem 'browser'
-gem 'charlock_holmes', github: 'gomasy/charlock_holmes', ref: 'dff95939a325fa951ce3a9958856e94b9bdc59f1'
+gem 'charlock_holmes', '~> 0.7.7'
 gem 'chewy', '~> 7.3'
 gem 'devise', '~> 4.9'
 gem 'devise-two-factor', '~> 4.1'

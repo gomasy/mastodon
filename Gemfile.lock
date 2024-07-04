@@ -8,13 +8,6 @@ GIT
       jwt (~> 2.0)
 
 GIT
-  remote: https://github.com/gomasy/charlock_holmes.git
-  revision: dff95939a325fa951ce3a9958856e94b9bdc59f1
-  ref: dff95939a325fa951ce3a9958856e94b9bdc59f1
-  specs:
-    charlock_holmes (0.7.7)
-
-GIT
   remote: https://github.com/mastodon/rails-settings-cached.git
   revision: 86328ef0bd04ce21cc0504ff5e334591e8c2ccab
   branch: v0.6.6-aliases-true
@@ -199,6 +192,7 @@ GEM
     case_transform (0.2)
       activesupport
     cbor (0.5.9.6)
+    charlock_holmes (0.7.7)
     chewy (7.3.4)
       activesupport (>= 5.2)
       elasticsearch (>= 7.12.0, < 7.14.0)
@@ -838,7 +832,7 @@ DEPENDENCIES
   capistrano-rbenv (~> 2.2)
   capistrano-yarn (~> 2.0)
   capybara (~> 3.39)
-  charlock_holmes!
+  charlock_holmes (~> 0.7.7)
   chewy (~> 7.3)
   climate_control (~> 0.2)
   cocoon (~> 1.2)
