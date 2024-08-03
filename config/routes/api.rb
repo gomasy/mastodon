@@ -156,6 +156,11 @@ namespace :api, format: false do
 
     namespace :notifications do
       resources :requests, only: [:index, :show] do
+        collection do
+          post :accept, to: 'requests#accept_bulk'
+          post :dismiss, to: 'requests#dismiss_bulk'
+        end
+
         member do
           post :accept
           post :dismiss
@@ -168,6 +173,7 @@ namespace :api, format: false do
     resources :notifications, only: [:index, :show] do
       collection do
         post :clear
+        get :unread_count
       end
 
       member do
@@ -339,6 +345,7 @@ namespace :api, format: false do
     resources :notifications, only: [:index, :show] do
       collection do
         post :clear
+        get :unread_count
       end
 
       member do
