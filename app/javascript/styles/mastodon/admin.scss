@@ -705,7 +705,7 @@ body,
     top: 15px;
 
     .avatar {
-      border-radius: 4px;
+      border-radius: var(--avatar-border-radius);
       width: 40px;
       height: 40px;
     }
@@ -756,7 +756,7 @@ body,
     top: 15px;
 
     .avatar {
-      border-radius: 4px;
+      border-radius: var(--avatar-border-radius);
       width: 40px;
       height: 40px;
     }
@@ -880,6 +880,7 @@ a.name-tag,
 
     .account {
       padding: 0;
+      border: none;
 
       &__avatar-wrapper {
         margin-inline-start: 0;
@@ -1603,7 +1604,7 @@ a.sparkline {
       position: absolute;
       inset-inline-start: 15px;
       top: 15px;
-      border-radius: 4px;
+      border-radius: var(--avatar-border-radius);
       width: 40px;
       height: 40px;
     }
