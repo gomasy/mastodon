@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.9
-ARG RUBY_VERSION="3.3.4"
+ARG RUBY_VERSION="3.3.5"
 ARG NODE_MAJOR_VERSION="20"
 ARG DEBIAN_VERSION="bookworm"
 
