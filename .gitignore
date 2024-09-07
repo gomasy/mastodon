@@ -71,6 +71,3 @@ docker-compose.override.yml
 
 # Ignore dotenv .local files
 .env*.local
-
-# Ignore Dependabot config files
-.github/dependabot.yml
