@@ -10415,7 +10415,8 @@ noscript {
   display: flex;
   align-items: center;
   border-bottom: 1px solid var(--background-border-color);
-  padding: 16px 24px;
+  padding: 16px;
+  padding-left: 8px;
   gap: 8px;
   color: $darker-text-color;
   text-decoration: none;
@@ -10601,7 +10602,8 @@ noscript {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  padding: 16px 24px;
+  padding: 16px;
+  padding-left: 8px;
   border-bottom: 1px solid var(--background-border-color);
 
   &__icon {
@@ -10793,7 +10795,8 @@ noscript {
 }
 
 .notification-ungrouped {
-  padding: 16px 24px;
+  padding: 16px;
+  padding-left: 8px;
   border-bottom: 1px solid var(--background-border-color);
 
   &__header {
