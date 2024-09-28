@@ -439,6 +439,24 @@ class Status extends ImmutablePureComponent {
             media={status.get('media_attachments')}
           />
         );
+      } else if (['image', 'gifv'].includes(status.getIn(['media_attachments', 0, 'type'])) || status.get('media_attachments').size > 1) {
+        media = (
+          <Bundle fetchComponent={MediaGallery} loading={this.renderLoadingMediaGallery}>
+            {Component => (
+              <Component
+                media={status.get('media_attachments')}
+                lang={language}
+                sensitive={status.get('sensitive')}
+                height={110}
+                onOpenMedia={this.handleOpenMedia}
+                cacheWidth={this.props.cacheMediaWidth}
+                defaultWidth={this.props.cachedMediaWidth}
+                visible={this.state.showMedia}
+                onToggleVisibility={this.handleToggleMediaVisibility}
+              />
+            )}
+          </Bundle>
+        );
       } else if (status.getIn(['media_attachments', 0, 'type']) === 'audio') {
         const attachment = status.getIn(['media_attachments', 0]);
         const description = attachment.getIn(['translation', 'description']) || attachment.get('description');
@@ -485,24 +503,6 @@ class Status extends ImmutablePureComponent {
                 sensitive={status.get('sensitive')}
                 onOpenVideo={this.handleOpenVideo}
                 deployPictureInPicture={pictureInPicture.get('available') ? this.handleDeployPictureInPicture : undefined}
-                visible={this.state.showMedia}
-                onToggleVisibility={this.handleToggleMediaVisibility}
-              />
-            )}
-          </Bundle>
-        );
-      } else {
-        media = (
-          <Bundle fetchComponent={MediaGallery} loading={this.renderLoadingMediaGallery}>
-            {Component => (
-              <Component
-                media={status.get('media_attachments')}
-                lang={language}
-                sensitive={status.get('sensitive')}
-                height={110}
-                onOpenMedia={this.handleOpenMedia}
-                cacheWidth={this.props.cacheMediaWidth}
-                defaultWidth={this.props.cachedMediaWidth}
                 visible={this.state.showMedia}
                 onToggleVisibility={this.handleToggleMediaVisibility}
               />
