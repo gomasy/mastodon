@@ -225,7 +225,7 @@ class ComposeForm extends ImmutablePureComponent {
   };
 
   handleTemplatePick = (data) => {
-    const position  = this.autosuggestTextarea.textarea.selectionStart;
+    const position  = this.textareaRef.current.selectionStart;
 
     this.props.onPickTemplate(position, data);
   }
