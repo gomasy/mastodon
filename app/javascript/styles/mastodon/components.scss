@@ -5581,7 +5581,7 @@ a.status-card {
         width: calc(100% / 2 - 12px);
 
         &:hover {
-          background-color: rgba(217, 225, 232, .7);
+          background-color: var(--dropdown-border-color);
           border-radius: 4px;
         }
 
