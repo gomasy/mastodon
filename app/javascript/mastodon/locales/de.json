@@ -516,6 +516,7 @@
   "notification.label.private_reply": "Private Antwort",
   "notification.label.reply": "Antwort",
   "notification.mention": "Erwähnung",
+  "notification.mentioned_you": "{name} erwähnte dich",
   "notification.moderation-warning.learn_more": "Mehr erfahren",
   "notification.moderation_warning": "Du wurdest von den Moderator*innen verwarnt",
   "notification.moderation_warning.action_delete_statuses": "Einige deiner Beiträge sind entfernt worden.",
