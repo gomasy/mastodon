@@ -15,6 +15,13 @@ class FetchLinkCardService < BaseService
     )
   }iox
 
+  USE_DISCORD_UA_FQDN = [
+    'youtube.com',
+    'youtu.be',
+    'www.youtube.com',
+    'm.youtube.com',
+  ]
+
   def call(status)
     @status       = status
     @original_url = parse_urls
@@ -48,7 +55,7 @@ class FetchLinkCardService < BaseService
     headers = {
       'Accept' => 'text/html',
       'Accept-Language' => "#{I18n.default_locale}, *;q=0.5",
-      'User-Agent' => "#{Mastodon::Version.user_agent} Bot",
+      'User-Agent' => !USE_DISCORD_UA_FQDN.include?(Addressable::URI.parse(@url).host) ? "#{Mastodon::Version.user_agent} Bot" : 'Discordbot',
     }
 
     @html = Request.new(:get, @url).add_headers(headers).perform do |res|
