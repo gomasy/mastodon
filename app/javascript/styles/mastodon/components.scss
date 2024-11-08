@@ -2443,6 +2443,10 @@ a.account__display-name {
 
 .display-name__html {
   font-weight: 500;
+
+  .emojione {
+    width: auto;
+  }
 }
 
 .status__relative-time,
@@ -8246,6 +8250,10 @@ noscript {
       text-decoration: none;
     }
   }
+
+  .emojione {
+    width: auto;
+  }
 }
 
 .account__header {
@@ -8367,7 +8375,7 @@ noscript {
       margin-bottom: 16px;
 
       .emojione {
-        width: 22px;
+        width: auto;
         height: 22px;
       }
 
