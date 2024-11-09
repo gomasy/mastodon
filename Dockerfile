@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.10
-ARG RUBY_VERSION="3.3.5"
-ARG NODE_MAJOR_VERSION="20"
+ARG RUBY_VERSION="3.3.6"
+ARG NODE_MAJOR_VERSION="22"
 ARG DEBIAN_VERSION="bookworm"
 
 FROM docker.io/ruby:${RUBY_VERSION}-slim-${DEBIAN_VERSION} as ruby
