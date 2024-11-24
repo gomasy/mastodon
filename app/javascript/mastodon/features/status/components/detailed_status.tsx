@@ -338,7 +338,7 @@ export const DetailedStatus: React.FC<{
           <div className='detailed-status__meta__line'>
             <a
               className='detailed-status__datetime'
-              href={status.get('url')}
+              href={`/@${status.getIn(['account', 'acct'])}/${status.get('id')}`}
               target='_blank'
               rel='noopener noreferrer'
             >
