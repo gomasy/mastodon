@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_05_163118) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_12_154346) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "account_aliases", force: :cascade do |t|
-    t.bigint "account_id"
+    t.bigint "account_id", null: false
     t.string "acct", default: "", null: false
     t.string "uri", default: "", null: false
     t.datetime "created_at", precision: nil, null: false
@@ -36,17 +36,17 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_05_163118) do
   end
 
   create_table "account_deletion_requests", force: :cascade do |t|
-    t.bigint "account_id"
+    t.bigint "account_id", null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["account_id"], name: "index_account_deletion_requests_on_account_id"
   end
 
   create_table "account_domain_blocks", force: :cascade do |t|
-    t.string "domain"
+    t.string "domain", null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.bigint "account_id"
+    t.bigint "account_id", null: false
     t.index ["account_id", "domain"], name: "index_account_domain_blocks_on_account_id_and_domain", unique: true
   end
 
@@ -82,8 +82,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_05_163118) do
   end
 
   create_table "account_pins", force: :cascade do |t|
-    t.bigint "account_id"
-    t.bigint "target_account_id"
+    t.bigint "account_id", null: false
+    t.bigint "target_account_id", null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["account_id", "target_account_id"], name: "index_account_pins_on_account_id_and_target_account_id", unique: true
@@ -213,7 +213,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_05_163118) do
   end
 
   create_table "admin_action_logs", force: :cascade do |t|
-    t.bigint "account_id"
+    t.bigint "account_id", null: false
     t.string "action", default: "", null: false
     t.string "target_type"
     t.bigint "target_id"
@@ -227,8 +227,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_05_163118) do
   end
 
   create_table "announcement_mutes", force: :cascade do |t|
-    t.bigint "account_id"
-    t.bigint "announcement_id"
+    t.bigint "account_id", null: false
+    t.bigint "announcement_id", null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["account_id", "announcement_id"], name: "index_announcement_mutes_on_account_id_and_announcement_id", unique: true
@@ -236,8 +236,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_05_163118) do
   end
 
   create_table "announcement_reactions", force: :cascade do |t|
-    t.bigint "account_id"
-    t.bigint "announcement_id"
+    t.bigint "account_id", null: false
+    t.bigint "announcement_id", null: false
     t.string "name", default: "", null: false
     t.bigint "custom_emoji_id"
     t.datetime "created_at", precision: nil, null: false
@@ -405,7 +405,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_05_163118) do
   end
 
   create_table "custom_filters", force: :cascade do |t|
-    t.bigint "account_id"
+    t.bigint "account_id", null: false
     t.datetime "expires_at", precision: nil
     t.text "phrase", default: "", null: false
     t.string "context", default: [], null: false, array: true
@@ -922,7 +922,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_05_163118) do
   end
 
   create_table "scheduled_statuses", force: :cascade do |t|
-    t.bigint "account_id"
+    t.bigint "account_id", null: false
     t.datetime "scheduled_at", precision: nil
     t.jsonb "params"
     t.index ["account_id"], name: "index_scheduled_statuses_on_account_id"
@@ -1117,6 +1117,15 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_05_163118) do
     t.index "lower((name)::text) text_pattern_ops", name: "index_tags_on_name_lower_btree", unique: true
   end
 
+  create_table "terms_of_services", force: :cascade do |t|
+    t.text "text", default: "", null: false
+    t.text "changelog", default: "", null: false
+    t.datetime "published_at"
+    t.datetime "notification_sent_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "tombstones", force: :cascade do |t|
     t.bigint "account_id"
     t.string "uri", null: false
@@ -1135,7 +1144,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_05_163118) do
   end
 
   create_table "user_invite_requests", force: :cascade do |t|
-    t.bigint "user_id"
+    t.bigint "user_id", null: false
     t.text "text"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
