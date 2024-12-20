@@ -33,8 +33,12 @@ module FormattingHelper
         'app.formatter.content.origin' => status.local? ? 'local' : 'remote'
       )
 
-      is_markdown = StatusMarkdown.where(status_id: status.id).exists?
-      html_aware_format(status.text, status.local?, preloaded_accounts: [status.account] + (status.respond_to?(:active_mentions) ? status.active_mentions.map(&:account) : []), markdown: is_markdown)
+      if status.local?
+        is_markdown = StatusMarkdown.where(status_id: status.id).exists?
+        html_aware_format(status.text, status.local?, preloaded_accounts: [status.account] + (status.respond_to?(:active_mentions) ? status.active_mentions.map(&:account) : []), markdown: is_markdown)
+      else
+        html_aware_format(status.text, status.local?, preloaded_accounts: [status.account] + (status.respond_to?(:active_mentions) ? status.active_mentions.map(&:account) : []))
+      end
     end
   end
 
