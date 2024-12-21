@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_12_154346) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_16_224825) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,8 +24,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_12_154346) do
   end
 
   create_table "account_conversations", force: :cascade do |t|
-    t.bigint "account_id"
-    t.bigint "conversation_id"
+    t.bigint "account_id", null: false
+    t.bigint "conversation_id", null: false
     t.bigint "participant_account_ids", default: [], null: false, array: true
     t.bigint "status_ids", default: [], null: false, array: true
     t.bigint "last_status_id"
@@ -72,8 +72,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_12_154346) do
   end
 
   create_table "account_notes", force: :cascade do |t|
-    t.bigint "account_id"
-    t.bigint "target_account_id"
+    t.bigint "account_id", null: false
+    t.bigint "target_account_id", null: false
     t.text "comment", null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
@@ -606,7 +606,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_12_154346) do
   end
 
   create_table "markers", force: :cascade do |t|
-    t.bigint "user_id"
+    t.bigint "user_id", null: false
     t.string "timeline", default: "", null: false
     t.bigint "last_read_id", default: 0, null: false
     t.integer "lock_version", default: 0, null: false
@@ -774,8 +774,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_12_154346) do
   end
 
   create_table "poll_votes", force: :cascade do |t|
-    t.bigint "account_id"
-    t.bigint "poll_id"
+    t.bigint "account_id", null: false
+    t.bigint "poll_id", null: false
     t.integer "choice", default: 0, null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
@@ -785,8 +785,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_12_154346) do
   end
 
   create_table "polls", force: :cascade do |t|
-    t.bigint "account_id"
-    t.bigint "status_id"
+    t.bigint "account_id", null: false
+    t.bigint "status_id", null: false
     t.datetime "expires_at", precision: nil
     t.string "options", default: [], null: false, array: true
     t.bigint "cached_tallies", default: [], null: false, array: true
@@ -1127,7 +1127,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_12_154346) do
   end
 
   create_table "tombstones", force: :cascade do |t|
-    t.bigint "account_id"
+    t.bigint "account_id", null: false
     t.string "uri", null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false

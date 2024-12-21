@@ -28,7 +28,7 @@ require_relative '../lib/redis/namespace_extensions'
 require_relative '../lib/paperclip/url_generator_extensions'
 require_relative '../lib/paperclip/attachment_extensions'
 
-require_relative '../lib/paperclip/gifv_transcoder'
+require_relative '../lib/paperclip/gif_transcoder'
 require_relative '../lib/paperclip/media_type_spoof_detector_extensions'
 require_relative '../lib/paperclip/transcoder'
 require_relative '../lib/paperclip/type_corrector'
@@ -107,6 +107,11 @@ module Mastodon
     config.x.captcha = config_for(:captcha)
     config.x.mastodon = config_for(:mastodon)
     config.x.translation = config_for(:translation)
+
+    if ENV.fetch('QUERY_LOG_TAGS_ENABLED', 'false') == 'true'
+      config.active_record.query_log_tags_enabled = ENV.fetch('QUERY_LOG_TAGS_ENABLED', 'false') == 'true'
+      config.active_record.query_log_tags = [:namespaced_controller, :action, :sidekiq_job_class]
+    end
 
     config.to_prepare do
       Doorkeeper::AuthorizationsController.layout 'modal'
