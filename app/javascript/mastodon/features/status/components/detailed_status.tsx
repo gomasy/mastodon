@@ -113,6 +113,10 @@ export const DetailedStatus: React.FC<{
     if (onTranslate) onTranslate(status);
   }, [onTranslate, status]);
 
+  if (!status) {
+    return null;
+  }
+
   let media;
   let applicationLink;
   let reblogLink;
