@@ -1,12 +1,14 @@
 # syntax=docker/dockerfile:1.12
+ARG BASE_REGISTRY="docker.io"
+
 ARG RUBY_VERSION="3.4.1"
 ARG NODE_MAJOR_VERSION="22"
 ARG DEBIAN_VERSION="bookworm"
 
-FROM docker.io/ruby:${RUBY_VERSION}-slim-${DEBIAN_VERSION} as ruby
+FROM ${BASE_REGISTRY}/ruby:${RUBY_VERSION}-slim-${DEBIAN_VERSION} as ruby
 RUN rm -fr /usr/local/lib/ruby/gems/*/cache
 
-FROM docker.io/node:${NODE_MAJOR_VERSION}-${DEBIAN_VERSION}-slim as build
+FROM ${BASE_REGISTRY}/node:${NODE_MAJOR_VERSION}-${DEBIAN_VERSION}-slim as build
 
 COPY --link --from=ruby /usr/local/bin/ /usr/local/bin/
 COPY --link --from=ruby /usr/local/include/ /usr/local/include/
@@ -50,7 +52,7 @@ RUN bundle install -j"$(nproc)"
 RUN yarn workspaces focus --all --production && \
     yarn cache clean
 
-FROM docker.io/node:${NODE_MAJOR_VERSION}-${DEBIAN_VERSION}-slim
+FROM ${BASE_REGISTRY}/node:${NODE_MAJOR_VERSION}-${DEBIAN_VERSION}-slim
 RUN rm -fr /usr/local/include/*
 
 # Use those args to specify your own version flags & suffixes
