@@ -290,6 +290,16 @@ module Mastodon::CLI
       fail_with_message 'Invalid URL'
     end
 
+    PRELOADED_MODELS = %w(
+      Account
+      Backup
+      CustomEmoji
+      Import
+      MediaAttachment
+      PreviewCard
+      SiteUpload
+    ).freeze
+
     private
 
     def object_storage_summary
@@ -310,16 +320,6 @@ module Mastodon::CLI
         COALESCE(file_file_size, 0) + COALESCE(thumbnail_file_size, 0)
       SQL
     end
-
-    PRELOADED_MODELS = %w(
-      Account
-      Backup
-      CustomEmoji
-      Import
-      MediaAttachment
-      PreviewCard
-      SiteUpload
-    ).freeze
 
     def preload_records_from_mixed_objects(objects)
       preload_map = Hash.new { |hash, key| hash[key] = [] }
