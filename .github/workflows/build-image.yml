@@ -16,6 +16,7 @@ jobs:
   build-image:
     runs-on: ${{ matrix.runner }}
     strategy:
+      fail-fast: false
       matrix:
         include:
           - runner: ubuntu-latest
@@ -23,10 +24,89 @@ jobs:
           - runner: self-hosted
             arch: arm64
 
+    env:
+      PUSH_TO_IMAGES: |
+        ghcr.io/gomasy/mastodon
+
     steps:
       - uses: actions/checkout@v4
-      - uses: hadolint/hadolint-action@v3.1.0
-      - uses: docker/setup-buildx-action@v3
+
+      - name: Prepare
+        run: |
+          echo "PLATFORM_PAIR=${{ matrix.arch }}" >> $GITHUB_ENV
+          # Transform multi-line variable into comma-separated variable
+          image_names=${PUSH_TO_IMAGES//$'\n'/,}
+          echo "IMAGE_NAMES=${image_names%,}" >> $GITHUB_ENV
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to the Github Container registry
+        uses: docker/login-action@v3
+        if: ${{ github.event_name != 'pull_request' }}
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Docker meta
+        uses: docker/metadata-action@v5
+        id: meta
+        with:
+          images: ${{ env.PUSH_TO_IMAGES }}
+          flavor: |
+            latest=auto
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=nightly,enable={{is_default_branch}}
+            type=raw,value={{branch}},enable=${{ github.ref != format('refs/heads/{0}', 'master') }}
+
+      - name: Build and push by digest
+        uses: docker/build-push-action@v6
+        id: build
+        with:
+          context: .
+          provenance: false
+          push: ${{ github.event_name != 'pull_request' }}
+          cache-from: ${{ github.ref == format('refs/heads/{0}', 'master') && 'type=gha' || '' }}
+          cache-to: ${{ github.ref == format('refs/heads/{0}', 'master') && 'type=gha,mode=max' || '' }}
+          outputs: type=image,"name=${{ env.IMAGE_NAMES }}",push-by-digest=true,name-canonical=true,push=${{ github.event_name != 'pull_request' }}
+
+      - name: Export digest
+        if: ${{ github.event_name != 'pull_request' }}
+        run: |
+          mkdir -p "${{ runner.temp }}/digests"
+          digest="${{ steps.build.outputs.digest }}"
+          touch "${{ runner.temp }}/digests/${digest#sha256:}"
+
+      - name: Upload digest
+        uses: actions/upload-artifact@v4
+        if: ${{ github.event_name != 'pull_request' }}
+        with:
+          name: digests-${{ env.PLATFORM_PAIR }}
+          path: ${{ runner.temp }}/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  merge-images:
+    if: ${{ github.event_name != 'pull_request' }}
+    runs-on: ubuntu-latest
+    needs:
+      - build-image
+
+    env:
+      PUSH_TO_IMAGES: |
+        ghcr.io/gomasy/mastodon
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download digests
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ runner.temp }}/digests
+          pattern: digests-*
+          merge-multiple: true
 
       - name: Log in to the Github Container registry
         uses: docker/login-action@v3
@@ -34,26 +114,30 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-        if: github.event_name != 'pull_request'
 
-      - uses: docker/metadata-action@v5
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Docker meta
+        uses: docker/metadata-action@v5
         id: meta
         with:
-          images: |
-            ghcr.io/Gomasy/mastodon
+          images: ${{ env.PUSH_TO_IMAGES }}
           flavor: |
             latest=auto
           tags: |
-            type=raw,value=latest-${{ matrix.arch }},enable={{is_default_branch}}
-            type=raw,value={{branch}}-${{ matrix.arch }},enable=${{ github.ref != format('refs/heads/{0}', 'master') }}
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=nightly,enable={{is_default_branch}}
+            type=raw,value={{branch}},enable=${{ github.ref != format('refs/heads/{0}', 'master') }}
 
-      - uses: docker/build-push-action@v5
-        with:
-          context: .
-          provenance: false
-          builder: ${{ steps.buildx.outputs.name }}
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+      - name: Create manifest list and push
+        working-directory: ${{ runner.temp }}/digests
+        run: |
+          echo "$PUSH_TO_IMAGES" | xargs -I{} \
+            docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
+              $(printf '{}@sha256:%s ' *)
+
+      - name: Inspect image
+        run: |
+          echo "$PUSH_TO_IMAGES" | xargs -i{} \
+            docker buildx imagetools inspect {}:${{ steps.meta.outputs.version }}
