@@ -123,7 +123,7 @@ class ComposeForm extends ImmutablePureComponent {
       return;
     }
 
-    this.props.onSubmit(missingAltTextModal && this.props.missingAltText);
+    this.props.onSubmit(missingAltTextModal && this.props.missingAltText && this.props.privacy !== 'direct');
 
     if (e) {
       e.preventDefault();
