@@ -6,7 +6,7 @@
 import type { CSSProperties } from 'react';
 import { useState, useRef, useCallback } from 'react';
 
-import { FormattedDate, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
@@ -15,12 +15,15 @@ import AlternateEmailIcon from '@/material-icons/400-24px/alternate_email.svg?re
 import { AnimatedNumber } from 'mastodon/components/animated_number';
 import { ContentWarning } from 'mastodon/components/content_warning';
 import EditedTimestamp from 'mastodon/components/edited_timestamp';
+import { FilterWarning } from 'mastodon/components/filter_warning';
+import { FormattedDateWrapper } from 'mastodon/components/formatted_date';
 import type { StatusLike } from 'mastodon/components/hashtag_bar';
 import { getHashtagBarForStatus } from 'mastodon/components/hashtag_bar';
 import { Icon } from 'mastodon/components/icon';
 import { IconLogo } from 'mastodon/components/logo';
 import PictureInPicturePlaceholder from 'mastodon/components/picture_in_picture_placeholder';
 import { VisibilityIcon } from 'mastodon/components/visibility_icon';
+import { Video } from 'mastodon/features/video';
 
 import { Avatar } from '../../../components/avatar';
 import { DisplayName } from '../../../components/display_name';
@@ -28,7 +31,6 @@ import MediaGallery from '../../../components/media_gallery';
 import StatusContent from '../../../components/status_content';
 import Audio from '../../audio';
 import scheduleIdleTask from '../../ui/util/schedule_idle_task';
-import Video from '../../video';
 
 import Card from './card';
 
@@ -36,7 +38,6 @@ interface VideoModalOptions {
   startTime: number;
   autoPlay?: boolean;
   defaultVolume: number;
-  componentIndex: number;
 }
 
 export const DetailedStatus: React.FC<{
@@ -69,6 +70,7 @@ export const DetailedStatus: React.FC<{
   onToggleHidden,
 }) => {
   const [height, setHeight] = useState(0);
+  const [showDespiteFilter, setShowDespiteFilter] = useState(false);
   const nodeRef = useRef<HTMLDivElement>();
 
   const handleOpenVideo = useCallback(
@@ -80,6 +82,10 @@ export const DetailedStatus: React.FC<{
     },
     [onOpenVideo, status],
   );
+
+  const handleFilterToggle = useCallback(() => {
+    setShowDespiteFilter(!showDespiteFilter);
+  }, [showDespiteFilter, setShowDespiteFilter]);
 
   const handleExpandedToggle = useCallback(() => {
     if (onToggleHidden) onToggleHidden(status);
@@ -149,6 +155,7 @@ export const DetailedStatus: React.FC<{
           onOpenMedia={onOpenMedia}
           visible={showMedia}
           onToggleVisibility={onToggleMediaVisibility}
+          matchedFilters={status.get('matched_media_filters')}
         />
       );
     } else if (status.getIn(['media_attachments', 0, 'type']) === 'audio') {
@@ -175,6 +182,7 @@ export const DetailedStatus: React.FC<{
           blurhash={attachment.get('blurhash')}
           height={150}
           onToggleVisibility={onToggleMediaVisibility}
+          matchedFilters={status.get('matched_media_filters')}
         />
       );
     } else if (status.getIn(['media_attachments', 0, 'type']) === 'video') {
@@ -191,13 +199,12 @@ export const DetailedStatus: React.FC<{
           src={attachment.get('url')}
           alt={description}
           lang={language}
-          width={300}
-          height={150}
           inline
           onOpenVideo={handleOpenVideo}
           sensitive={status.get('sensitive')}
           visible={showMedia}
           onToggleVisibility={onToggleMediaVisibility}
+          matchedFilters={status.get('matched_media_filters')}
         />
       );
     }
@@ -272,8 +279,12 @@ export const DetailedStatus: React.FC<{
   const { statusContentProps, hashtagBar } = getHashtagBarForStatus(
     status as StatusLike,
   );
+
+  const matchedFilters = status.get('matched_filters');
+
   const expanded =
-    !status.get('hidden') || status.get('spoiler_text').length === 0;
+    (!matchedFilters || showDespiteFilter) &&
+    (!status.get('hidden') || status.get('spoiler_text').length === 0);
 
   return (
     <div style={outerStyle}>
@@ -314,16 +325,25 @@ export const DetailedStatus: React.FC<{
           )}
         </Link>
 
-        {status.get('spoiler_text').length > 0 && (
-          <ContentWarning
-            text={
-              status.getIn(['translation', 'spoilerHtml']) ||
-              status.get('spoilerHtml')
-            }
-            expanded={expanded}
-            onClick={handleExpandedToggle}
+        {matchedFilters && (
+          <FilterWarning
+            title={matchedFilters.join(', ')}
+            expanded={showDespiteFilter}
+            onClick={handleFilterToggle}
           />
         )}
+
+        {status.get('spoiler_text').length > 0 &&
+          (!matchedFilters || showDespiteFilter) && (
+            <ContentWarning
+              text={
+                status.getIn(['translation', 'spoilerHtml']) ||
+                status.get('spoilerHtml')
+              }
+              expanded={expanded}
+              onClick={handleExpandedToggle}
+            />
+          )}
 
         {expanded && (
           <>
@@ -346,7 +366,7 @@ export const DetailedStatus: React.FC<{
               target='_blank'
               rel='noopener noreferrer'
             >
-              <FormattedDate
+              <FormattedDateWrapper
                 value={new Date(status.get('created_at') as string)}
                 year='numeric'
                 month='short'

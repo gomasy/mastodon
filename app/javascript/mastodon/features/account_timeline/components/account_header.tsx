@@ -32,6 +32,7 @@ import { Avatar } from 'mastodon/components/avatar';
 import { Badge, AutomatedBadge, GroupBadge } from 'mastodon/components/badge';
 import { Button } from 'mastodon/components/button';
 import { CopyIconButton } from 'mastodon/components/copy_icon_button';
+import { FormattedDateWrapper } from 'mastodon/components/formatted_date';
 import { Icon } from 'mastodon/components/icon';
 import { IconButton } from 'mastodon/components/icon_button';
 import { LoadingIndicator } from 'mastodon/components/loading_indicator';
@@ -943,11 +944,12 @@ export const AccountHeader: React.FC<{
                       />
                     </dt>
                     <dd>
-                      {intl.formatDate(account.created_at, {
-                        year: 'numeric',
-                        month: 'short',
-                        day: '2-digit',
-                      })}
+                      <FormattedDateWrapper
+                        value={account.created_at}
+                        year='numeric'
+                        month='short'
+                        day='2-digit'
+                      />
                     </dd>
                   </dl>
 
