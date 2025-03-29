@@ -1,36 +1,29 @@
-@use '../mastodon/functions' as *;
-
-// Commonly used web colors
-$black: #000000;            // Black
-$white: #ffffff;            // White
-$red-600: #b7253d !default; // Deep Carmine
-$red-500: #df405a !default; // Cerise
-$blurple-600: #563acc;      // Iris
-$blurple-500: #6364ff;      // Brand purple
-$blurple-400: #7477fd;      // Medium slate blue
-$blurple-300: #858afa;      // Faded Blue
-$grey-600: #4e4c5a;         // Trout
-$grey-100: #dadaf3;         // Topaz
-
-$success-green: #79bd9a !default; // Padua
-$error-red: $red-500 !default;    // Cerise
-$warning-red: #ff5050 !default;   // Sunset Orange
-$gold-star: #ca8f04 !default;     // Dark Goldenrod
-
-$red-bookmark: $warning-red;
+// Dependent colors
+$white: #ffffff;    // White
+$grey-600: #4e4c5a; // Trout
+$grey-100: #dadaf3; // Topaz
 
 // Values from the classic Mastodon UI
-$classic-base-color: #2b2b2b;
-$classic-primary-color: #b5b5b5;
-$classic-secondary-color: #e5e5e5;
-$classic-highlight-color: #9b9b9b;
+$classic-base-color: #2b2b2b !default;
+$classic-primary-color: #b5b5b5 !default;
+$classic-secondary-color: #e5e5e5 !default;
+$classic-highlight-color: #9b9b9b !default;
 
+// Tell UI to use selected colors
 $ui-highlight-color: $classic-highlight-color !default;
+$ui-button-focus-outline-color: $classic-secondary-color !default;
+$ui-button-focus-outline: solid 2px $ui-button-focus-outline-color !default;
 
 @use '../mastodon/variables' with (
+  $classic-base-color: $classic-base-color,
+  $classic-primary-color: $classic-primary-color,
+  $classic-secondary-color: $classic-secondary-color,
+  $classic-highlight-color: $classic-highlight-color,
+
   $ui-button-background-color: $classic-highlight-color,
   $ui-button-focus-background-color: $classic-primary-color,
-  $ui-button-focus-outline-color: $classic-secondary-color,
+  $ui-button-focus-outline-color: $ui-button-focus-outline-color,
+  $ui-button-focus-outline: $ui-button-focus-outline,
 
   $ui-button-secondary-color: $grey-100,
   $ui-button-secondary-border-color: $grey-100,
@@ -40,8 +33,6 @@ $ui-highlight-color: $classic-highlight-color !default;
   $ui-button-tertiary-color: $grey-100,
   $ui-button-tertiary-border-color: $grey-100,
   $ui-button-tertiary-focus-background-color: $grey-600,
-
-  $ui-button-icon-hover-background-color: $classic-secondary-color,
 
   $highlight-text-color: $ui-highlight-color,
 );
