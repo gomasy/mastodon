@@ -3,10 +3,10 @@ ARG RUBY_VERSION="3.3.7"
 ARG NODE_MAJOR_VERSION="20"
 ARG DEBIAN_VERSION="bookworm"
 
-FROM docker.io/ruby:${RUBY_VERSION}-slim-${DEBIAN_VERSION} as ruby
+FROM docker.io/ruby:${RUBY_VERSION}-slim-${DEBIAN_VERSION} AS ruby
 RUN rm -fr /usr/local/lib/ruby/gems/*/cache
 
-FROM docker.io/node:${NODE_MAJOR_VERSION}-${DEBIAN_VERSION}-slim as build
+FROM docker.io/node:${NODE_MAJOR_VERSION}-${DEBIAN_VERSION}-slim AS build
 
 COPY --link --from=ruby /usr/local/bin/ /usr/local/bin/
 COPY --link --from=ruby /usr/local/include/ /usr/local/include/
