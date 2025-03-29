@@ -5,10 +5,10 @@ ARG RUBY_VERSION="3.4.2"
 ARG NODE_MAJOR_VERSION="22"
 ARG DEBIAN_VERSION="bookworm"
 
-FROM ${BASE_REGISTRY}/ruby:${RUBY_VERSION}-slim-${DEBIAN_VERSION} as ruby
+FROM ${BASE_REGISTRY}/ruby:${RUBY_VERSION}-slim-${DEBIAN_VERSION} AS ruby
 RUN rm -fr /usr/local/lib/ruby/gems/*/cache
 
-FROM ${BASE_REGISTRY}/node:${NODE_MAJOR_VERSION}-${DEBIAN_VERSION}-slim as build
+FROM ${BASE_REGISTRY}/node:${NODE_MAJOR_VERSION}-${DEBIAN_VERSION}-slim AS build
 
 COPY --link --from=ruby /usr/local/bin/ /usr/local/bin/
 COPY --link --from=ruby /usr/local/include/ /usr/local/include/
