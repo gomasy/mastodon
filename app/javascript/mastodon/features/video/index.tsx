@@ -161,7 +161,6 @@ const registerHotkeyEvent = (
 export const Video: React.FC<{
   preview?: string;
   frameRate?: string;
-  aspectRatio?: string;
   src: string;
   alt?: string;
   lang?: string;
@@ -173,6 +172,7 @@ export const Video: React.FC<{
   }) => void;
   onCloseVideo?: () => void;
   detailed?: boolean;
+  inline?: boolean;
   editable?: boolean;
   alwaysVisible?: boolean;
   visible?: boolean;
@@ -195,7 +195,6 @@ export const Video: React.FC<{
 }> = ({
   preview,
   frameRate = '25',
-  aspectRatio,
   src,
   alt = '',
   lang,
@@ -203,6 +202,7 @@ export const Video: React.FC<{
   onOpenVideo,
   onCloseVideo,
   detailed,
+  inline,
   editable,
   alwaysVisible,
   visible,
@@ -770,6 +770,11 @@ export const Video: React.FC<{
 
   const progress = Math.min((currentTime / duration) * 100, 100);
   const effectivelyMuted = muted || volume === 0;
+  const playerStyle: { aspectRatio?: string } = {};
+
+  if (inline) {
+    playerStyle.aspectRatio = '16 / 9';
+  }
 
   let preload;
 
@@ -783,234 +788,233 @@ export const Video: React.FC<{
 
   // The outer wrapper is necessary to avoid reflowing the layout when going into full screen
   return (
-    <div style={{ aspectRatio }}>
-      <div
-        role='menuitem'
-        className={classNames('video-player', {
-          inactive: !revealed,
-          detailed,
-          fullscreen,
-          editable,
-        })}
-        style={{ aspectRatio }}
-        ref={playerRef}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onClick={handleClickRoot}
-        onKeyDown={handleKeyDown}
-        tabIndex={0}
-      >
-        {blurhash && (
-          <Blurhash
-            hash={blurhash}
-            className={classNames('media-gallery__preview', {
-              'media-gallery__preview--hidden': revealed,
-            })}
-            dummy={!useBlurhash}
-          />
-        )}
-
-        {(revealed || editable) && (
-          <video /* eslint-disable-line jsx-a11y/media-has-caption */
-            ref={handleVideoRef}
-            src={src}
-            poster={preview}
-            preload={preload}
-            role='button'
-            tabIndex={0}
-            aria-label={alt}
-            title={alt}
-            lang={lang}
-            onClick={handleClick}
-            onKeyDown={handleVideoKeyDown}
-            onPlay={handlePlay}
-            onPause={handlePause}
-            onLoadedData={handleLoadedData}
-            onProgress={handleProgress}
-            onTimeUpdate={handleTimeUpdate}
-            onVolumeChange={handleVolumeChange}
-            style={{ width: '100%' }}
-          />
-        )}
-
-        <HotkeyIndicator
-          events={hotkeyEvents}
-          onDismiss={handleHotkeyEventDismiss}
-        />
-
-        <SpoilerButton
-          hidden={revealed || editable}
-          sensitive={sensitive ?? false}
-          onClick={toggleReveal}
-          matchedFilters={matchedFilters}
-        />
-
-        {!onCloseVideo &&
-          !editable &&
-          !fullscreen &&
-          !alwaysVisible &&
-          revealed && (
-            <div
-              className={classNames('media-gallery__actions', {
-                active: paused || hovered,
-              })}
-            >
-              <button
-                className='media-gallery__actions__pill'
-                onClick={toggleReveal}
-              >
-                <FormattedMessage
-                  id='media_gallery.hide'
-                  defaultMessage='Hide'
-                />
-              </button>
-            </div>
-          )}
-
-        <div
-          className={classNames('video-player__controls', {
-            active: paused || hovered,
+    <div
+      role='menuitem'
+      className={classNames('video-player', {
+        inactive: !revealed,
+        detailed,
+        inline: inline && !fullscreen,
+        fullscreen,
+        editable,
+      })}
+      style={playerStyle}
+      ref={playerRef}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClickRoot}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+    >
+      {blurhash && (
+        <Blurhash
+          hash={blurhash}
+          className={classNames('media-gallery__preview', {
+            'media-gallery__preview--hidden': revealed,
           })}
-        >
-          <div
-            className='video-player__seek'
-            role='slider'
-            aria-valuemin={0}
-            aria-valuenow={progress}
-            aria-valuemax={100}
-            onMouseDown={handleSeekMouseDown}
-            onKeyDown={handleVideoKeyDown}
-            tabIndex={0}
-            ref={seekRef}
-          >
-            <animated.div
-              className='video-player__seek__buffer'
-              style={{ width: style.buffer }}
-            />
-            <animated.div
-              className='video-player__seek__progress'
-              style={{ width: style.progress }}
-            />
+          dummy={!useBlurhash}
+        />
+      )}
 
-            <animated.span
-              className={classNames('video-player__seek__handle', {
-                active: dragging,
+      {(revealed || editable) && (
+        <video /* eslint-disable-line jsx-a11y/media-has-caption */
+          ref={handleVideoRef}
+          src={src}
+          poster={preview}
+          preload={preload}
+          role='button'
+          tabIndex={0}
+          aria-label={alt}
+          title={alt}
+          lang={lang}
+          onClick={handleClick}
+          onKeyDown={handleVideoKeyDown}
+          onPlay={handlePlay}
+          onPause={handlePause}
+          onLoadedData={handleLoadedData}
+          onProgress={handleProgress}
+          onTimeUpdate={handleTimeUpdate}
+          onVolumeChange={handleVolumeChange}
+          style={{ ...playerStyle, width: '100%' }}
+        />
+      )}
+
+      <HotkeyIndicator
+        events={hotkeyEvents}
+        onDismiss={handleHotkeyEventDismiss}
+      />
+
+      <SpoilerButton
+        hidden={revealed || editable}
+        sensitive={sensitive ?? false}
+        onClick={toggleReveal}
+        matchedFilters={matchedFilters}
+      />
+
+      {!onCloseVideo &&
+        !editable &&
+        !fullscreen &&
+        !alwaysVisible &&
+        revealed && (
+          <div
+            className={classNames('media-gallery__actions', {
+              active: paused || hovered,
+            })}
+          >
+            <button
+              className='media-gallery__actions__pill'
+              onClick={toggleReveal}
+            >
+              <FormattedMessage
+                id='media_gallery.hide'
+                defaultMessage='Hide'
+              />
+            </button>
+          </div>
+        )}
+
+      <div
+        className={classNames('video-player__controls', {
+          active: paused || hovered,
+        })}
+      >
+        <div
+          className='video-player__seek'
+          role='slider'
+          aria-valuemin={0}
+          aria-valuenow={progress}
+          aria-valuemax={100}
+          onMouseDown={handleSeekMouseDown}
+          onKeyDown={handleVideoKeyDown}
+          tabIndex={0}
+          ref={seekRef}
+        >
+          <animated.div
+            className='video-player__seek__buffer'
+            style={{ width: style.buffer }}
+          />
+          <animated.div
+            className='video-player__seek__progress'
+            style={{ width: style.progress }}
+          />
+
+          <animated.span
+            className={classNames('video-player__seek__handle', {
+              active: dragging,
+            })}
+            style={{ left: style.progress }}
+          />
+        </div>
+
+        <div className='video-player__buttons-bar'>
+          <div className='video-player__buttons left'>
+            <button
+              type='button'
+              title={intl.formatMessage(
+                paused ? messages.play : messages.pause,
+              )}
+              aria-label={intl.formatMessage(
+                paused ? messages.play : messages.pause,
+              )}
+              className='player-button'
+              onClick={togglePlay}
+            >
+              <Icon
+                id={paused ? 'play' : 'pause'}
+                icon={paused ? PlayArrowIcon : PauseIcon}
+              />
+            </button>
+            <button
+              type='button'
+              title={intl.formatMessage(
+                effectivelyMuted ? messages.unmute : messages.mute,
+              )}
+              aria-label={intl.formatMessage(
+                muted ? messages.unmute : messages.mute,
+              )}
+              className='player-button'
+              onClick={toggleMute}
+            >
+              <Icon
+                id={effectivelyMuted ? 'volume-off' : 'volume-up'}
+                icon={effectivelyMuted ? VolumeOffIcon : VolumeUpIcon}
+              />
+            </button>
+
+            <div
+              className={classNames('video-player__volume', {
+                active: hovered,
               })}
-              style={{ left: style.progress }}
-            />
+              role='slider'
+              aria-valuemin={0}
+              aria-valuenow={effectivelyMuted ? 0 : volume * 100}
+              aria-valuemax={100}
+              onMouseDown={handleVolumeMouseDown}
+              ref={volumeRef}
+              tabIndex={0}
+            >
+              <animated.div
+                className='video-player__volume__current'
+                style={{ width: style.volume }}
+              />
+
+              <animated.span
+                className={classNames('video-player__volume__handle')}
+                style={{ left: style.volume }}
+              />
+            </div>
+
+            {(detailed || fullscreen) && (
+              <span className='video-player__time'>
+                <span className='video-player__time-current'>
+                  {formatTime(Math.floor(currentTime))}
+                </span>
+                <span className='video-player__time-sep'>/</span>
+                <span className='video-player__time-total'>
+                  {formatTime(Math.floor(duration))}
+                </span>
+              </span>
+            )}
           </div>
 
-          <div className='video-player__buttons-bar'>
-            <div className='video-player__buttons left'>
+          <div className='video-player__buttons right'>
+            {!fullscreen && onOpenVideo && (
               <button
                 type='button'
-                title={intl.formatMessage(
-                  paused ? messages.play : messages.pause,
-                )}
-                aria-label={intl.formatMessage(
-                  paused ? messages.play : messages.pause,
-                )}
+                title={intl.formatMessage(messages.expand)}
+                aria-label={intl.formatMessage(messages.expand)}
                 className='player-button'
-                onClick={togglePlay}
+                onClick={handleOpenVideo}
               >
-                <Icon
-                  id={paused ? 'play' : 'pause'}
-                  icon={paused ? PlayArrowIcon : PauseIcon}
-                />
+                <Icon id='expand' icon={RectangleIcon} />
               </button>
+            )}
+            {onCloseVideo && (
               <button
                 type='button'
-                title={intl.formatMessage(
-                  effectivelyMuted ? messages.unmute : messages.mute,
-                )}
-                aria-label={intl.formatMessage(
-                  muted ? messages.unmute : messages.mute,
-                )}
+                title={intl.formatMessage(messages.close)}
+                aria-label={intl.formatMessage(messages.close)}
                 className='player-button'
-                onClick={toggleMute}
+                onClick={handleCloseVideo}
               >
-                <Icon
-                  id={effectivelyMuted ? 'volume-off' : 'volume-up'}
-                  icon={effectivelyMuted ? VolumeOffIcon : VolumeUpIcon}
-                />
+                <Icon id='compress' icon={FullscreenExitIcon} />
               </button>
-
-              <div
-                className={classNames('video-player__volume', {
-                  active: hovered,
-                })}
-                role='slider'
-                aria-valuemin={0}
-                aria-valuenow={effectivelyMuted ? 0 : volume * 100}
-                aria-valuemax={100}
-                onMouseDown={handleVolumeMouseDown}
-                ref={volumeRef}
-                tabIndex={0}
-              >
-                <animated.div
-                  className='video-player__volume__current'
-                  style={{ width: style.volume }}
-                />
-
-                <animated.span
-                  className={classNames('video-player__volume__handle')}
-                  style={{ left: style.volume }}
-                />
-              </div>
-
-              {(detailed || fullscreen) && (
-                <span className='video-player__time'>
-                  <span className='video-player__time-current'>
-                    {formatTime(Math.floor(currentTime))}
-                  </span>
-                  <span className='video-player__time-sep'>/</span>
-                  <span className='video-player__time-total'>
-                    {formatTime(Math.floor(duration))}
-                  </span>
-                </span>
+            )}
+            <button
+              type='button'
+              title={intl.formatMessage(
+                fullscreen ? messages.exit_fullscreen : messages.fullscreen,
               )}
-            </div>
-
-            <div className='video-player__buttons right'>
-              {!fullscreen && onOpenVideo && (
-                <button
-                  type='button'
-                  title={intl.formatMessage(messages.expand)}
-                  aria-label={intl.formatMessage(messages.expand)}
-                  className='player-button'
-                  onClick={handleOpenVideo}
-                >
-                  <Icon id='expand' icon={RectangleIcon} />
-                </button>
+              aria-label={intl.formatMessage(
+                fullscreen ? messages.exit_fullscreen : messages.fullscreen,
               )}
-              {onCloseVideo && (
-                <button
-                  type='button'
-                  title={intl.formatMessage(messages.close)}
-                  aria-label={intl.formatMessage(messages.close)}
-                  className='player-button'
-                  onClick={handleCloseVideo}
-                >
-                  <Icon id='compress' icon={FullscreenExitIcon} />
-                </button>
-              )}
-              <button
-                type='button'
-                title={intl.formatMessage(
-                  fullscreen ? messages.exit_fullscreen : messages.fullscreen,
-                )}
-                aria-label={intl.formatMessage(
-                  fullscreen ? messages.exit_fullscreen : messages.fullscreen,
-                )}
-                className='player-button'
-                onClick={toggleFullscreen}
-              >
-                <Icon
-                  id={fullscreen ? 'compress' : 'arrows-alt'}
-                  icon={fullscreen ? FullscreenExitIcon : FullscreenIcon}
-                />
-              </button>
-            </div>
+              className='player-button'
+              onClick={toggleFullscreen}
+            >
+              <Icon
+                id={fullscreen ? 'compress' : 'arrows-alt'}
+                icon={fullscreen ? FullscreenExitIcon : FullscreenIcon}
+              />
+            </button>
           </div>
         </div>
       </div>
