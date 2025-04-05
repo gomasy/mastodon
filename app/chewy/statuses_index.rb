@@ -28,11 +28,14 @@ class StatusesIndex < Chewy::Index
       },
 
       content: {
-        tokenizer: 'standard',
+        tokenizer: 'sudachi_tokenizer',
         filter: %w(
           lowercase
-          asciifolding
           cjk_width
+          sudachi_part_of_speech
+          sudachi_ja_stop
+          sudachi_normalizedform
+          asciifolding
           elision
           english_possessive_stemmer
           english_stop
@@ -48,6 +51,13 @@ class StatusesIndex < Chewy::Index
           asciifolding
           cjk_width
         ),
+      },
+    },
+    tokenizer: {
+      sudachi_tokenizer: {
+        type: 'sudachi_tokenizer',
+        discard_punctuation: true,
+        ignore_unavailable: true,
       },
     },
   }
