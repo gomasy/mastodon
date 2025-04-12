@@ -179,7 +179,7 @@ class AccountTimeline extends ImmutablePureComponent {
         <StatusList
           prepend={<AccountHeader accountId={this.props.accountId} hideTabs={forceEmptyState} tagged={this.props.params.tagged} handleRefresh={this.handleRefresh} />}
           alwaysPrepend
-          append={<RemoteHint accountId={accountId} />}
+          append={<RemoteHint accountId={accountId} refresh={this.handleRefresh} />}
           scrollKey='account_timeline'
           statusIds={forceEmptyState ? emptyList : statusIds}
           isLoading={isLoading}
