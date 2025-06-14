@@ -141,7 +141,7 @@ class AccountTimeline extends ImmutablePureComponent {
   };
 
   render () {
-    const { accountId, statusIds, isLoading, hasMore, blockedBy, suspended, isAccount, hidden, multiColumn, remote, remoteUrl } = this.props;
+    const { accountId, statusIds, isLoading, hasMore, blockedBy, suspended, isAccount, hidden, multiColumn, remote, remoteUrl, params: { tagged } } = this.props;
 
     if (isLoading && statusIds.isEmpty()) {
       return (
@@ -178,8 +178,8 @@ class AccountTimeline extends ImmutablePureComponent {
         <StatusList
           prepend={
             <>
-              <AccountHeader accountId={this.props.accountId} hideTabs={forceEmptyState} tagged={this.props.params.tagged} handleRefresh={this.handleRefresh} />
-              {!forceEmptyState && <FeaturedCarousel accountId={this.props.accountId} />}
+              <AccountHeader accountId={this.props.accountId} hideTabs={forceEmptyState} tagged={tagged} handleRefresh={this.handleRefresh} />
+              {!forceEmptyState && <FeaturedCarousel accountId={this.props.accountId} tagged={tagged} />}
             </>
         }
           alwaysPrepend
