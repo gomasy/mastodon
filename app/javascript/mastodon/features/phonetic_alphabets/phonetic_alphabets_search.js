@@ -1,4 +1,4 @@
-const phoneticAlphabets = require('./phonetic_code_map.json');
+import phoneticAlphabets from './phonetic_code_map.json';
 
 function search(value) {
   if (!phoneticAlphabets[value]) {
