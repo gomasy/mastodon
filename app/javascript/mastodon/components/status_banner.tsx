@@ -8,6 +8,10 @@ export enum BannerVariant {
   Filter = 'filter',
 }
 
+const stopPropagation: MouseEventHandler = (e) => {
+  e.stopPropagation();
+};
+
 export const StatusBanner: React.FC<{
   children: React.ReactNode;
   variant: BannerVariant;
@@ -18,8 +22,13 @@ export const StatusBanner: React.FC<{
 
   const buttonRef = useRef<HTMLButtonElement>(null);
   const forwardClick = useCallback<MouseEventHandler>((e) => {
-    if (buttonRef.current && e.target !== buttonRef.current) {
+    if (
+      buttonRef.current &&
+      e.target !== buttonRef.current &&
+      !buttonRef.current.contains(e.target as Node)
+    ) {
       buttonRef.current.click();
+      buttonRef.current.focus();
     }
   }, []);
 
@@ -33,6 +42,7 @@ export const StatusBanner: React.FC<{
           : 'content-warning content-warning--filter'
       }
       onClick={forwardClick}
+      onMouseUp={stopPropagation}
     >
       <p id={descriptionId}>{children}</p>
 
