@@ -46,6 +46,7 @@
  * @property {string} sso_redirect
  * @property {string} status_page_url
  * @property {boolean} terms_of_service_enabled
+ * @property {string?} emoji_style
  */
 
 /**
@@ -97,6 +98,7 @@ export const disableHoverCards = getMeta('disable_hover_cards');
 export const disabledAccountId = getMeta('disabled_account_id');
 export const displayMedia = getMeta('display_media');
 export const domain = getMeta('domain');
+export const emojiStyle = getMeta('emoji_style') || 'auto';
 export const expandSpoilers = getMeta('expand_spoilers');
 export const forceSingleColumn = !getMeta('advanced_layout');
 export const limitedFederationMode = getMeta('limited_federation_mode');
@@ -140,14 +142,6 @@ export const languages = initialState?.languages?.map(lang => {
  */
 export function getAccessToken() {
   return getMeta('access_token');
-}
-
-/**
- * @param {string} feature
- * @returns {boolean}
- */
-export function isFeatureEnabled(feature) {
-  return initialState?.features?.includes(feature) || false;
 }
 
 export default initialState;
