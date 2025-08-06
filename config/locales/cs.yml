@@ -1962,8 +1962,8 @@ cs:
       ownership: Nelze připnout příspěvek někoho jiného
       reblog: Boosty nelze připnout
     quote_policies:
-      followers: Sledující a zmínění uživatelé
-      nobody: Pouze zmínění uživatelé
+      followers: Pouze vaši sledující
+      nobody: Nikdo
       public: Všichni
     title: "%{name}: „%{quote}“"
     visibilities:
