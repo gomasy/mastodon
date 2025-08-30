@@ -81,13 +81,13 @@ RUN apt-get update && \
         curl \
         ffmpeg \
         file \
-        libicu72 \
+        libicu76 \
         libidn12 \
         libjemalloc2 \
         libpq5 \
-        libreadline8 \
-        libssl3 \
-        libvips42 \
+        libreadline8t64 \
+        libssl3t64 \
+        libvips42t64 \
         libyaml-0-2 \
         patchelf \
         procps \
