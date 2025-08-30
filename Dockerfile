@@ -3,7 +3,7 @@ ARG BASE_REGISTRY="docker.io"
 
 ARG RUBY_VERSION="3.4.5"
 ARG NODE_MAJOR_VERSION="22"
-ARG DEBIAN_VERSION="bookworm"
+ARG DEBIAN_VERSION="trixie"
 
 FROM ${BASE_REGISTRY}/ruby:${RUBY_VERSION}-slim-${DEBIAN_VERSION} AS ruby
 RUN rm -fr /usr/local/lib/ruby/gems/*/cache
