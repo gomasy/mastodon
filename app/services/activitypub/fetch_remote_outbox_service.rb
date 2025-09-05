@@ -31,7 +31,7 @@ class ActivityPub::FetchRemoteOutboxService < BaseService
     return collection_or_uri if collection_or_uri.is_a?(Hash)
     return if non_matching_uri_hosts?(@account.uri, collection_or_uri)
 
-    fetch_resource_without_id_validation(collection_or_uri, local_follower, true)
+    fetch_resource_without_id_validation(collection_or_uri, local_follower, raise_on_error: :temporary)
   end
 
   def process_items(items)
@@ -39,11 +39,7 @@ class ActivityPub::FetchRemoteOutboxService < BaseService
   end
 
   def process_item(item)
-    case item['type']
-    when 'Create'
-    when 'Announce'
-    else return
-    end
+    return unless ['Create', 'Announce'].include?(item['type'])
 
     uri = value_or_id(item)
     return if ActivityPub::TagManager.instance.local_uri?(uri) || non_matching_uri_hosts?(@account.uri, uri)
