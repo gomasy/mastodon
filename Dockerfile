@@ -32,7 +32,7 @@ RUN apt-get update && \
         libidn-dev \
         libjemalloc-dev \
         libpq-dev \
-        libreadline8 \
+        libreadline8t64 \
         libssl-dev \
         libyaml-dev \
         python3 \
