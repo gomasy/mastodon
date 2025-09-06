@@ -235,6 +235,7 @@ ko:
         setting_boost_modal: 부스트 전 확인창을 띄웁니다
         setting_crop_images: 확장되지 않은 게시물의 이미지를 16x9로 자르기
         setting_default_language: 게시물 언어
+        setting_default_privacy: 게시물 공개 범위
         setting_default_quote_policy: 인용할 수 있는 사람
         setting_default_sensitive: 미디어를 언제나 민감한 콘텐츠로 설정
         setting_delete_modal: 게시물 삭제 전 확인창을 띄웁니다

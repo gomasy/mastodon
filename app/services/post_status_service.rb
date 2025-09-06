@@ -40,8 +40,6 @@ class PostStatusService < BaseService
     @in_reply_to = @options[:thread]
     @quoted_status = @options[:quoted_status]
 
-    @antispam = Antispam.new
-
     return idempotency_duplicate if idempotency_given? && idempotency_duplicate?
 
     validate_media!
@@ -72,6 +70,7 @@ class PostStatusService < BaseService
     @text         = @options.delete(:spoiler_text) if @text.blank? && @options[:spoiler_text].present?
     @visibility   = @options[:visibility] || @account.user&.setting_default_privacy
     @visibility   = :unlisted if @visibility&.to_sym == :public && @account.silenced?
+    @visibility   = :private if @quoted_status&.private_visibility?
     @scheduled_at = @options[:scheduled_at]&.to_datetime
     @scheduled_at = nil if scheduled_in_the_past?
   rescue ArgumentError
@@ -83,7 +82,9 @@ class PostStatusService < BaseService
     process_mentions_service.call(@status, save_records: false)
     safeguard_mentions!(@status)
     attach_quote!(@status)
-    @antispam.local_preflight_check!(@status)
+
+    antispam = Antispam.new(@status)
+    antispam.local_preflight_check!
 
     # The following transaction block is needed to wrap the UPDATEs to
     # the media attachments when the status is created
@@ -115,7 +116,9 @@ class PostStatusService < BaseService
 
   def schedule_status!
     status_for_validation = @account.statuses.build(status_attributes)
-    @antispam.local_preflight_check!(status_for_validation)
+
+    antispam = Antispam.new(status_for_validation)
+    antispam.local_preflight_check!
 
     if status_for_validation.valid?
       # Marking the status as destroyed is necessary to prevent the status from being

@@ -28,11 +28,11 @@ module FormattingHelper
 
   def status_content_format(status)
     if status.local?
+      quoted_status = status.quote&.quoted_status
       is_markdown = StatusMarkdown.where(status_id: status.id).exists?
-      html_aware_format(status.text, status.local?, preloaded_accounts: [status.account] + (status.respond_to?(:active_mentions) ? status.active_mentions.map(&:account) : []), markdown: is_markdown)
-    else
-      html_aware_format(status.text, status.local?, preloaded_accounts: [status.account] + (status.respond_to?(:active_mentions) ? status.active_mentions.map(&:account) : []))
     end
+
+    html_aware_format(status.text, status.local?, preloaded_accounts: [status.account] + (status.respond_to?(:active_mentions) ? status.active_mentions.map(&:account) : []), quoted_status: quoted_status, markdown: is_markdown)
   end
 
   def rss_status_content_format(status)
