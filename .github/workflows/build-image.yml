@@ -29,7 +29,7 @@ jobs:
         ghcr.io/gomasy/mastodon
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Prepare
         run: |
@@ -99,7 +99,7 @@ jobs:
         ghcr.io/gomasy/mastodon
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Download digests
         uses: actions/download-artifact@v4
