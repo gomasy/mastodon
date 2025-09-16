@@ -1630,7 +1630,6 @@
       reblog: En fremheving kan ikke festes
     title: "%{name}: «%{quote}»"
     visibilities:
-      direct: Direkte
       private: Privat
       private_long: Synlig kun for følgere
       public: Offentlig
