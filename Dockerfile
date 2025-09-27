@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.12
+# syntax=docker/dockerfile:1.18
 ARG BASE_REGISTRY="docker.io"
 
 ARG RUBY_VERSION="3.4.6"
