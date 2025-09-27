@@ -293,12 +293,6 @@ class ComposeForm extends ImmutablePureComponent {
             </div>
           )}
 
-          <div className='compose-form__dropdowns'>
-            <VisibilityButton disabled={this.props.isEditing} />
-            <LanguageDropdown />
-            <MarkdownButtonContainer />
-          </div>
-
           <AutosuggestTextarea
             ref={this.textareaRef}
             placeholder={intl.formatMessage(messages.placeholder)}
@@ -322,6 +316,12 @@ class ComposeForm extends ImmutablePureComponent {
           <ComposeQuotedStatus />
 
           <div className='compose-form__footer'>
+            <div className='compose-form__dropdowns'>
+              <VisibilityButton disabled={this.props.isEditing} />
+              <LanguageDropdown />
+              <MarkdownButtonContainer />
+            </div>
+
             <div className='compose-form__actions'>
               <div className='compose-form__buttons'>
                 <UploadButtonContainer />
