@@ -60,6 +60,7 @@ class MediaAttachment < ApplicationRecord
   IMAGE_MIME_TYPES             = %w(image/jpeg image/png image/gif image/heic image/heif image/webp image/avif).freeze
   IMAGE_CONVERTIBLE_MIME_TYPES = %w(image/heic image/heif image/avif).freeze
   VIDEO_MIME_TYPES             = %w(video/webm video/mp4 video/quicktime video/ogg).freeze
+  VIDEO_CONVERTIBLE_MIME_TYPES = %w().freeze
   AUDIO_MIME_TYPES             = %w(audio/wave audio/wav audio/x-wav audio/x-pn-wave audio/vnd.wave audio/ogg audio/vorbis audio/mpeg audio/mp3 audio/webm audio/flac audio/aac audio/m4a audio/x-m4a audio/mp4 audio/3gpp video/x-ms-asf).freeze
 
   BLURHASH_OPTIONS = {
@@ -157,6 +158,11 @@ class MediaAttachment < ApplicationRecord
         }.freeze,
       }.freeze,
     }.freeze,
+  }.freeze
+
+  VIDEO_CONVERTED_STYLES = {
+    small: VIDEO_STYLES[:small].freeze,
+    original: VIDEO_FORMAT.freeze,
   }.freeze
 
   THUMBNAIL_STYLES = {
@@ -300,7 +306,9 @@ class MediaAttachment < ApplicationRecord
     private
 
     def file_styles(attachment)
-      if IMAGE_CONVERTIBLE_MIME_TYPES.include?(attachment.instance.file_content_type)
+      if attachment.instance.file_content_type == 'image/gif' || VIDEO_CONVERTIBLE_MIME_TYPES.include?(attachment.instance.file_content_type)
+        VIDEO_CONVERTED_STYLES
+      elsif IMAGE_CONVERTIBLE_MIME_TYPES.include?(attachment.instance.file_content_type)
         IMAGE_CONVERTED_STYLES
       elsif IMAGE_MIME_TYPES.include?(attachment.instance.file_content_type)
         IMAGE_STYLES
@@ -315,9 +323,9 @@ class MediaAttachment < ApplicationRecord
       if instance.file_content_type == 'image/gif'
         [:gif_transcoder, :blurhash_transcoder]
       elsif VIDEO_MIME_TYPES.include?(instance.file_content_type)
-        [:blurhash_transcoder, :type_corrector]
+        [:transcoder, :blurhash_transcoder, :type_corrector]
       elsif AUDIO_MIME_TYPES.include?(instance.file_content_type)
-        [:image_extractor, :type_corrector]
+        [:image_extractor, :transcoder, :type_corrector]
       else
         [:lazy_thumbnail, :blurhash_transcoder, :type_corrector]
       end
