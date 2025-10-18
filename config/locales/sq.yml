@@ -1177,10 +1177,7 @@ sq:
     hint_html: Nëse doni të kaloni nga një llogari tjetër në këtë këtu, këtu mund të krijoni një alias, i cili është i domosdoshëm përpara se të ecni më tej me kalimin e ndjekësve prej llogarisë së vjetër te kjo këtu. Ky veprim, në vetvete, është <strong>i padëmshëm dhe i prapakthyeshëm</strong>. <strong>Migrimi i llogarisë fillohet prej llogarisë së vjetër</strong>.
     remove: Hiqe aliasin
   appearance:
-    advanced_web_interface: Ndërfaqe web e thelluar
-    advanced_web_interface_hint: 'Nëse doni të shfrytëzoni krejt gjerësinë e ekranit tuaj, ndërfaqja e thelluar web ju lejon të formësoni shumë shtylla për të parë në të njëjtën kohë aq hollësi sa doni: Kreu, njoftime, rrjedhë kohore të federuarash, çfarëdo numri listash dhe hashtag-ësh.'
     animations_and_accessibility: Animacione dhe përdorim nga persona me aftësi të kufizuara
-    confirmation_dialogs: Dialogë ripohimesh
     discovery: Zbulim
     localization:
       body: Mastodon-i përkthehet nga vullnetarë.
@@ -1579,6 +1576,13 @@ sq:
       expires_at: Skadon më
       uses: Përdorime
     title: Ftoni njerëz
+  link_preview:
+    author_html: Nga %{name}
+    potentially_sensitive_content:
+      action: Klikoni për shfaqje
+      confirm_visit: Jeni i sigurt se doni të hapet kjo lidhje?
+      hide_button: Fshihe
+      label: Lëndë potencalisht me spec
   lists:
     errors:
       limit: Keni mbërritur në numrin maksimum të listave
@@ -1889,6 +1893,9 @@ sq:
         other: "%{count} video"
     boosted_from_html: Përforcuar nga %{acct_link}
     content_warning: 'Sinjalizim lënde: %{warning}'
+    content_warnings:
+      hide: Fshihe postimin
+      show: Shfaq më tepër
     default_language: Njësoj me gjuhën e ndërfaqes
     disallowed_hashtags:
       one: 'përmbante një hashtag të palejuar: %{tags}'
