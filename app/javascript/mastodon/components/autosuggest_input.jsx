@@ -65,7 +65,7 @@ export default class AutosuggestInput extends ImmutablePureComponent {
 
   static defaultProps = {
     autoFocus: true,
-    searchTokens: ['@', ':', '#'],
+    searchTokens: ['@', '＠', ':', '#', '＃'],
   };
 
   state = {
