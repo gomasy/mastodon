@@ -54,6 +54,7 @@ const AutosuggestTextarea = forwardRef(({
   onKeyUp,
   onKeyDown,
   onPaste,
+  onDrop,
   onFocus,
   autoFocus = true,
   lang,
@@ -157,6 +158,12 @@ const AutosuggestTextarea = forwardRef(({
     onPaste(e);
   }, [onPaste]);
 
+  const handleDrop = useCallback((e) => {
+    if (onDrop) {
+      onDrop(e);
+    }
+  }, [onDrop]);
+
   // Show the suggestions again whenever they change and the textarea is focused
   useEffect(() => {
     if (suggestions.size > 0 && textareaRef.current === document.activeElement) {
@@ -211,6 +218,7 @@ const AutosuggestTextarea = forwardRef(({
         onFocus={handleFocus}
         onBlur={handleBlur}
         onPaste={handlePaste}
+        onDrop={handleDrop}
         dir='auto'
         aria-autocomplete='list'
         aria-label={placeholder}
@@ -242,6 +250,7 @@ AutosuggestTextarea.propTypes = {
   onKeyUp: PropTypes.func,
   onKeyDown: PropTypes.func,
   onPaste: PropTypes.func.isRequired,
+  onDrop: PropTypes.func,
   onFocus:PropTypes.func,
   autoFocus: PropTypes.bool,
   lang: PropTypes.string,
