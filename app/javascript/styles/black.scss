@@ -1,2 +1,7 @@
-@use 'black/variables';
-@use 'application';
+@use 'black/css_variables';
+@use 'mastodon/variables';
+@use 'common';
+
+html {
+  color-scheme: dark;
+}
