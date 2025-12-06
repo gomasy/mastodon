@@ -1785,16 +1785,22 @@ be:
       body: 'Вас згадаў %{name} у:'
       subject: Вас згадаў %{name}
       title: Новае згадванне
+    moderation_warning:
+      subject: Вы атрымалі папярэджанне ад мадэратараў
     poll:
       subject: Апытанне ад %{name} скончылася
     quote:
       body: 'Ваш допіс працытаваў карыстальнік %{name}:'
       subject: Карыстальнік %{name} працытаваў Ваш допіс
       title: Цытаваць
+    quoted_update:
+      subject: "%{name} адрэдагаваў допіс, як Вы цытавалі"
     reblog:
       body: "%{name} пашырыў(-ла) Ваш допіс:"
       subject: "%{name} пашырыў ваш допіс"
       title: Новае пашырэнне
+    severed_relationships:
+      subject: Вы страцілі сувязі праз рашэнне мадэратараў
     status:
       subject: Новы допіс ад %{name}
     update:
@@ -2268,3 +2274,5 @@ be:
     not_supported: Гэты браўзер не падтрымлівае ключы бяспекі
     otp_required: Каб выкарыстоўваць ключы бяспекі, спачатку ўключыце двухфактарную аўтэнтыфікацыю.
     registered_on: Зарэгістраваны %{date}
+  wrapstodon:
+    title: Вынікадон %{year} для %{name}
