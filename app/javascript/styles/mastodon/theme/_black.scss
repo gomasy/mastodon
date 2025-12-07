@@ -1,6 +1,6 @@
-@use '../mastodon/theme_utils' as utils;
+@use 'utils';
 
-:root {
+@mixin palette {
   --color-black: #000;
   --color-grey-950: #191919;
   --color-grey-800: #2a2a2a;
@@ -25,7 +25,9 @@
   --color-yellow-600: #e17100;
   --color-green-400: #05df72;
   --color-green-600: #00a63e;
+}
 
+@mixin tokens {
   /* TEXT TOKENS */
 
   --color-text-primary: var(--color-grey-50);
