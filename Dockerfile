@@ -45,7 +45,6 @@ RUN apt-get update && \
 
 COPY Gemfile* package.json yarn.lock .yarnrc.yml /opt/mastodon/
 COPY streaming/package.json /opt/mastodon/streaming/
-COPY .yarn /opt/mastodon/.yarn
 
 RUN bundle install -j"$(nproc)"
 
