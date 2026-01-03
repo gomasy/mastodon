@@ -239,6 +239,8 @@ fr-CA:
         setting_always_send_emails: Toujours envoyer les notifications par courriel
         setting_auto_play_gif: Lire automatiquement les GIFs animés
         setting_boost_modal: Configurer la visibilité du partage
+        setting_color_scheme: Mode
+        setting_contrast: Contraste
         setting_crop_images: Recadrer en 16x9 les images des messages qui ne sont pas ouverts en vue détaillée
         setting_default_language: Langue de publication
         setting_default_privacy: Visibilité de la publication

@@ -239,6 +239,8 @@ es-MX:
         setting_always_send_emails: Enviar siempre notificaciones por correo
         setting_auto_play_gif: Reproducir automáticamente los GIFs animados
         setting_boost_modal: Control de visibilidad de impulsos
+        setting_color_scheme: Modo
+        setting_contrast: Contraste
         setting_crop_images: Recortar a 16x9 las imágenes de los toots no expandidos
         setting_default_language: Idioma de publicación
         setting_default_privacy: Visibilidad de publicación

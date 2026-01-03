@@ -239,6 +239,8 @@ is:
         setting_always_send_emails: Alltaf senda tilkynningar í tölvupósti
         setting_auto_play_gif: Spila sjálfkrafa GIF-hreyfimyndir
         setting_boost_modal: Stýrðu sýnileika endurbirtinga
+        setting_color_scheme: Hamur
+        setting_contrast: Birtuskil
         setting_crop_images: Utansníða myndir í ekki-útfelldum færslum í 16x9
         setting_default_language: Tungumál sem skrifað er á
         setting_default_privacy: Sýnileiki færslna

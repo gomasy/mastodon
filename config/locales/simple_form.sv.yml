@@ -231,6 +231,8 @@ sv:
         setting_aggregate_reblogs: Gruppera boostar i tidslinjer
         setting_always_send_emails: Skicka alltid e-postnotiser
         setting_auto_play_gif: Spela upp GIF:ar automatiskt
+        setting_color_scheme: Läge
+        setting_contrast: Kontrast
         setting_crop_images: Beskär bilder i icke-utökade inlägg till 16x9
         setting_default_language: Inläggsspråk
         setting_default_privacy: Inläggssynlighet

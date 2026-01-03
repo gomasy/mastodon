@@ -239,6 +239,8 @@ it:
         setting_always_send_emails: Manda sempre notifiche via email
         setting_auto_play_gif: Riproduci automaticamente le GIF animate
         setting_boost_modal: Controllo della visibilità del potenziamento
+        setting_color_scheme: Modalità
+        setting_contrast: Contrasto
         setting_crop_images: Ritaglia immagini in post non espansi a 16x9
         setting_default_language: Lingua dei post
         setting_default_privacy: Visibilità dei post
