@@ -6093,6 +6093,10 @@ a.status-card {
 
   @media screen and (width <= $mobile-breakpoint) {
     margin-top: auto;
+
+    &.video-modal {
+      margin-top: 0;
+    }
   }
 }
 
