@@ -80,6 +80,10 @@ const messages = defineMessages({
     id: 'account.open_original_page',
     defaultMessage: 'Open original page',
   },
+  fetchRemoteOutbox: {
+    id: 'account.fetch_remote_outbox',
+    defaultMessage: 'Fetch remote outbox of @{name}',
+  },
   removeFromFollowers: {
     id: 'account.remove_from_followers',
     defaultMessage: 'Remove {name} from followers',
@@ -99,7 +103,7 @@ const messages = defineMessages({
   },
 });
 
-export const AccountMenu: FC<{ accountId: string }> = ({ accountId }) => {
+export const AccountMenu: FC<{ accountId: string; handleRefresh: () => void; }> = ({ accountId, handleRefresh }) => {
   const intl = useIntl();
   const { signedIn, permissions } = useIdentity();
 
@@ -142,6 +146,12 @@ export const AccountMenu: FC<{ accountId: string }> = ({ accountId }) => {
       arr.push({
         text: intl.formatMessage(messages.openOriginalPage),
         href: account.url,
+      });
+      arr.push({
+        text: intl.formatMessage(messages.fetchRemoteOutbox, {
+          name: account.username,
+        }),
+        action: handleRefresh,
       });
       arr.push(null);
     }
