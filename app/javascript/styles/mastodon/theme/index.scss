@@ -6,53 +6,29 @@
 
 html {
   @include base.palette;
-
-  &:where([data-user-theme='system']) {
-    color-scheme: dark light;
-
-    @media (prefers-color-scheme: dark) {
-      @include dark.tokens;
-      @include utils.invert-on-dark;
-
-      @media (prefers-contrast: more) {
-        @include dark.contrast-overrides;
-      }
-    }
-
-    @media (prefers-color-scheme: light) {
-      @include light.tokens;
-      @include utils.invert-on-light;
-
-      @media (prefers-contrast: more) {
-        @include light.contrast-overrides;
-      }
-    }
-  }
 }
 
-html:where([data-user-theme='default']),
-html:where([data-user-theme='contrast']) {
+[data-color-scheme='dark'],
+html:not([data-color-scheme]) {
   color-scheme: dark;
 
   @include dark.tokens;
   @include utils.invert-on-dark;
+
+  &[data-contrast='high'],
+  [data-contrast='high'] & {
+    @include dark.contrast-overrides;
+  }
 }
 
-html:where([data-user-theme='contrast']) {
-  @include dark.contrast-overrides;
-}
-
-html:where([data-user-theme='mastodon-light']) {
+[data-color-scheme='light'] {
   color-scheme: light;
 
   @include light.tokens;
   @include utils.invert-on-light;
-}
 
-html:where([data-user-theme='black']) {
-  color-scheme: dark;
-
-  @include black.palette;
-  @include black.tokens;
-  @include utils.invert-on-dark;
+  &[data-contrast='high'],
+  [data-contrast='high'] & {
+    @include light.contrast-overrides;
+  }
 }
