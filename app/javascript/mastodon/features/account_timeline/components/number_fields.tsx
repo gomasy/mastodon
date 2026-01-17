@@ -1,17 +1,11 @@
 import type { FC } from 'react';
 
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, FormattedNumber, useIntl } from 'react-intl';
 
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 
-import {
-  FollowersCounter,
-  FollowingCounter,
-  StatusesCounter,
-} from '@/mastodon/components/counters';
 import { FormattedDateWrapper } from '@/mastodon/components/formatted_date';
-import { ShortNumber } from '@/mastodon/components/short_number';
 import { useAccount } from '@/mastodon/hooks/useAccount';
 
 import { isRedesignEnabled } from '../common';
@@ -40,10 +34,7 @@ export const AccountNumberFields: FC<{ accountId: string }> = ({
           to={`/@${account.acct}`}
           title={intl.formatNumber(account.statuses_count)}
         >
-          <ShortNumber
-            value={account.statuses_count}
-            renderer={StatusesCounter}
-          />
+          <strong><FormattedNumber value={account.statuses_count} /></strong> <FormattedMessage id='account.posts' defaultMessage='Toots' />
         </NavLink>
       )}
 
@@ -52,10 +43,7 @@ export const AccountNumberFields: FC<{ accountId: string }> = ({
         to={`/@${account.acct}/following`}
         title={intl.formatNumber(account.following_count)}
       >
-        <ShortNumber
-          value={account.following_count}
-          renderer={FollowingCounter}
-        />
+        <strong><FormattedNumber value={account.following_count} /></strong> <FormattedMessage id='account.follow' defaultMessage='Follow' />
       </NavLink>
 
       <NavLink
@@ -63,10 +51,7 @@ export const AccountNumberFields: FC<{ accountId: string }> = ({
         to={`/@${account.acct}/followers`}
         title={intl.formatNumber(account.followers_count)}
       >
-        <ShortNumber
-          value={account.followers_count}
-          renderer={FollowersCounter}
-        />
+        <strong><FormattedNumber value={account.followers_count} /></strong> <FormattedMessage id='account.followers' defaultMessage='Followers' />
       </NavLink>
 
       {isRedesignEnabled() && (
