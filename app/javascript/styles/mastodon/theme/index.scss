@@ -15,6 +15,11 @@ html:not([data-color-scheme]) {
   @include dark.tokens;
   @include utils.invert-on-dark;
 
+  [data-user-theme='theme-black'] {
+    @include black.palette;
+    @include black.tokens;
+  }
+
   &[data-contrast='high'],
   [data-contrast='high'] & {
     @include dark.contrast-overrides;
