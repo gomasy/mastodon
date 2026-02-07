@@ -131,12 +131,15 @@ class AccountTimeline extends ImmutablePureComponent {
   }
 
   handleLoadMore = maxId => {
-    this.props.dispatch(expandAccountTimeline(this.props.accountId, { maxId, withReplies: this.props.withReplies, tagged: this.props.params.tagged }));
+    dispatch(expandAccountTimeline(accountId, { maxId, withReplies, tagged }));
   };
 
   handleRefresh = () => {
-    this.props.dispatch(fetchRemoteOutbox(this.props.accountId, () => {
-      this.props.dispatch(expandAccountTimeline(this.props.accountId, { withReplies: this.props.withReplies, tagged: this.props.params.tagged }));
+    dispatch(fetchRemoteOutbox(accountId, () => {
+      if (!withReplies) {
+        dispatch(expandAccountFeaturedTimeline(accountId, { tagged }));
+      }
+      dispatch(expandAccountTimeline(accountId, { withReplies, tagged }));
     }));
   };
 
