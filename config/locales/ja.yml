@@ -1942,10 +1942,6 @@ ja:
     title: "%{domain} の利用規約が変更されています"
   themes:
     black: Mastodon (ブラック）
-    contrast: Mastodon (ハイコントラスト)
-    default: Mastodon (ダーク)
-    mastodon-light: Mastodon (ライト)
-    system: 自動 (システムのテーマを使用)
   time:
     formats:
       default: "%Y年%m月%d日 %H:%M"
