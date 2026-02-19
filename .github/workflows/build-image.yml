@@ -14,6 +14,7 @@ permissions:
 
 jobs:
   build-image:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ${{ matrix.runner }}
     strategy:
       fail-fast: false
@@ -21,7 +22,7 @@ jobs:
         include:
           - runner: ubuntu-latest
             arch: amd64
-          - runner: self-hosted
+          - runner: ubuntu-24.04-arm
             arch: arm64
 
     env:
@@ -89,7 +90,7 @@ jobs:
           retention-days: 1
 
   merge-images:
-    if: ${{ github.event_name != 'pull_request' }}
+    if: "github.event_name != 'pull_request' && !contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ubuntu-latest
     needs:
       - build-image
