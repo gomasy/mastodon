@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 
 import { useDebouncedCallback } from 'use-debounce';
 
+import { fetchRelationships } from 'mastodon/actions/accounts';
 import { importFetchedAccounts } from 'mastodon/actions/importer';
 import { apiRequest } from 'mastodon/api';
 import type { ApiAccountJSON } from 'mastodon/api_types/accounts';
@@ -9,12 +10,18 @@ import { useAppDispatch } from 'mastodon/store';
 
 export function useSearchAccounts({
   onSettled,
+  filterResults,
+  resetOnInputClear = true,
+  withRelationships = false,
 }: {
   onSettled?: (value: string) => void;
+  filterResults?: (account: ApiAccountJSON) => boolean;
+  resetOnInputClear?: boolean;
+  withRelationships?: boolean;
 } = {}) {
   const dispatch = useAppDispatch();
 
-  const [accountIds, setAccountIds] = useState<string[]>();
+  const [accountIds, setAccountIds] = useState<string[]>([]);
   const [loadingState, setLoadingState] = useState<
     'idle' | 'loading' | 'error'
   >('idle');
@@ -29,6 +36,9 @@ export function useSearchAccounts({
 
       if (value.trim().length === 0) {
         onSettled?.('');
+        if (resetOnInputClear) {
+          setAccountIds([]);
+        }
         return;
       }
 
@@ -44,8 +54,13 @@ export function useSearchAccounts({
         },
       })
         .then((data) => {
-          dispatch(importFetchedAccounts(data));
-          setAccountIds(data.map((a) => a.id));
+          const accounts = filterResults ? data.filter(filterResults) : data;
+          const accountIds = accounts.map((a) => a.id);
+          dispatch(importFetchedAccounts(accounts));
+          if (withRelationships) {
+            dispatch(fetchRelationships(accountIds));
+          }
+          setAccountIds(accountIds);
           setLoadingState('idle');
           onSettled?.(value);
         })

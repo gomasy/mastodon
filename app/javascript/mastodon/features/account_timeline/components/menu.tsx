@@ -44,6 +44,8 @@ import ShareIcon from '@/material-icons/400-24px/share.svg?react';
 
 import { isRedesignEnabled } from '../common';
 
+import classes from './redesign.module.scss';
+
 export const AccountMenu: FC<{ accountId: string }> = ({ accountId }) => {
   const intl = useIntl();
   const { signedIn, permissions } = useIdentity();
@@ -88,6 +90,7 @@ export const AccountMenu: FC<{ accountId: string }> = ({ accountId }) => {
       items={menuItems}
       icon='ellipsis-v'
       iconComponent={MoreHorizIcon}
+      className={classes.buttonMenu}
     />
   );
 };
