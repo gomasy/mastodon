@@ -11,7 +11,6 @@ import {
   DomainBlockModal,
   ReportModal,
   ReportCollectionModal,
-  ShareCollectionModal,
   EmbedModal,
   ListAdder,
   CompareHistoryModal,
@@ -80,7 +79,7 @@ export const MODAL_COMPONENTS = {
   'DOMAIN_BLOCK': DomainBlockModal,
   'REPORT': ReportModal,
   'REPORT_COLLECTION': ReportCollectionModal,
-  'SHARE_COLLECTION': ShareCollectionModal,
+  'SHARE_COLLECTION': () => import('@/mastodon/features/collections/detail/share_modal').then(module => ({ default: module.CollectionShareModal })),
   'ACTIONS': () => Promise.resolve({ default: ActionsModal }),
   'EMBED': EmbedModal,
   'FOCAL_POINT': () => Promise.resolve({ default: AltTextModal }),
@@ -95,10 +94,19 @@ export const MODAL_COMPONENTS = {
   'COMPOSE_PRIVACY': () => Promise.resolve({ default: VisibilityModal }),
   'ACCOUNT_NOTE': () => import('@/mastodon/features/account_timeline/modals/note_modal').then(module => ({ default: module.AccountNoteModal })),
   'ACCOUNT_FIELD_OVERFLOW': () => import('@/mastodon/features/account_timeline/modals/field_modal').then(module => ({ default: module.AccountFieldModal })),
-  'ACCOUNT_EDIT_NAME': () => import('@/mastodon/features/account_edit/components/name_modal').then(module => ({ default: module.NameModal })),
-  'ACCOUNT_EDIT_BIO': () => import('@/mastodon/features/account_edit/components/bio_modal').then(module => ({ default: module.BioModal })),
-  'ACCOUNT_EDIT_PROFILE_DISPLAY': () => import('@/mastodon/features/account_edit/components/profile_display_modal').then(module => ({ default: module.ProfileDisplayModal })),
+  'ACCOUNT_EDIT_NAME': accountEditModal('NameModal'),
+  'ACCOUNT_EDIT_BIO': accountEditModal('BioModal'),
+  'ACCOUNT_EDIT_PROFILE_DISPLAY': accountEditModal('ProfileDisplayModal'),
+  'ACCOUNT_EDIT_VERIFY_LINKS': accountEditModal('VerifiedModal'),
+  'ACCOUNT_EDIT_FIELD_EDIT': accountEditModal('EditFieldModal'),
+  'ACCOUNT_EDIT_FIELD_DELETE': accountEditModal('DeleteFieldModal'),
+  'ACCOUNT_EDIT_FIELDS_REORDER': accountEditModal('ReorderFieldsModal'),
 };
+
+/** @arg {keyof import('@/mastodon/features/account_edit/modals')} type */
+function accountEditModal(type) {
+  return () => import('@/mastodon/features/account_edit/modals').then(module => ({ default: module[type] }));
+}
 
 export default class ModalRoot extends PureComponent {
 

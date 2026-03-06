@@ -13,7 +13,11 @@ import { AvatarGroup } from 'mastodon/components/avatar_group';
 import { Button } from 'mastodon/components/button';
 import { CopyLinkField } from 'mastodon/components/form_fields';
 import { IconButton } from 'mastodon/components/icon_button';
-import { ModalShell } from 'mastodon/components/modal_shell';
+import {
+  ModalShell,
+  ModalShellActions,
+  ModalShellBody,
+} from 'mastodon/components/modal_shell';
 import { useAppDispatch } from 'mastodon/store';
 
 import { AuthorNote } from '.';
@@ -36,8 +40,8 @@ export const CollectionShareModal: React.FC<{
 }> = ({ collection, onClose }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const location = useLocation<{ newCollection?: boolean }>();
-  const isNew = !!location.state.newCollection;
+  const location = useLocation<{ newCollection?: boolean } | undefined>();
+  const isNew = !!location.state?.newCollection;
   const isOwnCollection = collection.account_id === me;
 
   const collectionLink = `${window.location.origin}/collections/${collection.id}`;
@@ -64,7 +68,7 @@ export const CollectionShareModal: React.FC<{
 
   return (
     <ModalShell>
-      <ModalShell.Body>
+      <ModalShellBody>
         <h1 className={classes.heading}>
           {isNew ? (
             <FormattedMessage
@@ -112,9 +116,9 @@ export const CollectionShareModal: React.FC<{
           })}
           value={collectionLink}
         />
-      </ModalShell.Body>
+      </ModalShellBody>
 
-      <ModalShell.Actions className={classes.actions}>
+      <ModalShellActions className={classes.actions}>
         <div className={classes.shareButtonWrapper}>
           <Button secondary onClick={handleShareViaPost}>
             <FormattedMessage
@@ -135,7 +139,7 @@ export const CollectionShareModal: React.FC<{
         <Button plain onClick={onClose} className={classes.closeButtonMobile}>
           <FormattedMessage id='lightbox.close' defaultMessage='Close' />
         </Button>
-      </ModalShell.Actions>
+      </ModalShellActions>
     </ModalShell>
   );
 };
