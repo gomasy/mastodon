@@ -68,6 +68,7 @@ module MarkdownHelper
 
   def parse_markdown(text)
     markdown = Redcarpet::Markdown.new(CustomRender.new(renderer_options), renderer_extensions)
-    markdown.render(unescape(text))
+    html = markdown.render(unescape(text))
+    Sanitize.fragment(html, Sanitize::Config::MASTODON_STRICT)
   end
 end
