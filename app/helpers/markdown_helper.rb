@@ -23,9 +23,8 @@ module MarkdownHelper
     def strip_tags(code)
       code
         .gsub(/<a[^>]*rel="tag"[^>]*>(.*?)<\/a>/, '\1')
-        .gsub(/#<span>(.*?)<\/span>/, '#\1')
         .gsub(/<span.*?class="h-card".*?><a.*?class=".*?u-url.*?">(.*?)<\/a><\/span>/, '\1')
-        .gsub(/@<span>(.*?)<\/span>/, '@\1')
+        .gsub(/([#@])<span>(.*?)<\/span>/, '\1\2')
     end
   end
 
