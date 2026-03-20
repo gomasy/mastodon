@@ -46,7 +46,10 @@ class TextFormatter
     end
 
     if markdown?
-      html = parse_markdown(html)
+      html = parse_markdown(html).then do |result|
+        parts = result.split(/(<pre[^>]*>.*?<\/pre>)/m)
+        parts.map { |part| part.match?(/<pre/) ? part : part.delete("\n") }.join
+      end
     elsif multiline?
       html = simple_format(html, {}, sanitize: false).delete("\n")
     end
