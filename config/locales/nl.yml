@@ -1280,6 +1280,7 @@ nl:
     progress:
       confirm: E-mailadres bevestigen
       details: Jouw gegevens
+      list: Voortgang aanmelding
       review: Onze beoordeling
       rules: Regels accepteren
     providers:
