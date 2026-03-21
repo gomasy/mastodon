@@ -342,5 +342,102 @@ RSpec.describe TextFormatter do
         expect(subject).to include 'href="magnet:?xt=urn:btih:c12fe1c06bba254a9dc9f519b335aa7c1367a88a"'
       end
     end
+
+    context 'with markdown option' do
+      subject { described_class.new(text, markdown: true, preloaded_accounts: preloaded_accounts).to_s }
+
+      let(:preloaded_accounts) { nil }
+
+      context 'when given plain text' do
+        let(:text) { 'Hello world' }
+
+        it 'wraps in a paragraph' do
+          expect(subject).to eq '<p>Hello world</p>'
+        end
+      end
+
+      context 'when given text with a single line break' do
+        let(:text) { "line1\nline2" }
+
+        it 'converts the line break to <br>' do
+          expect(subject).to include 'line1<br>line2'
+        end
+      end
+
+      context 'when given text with multiple paragraphs' do
+        let(:text) { "paragraph1\n\nparagraph2" }
+
+        it 'wraps each paragraph in <p> tags' do
+          expect(subject).to include '<p>paragraph1</p>'
+          expect(subject).to include '<p>paragraph2</p>'
+        end
+
+        it 'does not contain newlines' do
+          expect(subject).to_not include "\n"
+        end
+      end
+
+      context 'when given bold text' do
+        let(:text) { '**bold**' }
+
+        it 'renders bold markup' do
+          expect(subject).to include '<strong>bold</strong>'
+        end
+      end
+
+      context 'when given italic text' do
+        let(:text) { '*italic*' }
+
+        it 'renders italic markup' do
+          expect(subject).to include '<em>italic</em>'
+        end
+      end
+
+      context 'when given a fenced code block' do
+        let(:text) { "before\n\n```\ncode\nline2\n```\n\nafter" }
+
+        it 'preserves newlines inside <pre> blocks' do
+          expect(subject).to include "<pre><code>code\nline2\n</code></pre>"
+        end
+
+        it 'renders surrounding text' do
+          expect(subject).to include '<p>before</p>'
+          expect(subject).to include '<p>after</p>'
+        end
+      end
+
+      context 'when given a strikethrough text' do
+        let(:text) { '~~deleted~~' }
+
+        it 'renders strikethrough markup' do
+          expect(subject).to include '<del>deleted</del>'
+        end
+      end
+
+      context 'when given a mention' do
+        let(:preloaded_accounts) { [Fabricate(:account, username: 'alice')] }
+        let(:text) { '@alice hello' }
+
+        it 'creates a mention link' do
+          expect(subject).to include 'class="u-url mention">@<span>alice</span></a>'
+        end
+      end
+
+      context 'when given a hashtag' do
+        let(:text) { '#test' }
+
+        it 'creates a hashtag link' do
+          expect(subject).to include 'class="mention hashtag" rel="tag">#<span>test</span></a>'
+        end
+      end
+
+      context 'when given a URL' do
+        let(:text) { 'https://example.com/' }
+
+        it 'creates a link' do
+          expect(subject).to include 'href="https://example.com/"'
+        end
+      end
+    end
   end
 end
