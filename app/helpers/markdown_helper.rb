@@ -30,6 +30,7 @@ module MarkdownHelper
 
   def renderer_options
     {
+      hard_wrap: true,
       no_images: true,
       no_styles: true,
       safe_links_only: true,
