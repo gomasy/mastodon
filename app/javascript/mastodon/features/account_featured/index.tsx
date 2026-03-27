@@ -111,8 +111,11 @@ const AccountFeatured: React.FC<{ multiColumn: boolean }> = ({
     );
   }
 
+  const noTags =
+    featuredTags.isEmpty() || isServerFeatureEnabled('profile_redesign');
+
   if (
-    featuredTags.isEmpty() &&
+    noTags &&
     featuredAccountIds.isEmpty() &&
     listedCollections.length === 0
   ) {
@@ -151,6 +154,7 @@ const AccountFeatured: React.FC<{ multiColumn: boolean }> = ({
                   key={item.id}
                   collection={item}
                   withoutBorder={index === listedCollections.length - 1}
+                  withAuthorHandle={false}
                   positionInList={index + 1}
                   listSize={listedCollections.length}
                 />
@@ -158,7 +162,7 @@ const AccountFeatured: React.FC<{ multiColumn: boolean }> = ({
             </ItemList>
           </>
         )}
-        {!featuredTags.isEmpty() && (
+        {!noTags && (
           <>
             <h4 className='column-subheading'>
               <FormattedMessage

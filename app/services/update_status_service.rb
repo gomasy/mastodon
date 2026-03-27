@@ -135,6 +135,7 @@ class UpdateStatusService < BaseService
   def update_metadata!
     ProcessHashtagsService.new.call(@status)
     ProcessMentionsService.new.call(@status)
+    ProcessLinksService.new.call(@status)
     if @options[:markdown]
       StatusMarkdown.create(status_id: @status.id)
     else
