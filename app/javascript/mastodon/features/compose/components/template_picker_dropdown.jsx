@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 
-import { defineMessages, injectIntl } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
@@ -118,8 +118,15 @@ class TemplatePickerMenuImpl extends PureComponent {
   }
 }
 
-const TemplatePicker = injectIntl(TemplatePickerImpl);
-const TemplatePickerMenu = injectIntl(TemplatePickerMenuImpl);
+const TemplatePicker = (props) => {
+  const intl = useIntl();
+  return <TemplatePickerImpl {...props} intl={intl} />;
+};
+
+const TemplatePickerMenu = (props) => {
+  const intl = useIntl();
+  return <TemplatePickerMenuImpl {...props} intl={intl} />;
+};
 
 class TemplatePickerDropdown extends PureComponent {
 
@@ -204,4 +211,9 @@ class TemplatePickerDropdown extends PureComponent {
   }
 }
 
-export default injectIntl(TemplatePickerDropdown);
+const TemplatePickerDropdownWrapper = (props) => {
+  const intl = useIntl();
+  return <TemplatePickerDropdown {...props} intl={intl} />;
+};
+
+export default TemplatePickerDropdownWrapper;
