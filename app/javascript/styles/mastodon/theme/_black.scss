@@ -33,6 +33,7 @@
   --color-text-primary: var(--color-grey-50);
   --color-text-secondary: var(--color-grey-400);
   --color-text-tertiary: var(--color-grey-500);
+  --color-text-inverted: var(--color-grey-950);
   --color-text-on-inverted: var(--color-grey-950);
   --color-text-brand: var(--color-grey-400);
   --color-text-brand-soft: color-mix(
@@ -41,6 +42,7 @@
     var(--color-text-brand)
   );
   --color-text-on-brand-base: var(--color-white);
+  --color-text-brand-on-inverted: var(--color-indigo-600);
   --color-text-error: var(--color-red-500);
   --color-text-on-error-base: var(--color-white);
   --color-text-warning: var(--color-yellow-400);
@@ -63,32 +65,26 @@
   // Neutrals
   --color-bg-primary: var(--color-grey-950);
   --overlay-strength-secondary: 10%;
-  --color-bg-secondary-base: var(--color-grey-200);
-  --color-bg-secondary: #{utils.css-alpha(
-      var(--color-bg-secondary-base),
-      var(--overlay-strength-secondary)
-    )};
+  --color-bg-secondary: var(--color-grey-800);
   --color-bg-secondary-solid: color-mix(
     in srgb,
     var(--color-bg-primary),
-    var(--color-bg-secondary-base) var(--overlay-strength-secondary)
+    var(--color-bg-secondary) var(--overlay-strength-secondary)
   );
   --color-bg-tertiary: color-mix(
     in oklab,
     var(--color-bg-primary),
-    var(--color-bg-secondary-base) calc(2 * var(--overlay-strength-secondary))
+    var(--color-bg-secondary) calc(2 * var(--overlay-strength-secondary))
   );
 
   // Utility
   --color-bg-ambient: var(--color-bg-primary);
   --color-bg-elevated: var(--color-bg-primary);
   --color-bg-inverted: var(--color-grey-50);
+  --color-bg-overlay-base: #{utils.css-alpha(var(--color-grey-950), 60%)};
+  --color-bg-overlay-highlight: #{utils.css-alpha(var(--color-white), 5%)};
   --color-bg-media-base: var(--color-black);
-  --color-bg-media-strength: 65%;
-  --color-bg-media: #{utils.css-alpha(
-      var(--color-bg-media-base),
-      var(--color-bg-media-strength)
-    )};
+  --color-bg-media: #{utils.css-alpha(var(--color-bg-media-base), 65%)};
   --color-bg-overlay: var(--color-black);
   --color-bg-disabled: var(--color-grey-700);
 
@@ -108,6 +104,7 @@
       var(--color-bg-brand-base),
       var(--overlay-strength-brand)
     )};
+  --color-bg-brand-softest: var(--color-bg-brand-softer);
 
   // Error
   --overlay-strength-error: 12%;
@@ -125,6 +122,7 @@
       var(--color-bg-error-base),
       var(--overlay-strength-error)
     )};
+  --color-bg-error-softest: var(--color-bg-error-softer);
 
   // Warning
   --overlay-strength-warning: 10%;
@@ -142,6 +140,7 @@
       var(--color-bg-warning-base),
       var(--overlay-strength-warning)
     )};
+  --color-bg-warning-softest: var(--color-bg-warning-softer);
 
   // Success
   --overlay-strength-success: 15%;
@@ -159,6 +158,7 @@
       var(--color-bg-success-base),
       var(--overlay-strength-success)
     )};
+  --color-bg-success-softest: var(--color-bg-success-softer);
 
   /* BORDER TOKENS */
 
@@ -167,6 +167,12 @@
       var(--color-grey-200),
       var(--border-strength-primary)
     )};
+  --color-border-brand: var(--color-text-brand);
+  --color-border-brand-soft: #{utils.css-alpha(var(--color-text-brand), 50%)};
+  --color-border-error: var(--color-red-500);
+  --color-border-error-soft: #{utils.css-alpha(var(--color-border-error), 50%)};
+  --color-border-warning-soft: #{utils.css-alpha(var(--color-text-warning), 50%)};
+  --color-border-success-soft: #{utils.css-alpha(var(--color-text-success), 50%)};
   --color-border-media: rgb(252 248 255 / 15%);
   --color-border-on-bg-secondary: #{utils.css-alpha(
       var(--color-grey-200),
