@@ -3,8 +3,6 @@ import type { FC } from 'react';
 
 import { FormattedMessage, FormattedNumber, useIntl } from 'react-intl';
 
-import { NavLink } from 'react-router-dom';
-
 import { FormattedDateWrapper } from '@/mastodon/components/formatted_date';
 import {
   NumberFields,
@@ -12,45 +10,9 @@ import {
 } from '@/mastodon/components/number_fields';
 import { useAccount } from '@/mastodon/hooks/useAccount';
 
-import { isRedesignEnabled } from '../common';
-
-const LegacyNumberFields: FC<{ accountId: string }> = ({ accountId }) => {
-  const intl = useIntl();
-  const account = useAccount(accountId);
-
-  if (!account) {
-    return null;
-  }
-
-  return (
-    <div className='account__header__extra__links'>
-      <NavLink
-        to={`/@${account.acct}`}
-        title={intl.formatNumber(account.statuses_count)}
-      >
-        <strong><FormattedNumber value={account.statuses_count} /></strong> <FormattedMessage id='account.posts' defaultMessage='Toots' />
-      </NavLink>
-
-      <NavLink
-        exact
-        to={`/@${account.acct}/following`}
-        title={intl.formatNumber(account.following_count)}
-      >
-        <strong><FormattedNumber value={account.following_count} /></strong> <FormattedMessage id='account.follow' defaultMessage='Follow' />
-      </NavLink>
-
-      <NavLink
-        exact
-        to={`/@${account.acct}/followers`}
-        title={intl.formatNumber(account.followers_count)}
-      >
-        <strong><FormattedNumber value={account.followers_count} /></strong> <FormattedMessage id='account.followers' defaultMessage='Followers' />
-      </NavLink>
-    </div>
-  );
-};
-
-const RedesignNumberFields: FC<{ accountId: string }> = ({ accountId }) => {
+export const AccountNumberFields: FC<{ accountId: string }> = ({
+  accountId,
+}) => {
   const intl = useIntl();
   const account = useAccount(accountId);
   const createdThisYear = useMemo(
@@ -64,13 +26,6 @@ const RedesignNumberFields: FC<{ accountId: string }> = ({ accountId }) => {
 
   return (
     <NumberFields>
-      <NumberFieldsItem
-        label={<FormattedMessage id='account.posts' defaultMessage='Posts' />}
-        hint={intl.formatNumber(account.statuses_count)}
-      >
-        <FormattedNumber value={account.statuses_count} />
-      </NumberFieldsItem>
-
       <NumberFieldsItem
         label={
           <FormattedMessage id='account.followers' defaultMessage='Followers' />
@@ -92,6 +47,13 @@ const RedesignNumberFields: FC<{ accountId: string }> = ({ accountId }) => {
       </NumberFieldsItem>
 
       <NumberFieldsItem
+        label={<FormattedMessage id='account.posts' defaultMessage='Posts' />}
+        hint={intl.formatNumber(account.statuses_count)}
+      >
+        <FormattedNumber value={account.statuses_count} />
+      </NumberFieldsItem>
+
+      <NumberFieldsItem
         label={
           <FormattedMessage id='account.joined_short' defaultMessage='Joined' />
         }
@@ -110,7 +72,3 @@ const RedesignNumberFields: FC<{ accountId: string }> = ({ accountId }) => {
     </NumberFields>
   );
 };
-
-export const AccountNumberFields = isRedesignEnabled()
-  ? RedesignNumberFields
-  : LegacyNumberFields;
