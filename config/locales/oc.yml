@@ -563,8 +563,6 @@ oc:
     lists: Listas
     mutes: Personas rescondudas
     storage: Mèdias gardats
-  featured_tags:
-    add_new: Ajustar una etiqueta nòva
   filters:
     contexts:
       account: Perfils
