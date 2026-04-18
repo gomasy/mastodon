@@ -1398,6 +1398,10 @@ et:
       your_appeal_rejected: Vaidlustus on tagasi lükatud
   edit_profile:
     other: Muu
+  email_subscription_mailer:
+    notification:
+      subject:
+        plural: Uus postitus kasutajalt %{name}
   emoji_styles:
     auto: Automaatne
     native: Rakenduseomane
