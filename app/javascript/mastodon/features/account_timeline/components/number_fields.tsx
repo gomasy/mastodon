@@ -1,14 +1,16 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import type { FC } from 'react';
 
 import { FormattedMessage, FormattedNumber, useIntl } from 'react-intl';
 
+import { openModal } from '@/mastodon/actions/modal';
 import { FormattedDateWrapper } from '@/mastodon/components/formatted_date';
 import {
   NumberFields,
   NumberFieldsItem,
 } from '@/mastodon/components/number_fields';
 import { useAccount } from '@/mastodon/hooks/useAccount';
+import { useAppDispatch } from '@/mastodon/store';
 
 export const AccountNumberFields: FC<{ accountId: string }> = ({
   accountId,
@@ -19,6 +21,13 @@ export const AccountNumberFields: FC<{ accountId: string }> = ({
     () => account?.created_at.includes(new Date().getFullYear().toString()),
     [account?.created_at],
   );
+
+  const dispatch = useAppDispatch();
+  const showJoinModal = useCallback(() => {
+    dispatch(
+      openModal({ modalType: 'ACCOUNT_JOIN_DATE', modalProps: { accountId } }),
+    );
+  }, [accountId, dispatch]);
 
   if (!account) {
     return null;
@@ -59,15 +68,17 @@ export const AccountNumberFields: FC<{ accountId: string }> = ({
         }
         hint={intl.formatDate(account.created_at)}
       >
-        {createdThisYear ? (
-          <FormattedDateWrapper
-            value={account.created_at}
-            month='short'
-            day='2-digit'
-          />
-        ) : (
-          <FormattedDateWrapper value={account.created_at} year='numeric' />
-        )}
+        <button type='button' onClick={showJoinModal}>
+          {createdThisYear ? (
+            <FormattedDateWrapper
+              value={account.created_at}
+              month='short'
+              day='2-digit'
+            />
+          ) : (
+            <FormattedDateWrapper value={account.created_at} year='numeric' />
+          )}
+        </button>
       </NumberFieldsItem>
     </NumberFields>
   );
