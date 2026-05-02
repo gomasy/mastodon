@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { PureComponent } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -33,206 +33,162 @@ export async function loadCustomTemplateData() {
   return customTemplates;
 }
 
-class TemplatePickerImpl extends PureComponent {
-
-  static propTypes = {
-    intl: PropTypes.object.isRequired,
-    onClick: PropTypes.func.isRequired,
-    pickerButtonRef: PropTypes.func.isRequired,
-  };
-
-  handleClick = e => {
-    const { onClick } = this.props;
-    onClick(customTemplates[e.currentTarget.getAttribute('data-index')]);
-  }
-
-  render () {
-    const { intl } = this.props;
-    const { handleClick } = this;
-    const title = intl.formatMessage(messages.template);
-
-    return (
-      <div className='template-picker'>
-        <div className='template-picker-title'>{title}</div>
-        <div className='template-picker-scroll'>
-          <div className='template-picker-area'>
-            {(customTemplates ?? []).map((template, i) => {
-              const content = template.content;
-              const emojis = template.emojis.reduce((map, emoji) => {
-                map[`:${emoji.shortcode}:`] = emoji;
-                return map;
-              }, {});
-
-              const html = emojify(escapeTextContentForBrowser(content).replace(/\s*\r\n/g, '<br />'), emojis);
-
-              return (
-                <div
-                  className='template-picker-template'
-                  key={i}
-                  data-index={i}
-                  dangerouslySetInnerHTML={{ __html: html }}
-                  onClick={handleClick}
-                />
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
-
-class TemplatePickerMenuImpl extends PureComponent {
-
-  static propTypes = {
-    style: PropTypes.object,
-    onPick: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired,
-  };
-
-  handleDocumentClick = e => {
-    if (this.node && !this.node.contains(e.target) && !this.props.pickerButtonRef.contains(e.target)) {
-      this.props.onClose();
-    }
-  }
-
-  componentDidMount () {
-    document.addEventListener('click', this.handleDocumentClick, { capture: true });
-    document.addEventListener('touchend', this.handleDocumentClick, listenerOptions);
-  }
-
-  componentWillUnmount () {
-    document.removeEventListener('click', this.handleDocumentClick, { capture: true });
-    document.removeEventListener('touchend', this.handleDocumentClick, listenerOptions);
-  }
-
-  setRef = c => {
-    this.node = c;
-  }
-
-  handleClick = template => {
-    this.props.onClose();
-    this.props.onPick(template);
-  }
-
-  render () {
-    const { style } = this.props;
-
-    return (
-      <div className='template-picker-dropdown__menu' style={style} ref={this.setRef}>
-        <TemplatePicker
-          onClick={this.handleClick}
-        />
-      </div>
-    );
-  }
-}
-
-const TemplatePicker = (props) => {
+const TemplatePicker = ({ onClick }) => {
   const intl = useIntl();
-  return <TemplatePickerImpl {...props} intl={intl} />;
-};
+  const [isLoaded, setIsLoaded] = useState(customTemplates !== null);
 
-const TemplatePickerMenu = (props) => {
-  const intl = useIntl();
-  return <TemplatePickerMenuImpl {...props} intl={intl} />;
-};
-
-class TemplatePickerDropdown extends PureComponent {
-
-  static propTypes = {
-    intl: PropTypes.object.isRequired,
-    onPickTemplate: PropTypes.func.isRequired,
-  };
-
-  state = {
-    active: false,
-    loading: false,
-  };
-
-  setRef = (c) => {
-    this.dropdown = c;
-  }
-
-  onShowDropdown = () => {
-    this.setState({ active: true });
-
+  useEffect(() => {
     if (customTemplates === null) {
-      this.setState({ loading: true });
-
-      loadCustomTemplateData().then(() => {
-        this.setState({ loading: false });
-      }).catch(() => {
-        this.setState({ loading: false, active: false });
+      void loadCustomTemplateData().then(() => {
+        setIsLoaded(true);
       });
     }
+  }, []);
+
+  const handleClick = useCallback(e => {
+    onClick(customTemplates[e.currentTarget.getAttribute('data-index')]);
+  }, [onClick]);
+
+  if (!isLoaded) {
+    return null;
   }
 
-  onHideDropdown = () => {
-    this.setState({ active: false });
-  }
+  const title = intl.formatMessage(messages.template);
 
-  onToggle = (e) => {
-    if (!this.state.loading && (!e.key || e.key === 'Enter')) {
-      if (this.state.active) {
-        this.onHideDropdown();
-      } else {
-        this.onShowDropdown();
-      }
-    }
-  }
+  return (
+    <div className='template-picker'>
+      <div className='template-picker-title'>{title}</div>
+      <div className='template-picker-scroll'>
+        <div className='template-picker-area'>
+          {customTemplates.map((template, i) => {
+            const content = template.content;
+            const emojis = template.emojis.reduce((map, emoji) => {
+              map[`:${emoji.shortcode}:`] = emoji;
+              return map;
+            }, {});
 
-  handleKeyDown = e => {
-    if (e.key === 'Escape') {
-      this.onHideDropdown();
-    }
-  }
+            const html = emojify(escapeTextContentForBrowser(content).replace(/\s*\r\n/g, '<br />'), emojis);
 
-  setTargetRef = c => {
-    this.target = c;
-  }
-
-  findTarget = () => {
-    return this.target;
-  }
-
-  render () {
-    const { intl, onPickTemplate } = this.props;
-    const title = intl.formatMessage(messages.template);
-    const { active, loading } = this.state;
-
-    return (
-      <div className='template-picker-dropdown' onKeyDown={this.handleKeyDown} ref={this.setTargetRef}>
-        <IconButton
-          title={title}
-          aria-expanded={active}
-          active={active}
-          iconComponent={ContentPasteIcon}
-          onClick={this.onToggle}
-          inverted
-        />
-
-        <Overlay show={active && !loading} placement={'bottom'} target={this.findTarget}>
-          {({ props, placement }) => (
-            <div {...props} style={{ ...props.style }}>
-              <div className={`dropdown-animation ${placement}`}>
-                <TemplatePickerMenu
-                  onPick={onPickTemplate}
-                  onClose={this.onHideDropdown}
-                  pickerButtonRef={this.target}
-                />
-              </div>
-            </div>
-          )}
-        </Overlay>
+            return (
+              <div
+                className='template-picker-template'
+                key={i}
+                data-index={i}
+                dangerouslySetInnerHTML={{ __html: html }}
+                onClick={handleClick}
+              />
+            );
+          })}
+        </div>
       </div>
-    );
-  }
-}
-
-const TemplatePickerDropdownWrapper = (props) => {
-  const intl = useIntl();
-  return <TemplatePickerDropdown {...props} intl={intl} />;
+    </div>
+  );
 };
 
-export default TemplatePickerDropdownWrapper;
+TemplatePicker.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
+
+const TemplatePickerMenu = ({ style, onClose, onPick, pickerButtonRef }) => {
+  const nodeRef = useRef(null);
+
+  useEffect(() => {
+    const handleDocumentClick = e => {
+      if (nodeRef.current && !nodeRef.current.contains(e.target) && !pickerButtonRef.contains(e.target)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('click', handleDocumentClick, { capture: true });
+    document.addEventListener('touchend', handleDocumentClick, listenerOptions);
+
+    return () => {
+      document.removeEventListener('click', handleDocumentClick, { capture: true });
+      document.removeEventListener('touchend', handleDocumentClick, listenerOptions);
+    };
+  }, [onClose, pickerButtonRef]);
+
+  const handleClick = useCallback(template => {
+    onClose();
+    onPick(template);
+  }, [onClose, onPick]);
+
+  return (
+    <div className='template-picker-dropdown__menu' style={style} ref={nodeRef}>
+      <TemplatePicker onClick={handleClick} />
+    </div>
+  );
+};
+
+TemplatePickerMenu.propTypes = {
+  style: PropTypes.object,
+  onPick: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
+
+const TemplatePickerDropdown = ({ onPickTemplate }) => {
+  const intl = useIntl();
+  const [active, setActive] = useState(false);
+  const targetRef = useRef(null);
+
+  const onShowDropdown = useCallback(() => {
+    setActive(true);
+  }, []);
+
+  const onHideDropdown = useCallback(() => {
+    setActive(false);
+  }, []);
+
+  const onToggle = useCallback(e => {
+    if (!e.key || e.key === 'Enter') {
+      if (active) {
+        onHideDropdown();
+      } else {
+        onShowDropdown();
+      }
+    }
+  }, [active, onShowDropdown, onHideDropdown]);
+
+  const handleKeyDown = useCallback(e => {
+    if (e.key === 'Escape') {
+      onHideDropdown();
+    }
+  }, [onHideDropdown]);
+
+  const findTarget = useCallback(() => targetRef.current, []);
+
+  const title = intl.formatMessage(messages.template);
+
+  return (
+    <div className='template-picker-dropdown' onKeyDown={handleKeyDown} ref={targetRef}>
+      <IconButton
+        title={title}
+        aria-expanded={active}
+        active={active}
+        iconComponent={ContentPasteIcon}
+        onClick={onToggle}
+        inverted
+      />
+
+      <Overlay show={active} placement={'bottom'} target={findTarget}>
+        {({ props, placement }) => (
+          <div {...props} style={{ ...props.style }}>
+            <div className={`dropdown-animation ${placement}`}>
+              <TemplatePickerMenu
+                onPick={onPickTemplate}
+                onClose={onHideDropdown}
+                pickerButtonRef={targetRef.current}
+              />
+            </div>
+          </div>
+        )}
+      </Overlay>
+    </div>
+  );
+};
+
+TemplatePickerDropdown.propTypes = {
+  onPickTemplate: PropTypes.func.isRequired,
+};
+
+export default TemplatePickerDropdown;
