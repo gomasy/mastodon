@@ -5,8 +5,6 @@ import { Route } from 'react-router-dom';
 
 import { Provider as ReduxProvider } from 'react-redux';
 
-
-import { fetchCustomEmojis } from 'mastodon/actions/custom_emojis';
 import { fetchCustomTemplates } from '../actions/custom_templates';
 import { hydrateStore } from 'mastodon/actions/store';
 import { connectUserStream } from 'mastodon/actions/streaming';
@@ -28,7 +26,6 @@ const hydrateAction = hydrateStore(initialState);
 
 store.dispatch(hydrateAction);
 if (initialState.meta.me) {
-  store.dispatch(fetchCustomEmojis());
   store.dispatch(fetchCustomTemplates());
 }
 
