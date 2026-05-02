@@ -5,7 +5,6 @@ import { Route } from 'react-router-dom';
 
 import { Provider as ReduxProvider } from 'react-redux';
 
-import { fetchCustomTemplates } from '../actions/custom_templates';
 import { hydrateStore } from 'mastodon/actions/store';
 import { connectUserStream } from 'mastodon/actions/streaming';
 import ErrorBoundary from 'mastodon/components/error_boundary';
@@ -25,9 +24,6 @@ const title = isProduction() ? siteTitle : `${siteTitle} (Dev)`;
 const hydrateAction = hydrateStore(initialState);
 
 store.dispatch(hydrateAction);
-if (initialState.meta.me) {
-  store.dispatch(fetchCustomTemplates());
-}
 
 export default class Mastodon extends PureComponent {
   identity = createIdentityContext(initialState);

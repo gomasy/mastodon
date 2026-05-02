@@ -1,14 +1,11 @@
 import { connect } from 'react-redux';
-import TemplatePickerDropdown from '../components/template_picker_dropdown';
 
-const mapStateToProps = state => ({
-  custom_templates: state.get('custom_templates'),
-});
+import TemplatePickerDropdown from '../components/template_picker_dropdown';
 
 const mapDispatchToProps = (dispatch, { onPickTemplate }) => ({
   onPickTemplate: template => {
-    onPickTemplate(template.get('content'));
+    onPickTemplate(template.content);
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TemplatePickerDropdown);
+export default connect(null, mapDispatchToProps)(TemplatePickerDropdown);

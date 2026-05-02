@@ -3,8 +3,6 @@ import { PureComponent } from 'react';
 
 import { defineMessages, useIntl } from 'react-intl';
 
-import ImmutablePropTypes from 'react-immutable-proptypes';
-
 import { supportsPassiveEvents } from 'detect-passive-events';
 import Overlay from 'react-overlays/Overlay';
 
@@ -20,22 +18,36 @@ const messages = defineMessages({
 
 const listenerOptions = supportsPassiveEvents ? { passive: true, capture: true } : true;
 
+let customTemplates = null;
+
+export async function loadCustomTemplateData() {
+  if (customTemplates !== null) {
+    return customTemplates;
+  }
+  const url = new URL('/api/v1/custom_templates', location.origin);
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch custom templates: ${response.statusText}`);
+  }
+  customTemplates = await response.json();
+  return customTemplates;
+}
+
 class TemplatePickerImpl extends PureComponent {
 
   static propTypes = {
-    custom_templates: ImmutablePropTypes.list,
     intl: PropTypes.object.isRequired,
     onClick: PropTypes.func.isRequired,
     pickerButtonRef: PropTypes.func.isRequired,
   };
 
   handleClick = e => {
-    const { custom_templates, onClick } = this.props;
-    onClick(custom_templates.get(e.currentTarget.getAttribute('data-index')));
+    const { onClick } = this.props;
+    onClick(customTemplates[e.currentTarget.getAttribute('data-index')]);
   }
 
   render () {
-    const { custom_templates, intl } = this.props;
+    const { intl } = this.props;
     const { handleClick } = this;
     const title = intl.formatMessage(messages.template);
 
@@ -44,9 +56,9 @@ class TemplatePickerImpl extends PureComponent {
         <div className='template-picker-title'>{title}</div>
         <div className='template-picker-scroll'>
           <div className='template-picker-area'>
-            {custom_templates.map((template, i) => {
-              const content = template.get('content');
-              const emojis = template.get('emojis').toJS().reduce((map, emoji) => {
+            {(customTemplates ?? []).map((template, i) => {
+              const content = template.content;
+              const emojis = template.emojis.reduce((map, emoji) => {
                 map[`:${emoji.shortcode}:`] = emoji;
                 return map;
               }, {});
@@ -73,7 +85,6 @@ class TemplatePickerImpl extends PureComponent {
 class TemplatePickerMenuImpl extends PureComponent {
 
   static propTypes = {
-    custom_templates: ImmutablePropTypes.list,
     style: PropTypes.object,
     onPick: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
@@ -110,7 +121,6 @@ class TemplatePickerMenuImpl extends PureComponent {
     return (
       <div className='template-picker-dropdown__menu' style={style} ref={this.setRef}>
         <TemplatePicker
-          custom_templates={this.props.custom_templates}
           onClick={this.handleClick}
         />
       </div>
@@ -131,13 +141,13 @@ const TemplatePickerMenu = (props) => {
 class TemplatePickerDropdown extends PureComponent {
 
   static propTypes = {
-    custom_templates: ImmutablePropTypes.list,
     intl: PropTypes.object.isRequired,
     onPickTemplate: PropTypes.func.isRequired,
   };
 
   state = {
     active: false,
+    loading: false,
   };
 
   setRef = (c) => {
@@ -146,6 +156,16 @@ class TemplatePickerDropdown extends PureComponent {
 
   onShowDropdown = () => {
     this.setState({ active: true });
+
+    if (customTemplates === null) {
+      this.setState({ loading: true });
+
+      loadCustomTemplateData().then(() => {
+        this.setState({ loading: false });
+      }).catch(() => {
+        this.setState({ loading: false, active: false });
+      });
+    }
   }
 
   onHideDropdown = () => {
@@ -153,7 +173,7 @@ class TemplatePickerDropdown extends PureComponent {
   }
 
   onToggle = (e) => {
-    if (!e.key || e.key === 'Enter') {
+    if (!this.state.loading && (!e.key || e.key === 'Enter')) {
       if (this.state.active) {
         this.onHideDropdown();
       } else {
@@ -179,7 +199,7 @@ class TemplatePickerDropdown extends PureComponent {
   render () {
     const { intl, onPickTemplate } = this.props;
     const title = intl.formatMessage(messages.template);
-    const { active } = this.state;
+    const { active, loading } = this.state;
 
     return (
       <div className='template-picker-dropdown' onKeyDown={this.handleKeyDown} ref={this.setTargetRef}>
@@ -192,12 +212,11 @@ class TemplatePickerDropdown extends PureComponent {
           inverted
         />
 
-        <Overlay show={active} placement={'bottom'} target={this.findTarget}>
+        <Overlay show={active && !loading} placement={'bottom'} target={this.findTarget}>
           {({ props, placement }) => (
             <div {...props} style={{ ...props.style }}>
               <div className={`dropdown-animation ${placement}`}>
                 <TemplatePickerMenu
-                  custom_templates={this.props.custom_templates}
                   onPick={onPickTemplate}
                   onClose={this.onHideDropdown}
                   pickerButtonRef={this.target}
