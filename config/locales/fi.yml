@@ -345,12 +345,19 @@ fi:
       updated_msg: Tiedotteen päivitys onnistui!
     collections:
       accounts: Tilit
+      back_to_account: Takaisin tilisivulle
+      back_to_report: Takaisin raporttisivulle
+      batch:
+        add_to_report: Lisää raporttiin nro %{id}
+        report: Raportoi
       collection_title: Kokoelma, koonnut %{name}
       contents: Sisältö
+      no_collection_selected: Kokoelmia ei muutettu, koska yhtään ei ollut valittuna
       number_of_accounts:
         one: 1 tili
         other: "%{count} tiliä"
       open: Avaa
+      title: Tilin kokoelmat – @%{name}
       view_publicly: Näytä julkisesti
     critical_update_pending: Kriittinen päivitys odottaa
     custom_emojis:
@@ -484,9 +491,49 @@ fi:
         title: Estä uusi sähköpostiverkkotunnus
       no_email_domain_block_selected: Sähköpostiverkkotunnusten estoja ei muutettu, koska yhtäkään ei ollut valittuna
       not_permitted: Ei sallittu
+      reset: Palauta
       resolved_dns_records_hint_html: Verkkotunnusnimi kytkeytyy seuraaviin MX-verkkotunnuksiin, jotka ovat viime kädessä vastuussa sähköpostin vastaanottamisesta. MX-verkkotunnuksen estäminen estää rekisteröitymisen mistä tahansa sähköpostiosoitteesta, joka käyttää samaa MX-verkkotunnusta, vaikka näkyvä verkkotunnuksen nimi olisikin erilainen. <strong>Varo estämästä suuria sähköpostipalvelujen tarjoajia.</strong>
       resolved_through_html: Ratkaistu verkkotunnuksen %{domain} kautta
+      search: Hae
       title: Estetyt sähköpostiverkkotunnukset
+    email_subscriptions:
+      accounts:
+        account: Tili
+        empty:
+          hint: Millään tilillä ei ole vielä tilaajia.
+          no_lists_yet: Ei vielä listoja
+        lead: Alla näkyvät tilit, jotka ovat ottaneet ominaisuuden käyttöön ja joilla on tilaajia.
+        status: Tila
+        subscribers: Tilaajia
+        title: Postituslistat
+      additional_footer_texts:
+        show:
+          title: Alatunnisteen lisäteksti
+      compliance_settings:
+        additional_footer_text:
+          action: Hallitse
+          title: Alatunnisteen lisäteksti
+        privacy_policy:
+          action: Hallitse
+          title: Tietosuojakäytäntö
+      danger_zone:
+        disable_feature:
+          action: Poista käytöstä
+          hint: Poista ominaisuus käytöstä kaikilta tileiltä
+          title: Poista ominaisuus käytöstä
+        title: Vaaravyöhyke
+      index:
+        disabled:
+          get_started: Aloita
+      roles:
+        edit_role: Muokkaa roolia
+        manage_roles: Hallitse rooleja
+        role_name: Roolin nimi
+        title: Roolit
+      setups:
+        show:
+          enable_feature: Ota ominaisuus käyttöön
+          important_information: Tärkeää tietoa
     export_domain_allows:
       new:
         title: Tuo sallittuja verkkotunnuksia
@@ -792,7 +839,6 @@ fi:
         manage_custom_emojis: Hallita mukautettuja emojeita
         manage_custom_emojis_description: Sallii käyttäjien hallita palvelimen mukautettuja emojeita
         manage_email_subscriptions: Hallita sähköpostitilauksia
-        manage_email_subscriptions_description: Sallii käyttäjien tilata sähköpostitse käyttäjiä, joilla on tämä käyttöoikeus
         manage_federation: Hallita federointia
         manage_federation_description: Sallii käyttäjien estää tai sallia federointi muiden verkkotunnusten kanssa ja hallita toimitusta
         manage_invites: Hallita kutsuja
