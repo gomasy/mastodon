@@ -7,9 +7,9 @@ import { supportsPassiveEvents } from 'detect-passive-events';
 import Overlay from 'react-overlays/Overlay';
 
 import ContentPasteIcon from 'mastodon/../material-icons/400-24px/content_paste.svg?react';
+import { EmojiHTML } from 'mastodon/components/emoji/html';
 import { IconButton } from 'mastodon/components/icon_button';
 
-import emojify from '../../emoji/emoji';
 import escapeTextContentForBrowser from 'escape-html';
 
 const messages = defineMessages({
@@ -61,20 +61,15 @@ const TemplatePicker = ({ onClick }) => {
       <div className='template-picker-scroll'>
         <div className='template-picker-area'>
           {customTemplates.map((template, i) => {
-            const content = template.content;
-            const emojis = template.emojis.reduce((map, emoji) => {
-              map[`:${emoji.shortcode}:`] = emoji;
-              return map;
-            }, {});
-
-            const html = emojify(escapeTextContentForBrowser(content).replace(/\s*\r\n/g, '<br />'), emojis);
+            const html = escapeTextContentForBrowser(template.content).replace(/\s*\r\n/g, '<br />');
 
             return (
-              <div
+              <EmojiHTML
                 className='template-picker-template'
                 key={i}
                 data-index={i}
-                dangerouslySetInnerHTML={{ __html: html }}
+                htmlString={html}
+                extraEmojis={template.emojis}
                 onClick={handleClick}
               />
             );
