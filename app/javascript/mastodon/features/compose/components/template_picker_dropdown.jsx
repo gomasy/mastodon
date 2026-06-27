@@ -1,22 +1,18 @@
 import PropTypes from 'prop-types';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { defineMessages, useIntl } from 'react-intl';
 
-import { supportsPassiveEvents } from 'detect-passive-events';
-import Overlay from 'react-overlays/Overlay';
-
-import ContentPasteIcon from 'mastodon/../material-icons/400-24px/content_paste.svg?react';
-import { EmojiHTML } from 'mastodon/components/emoji/html';
-import { IconButton } from 'mastodon/components/icon_button';
-
 import escapeTextContentForBrowser from 'escape-html';
+
+import ContentPasteIcon from '@/material-icons/400-24px/content_paste.svg?react';
+import { EmojiHTML } from '@/mastodon/components/emoji/html';
+import { IconButton } from '@/mastodon/components/icon_button';
+import { Popover } from '@/mastodon/components/popover';
 
 const messages = defineMessages({
   template: { id: 'template_button.label', defaultMessage: 'Insert template' },
 });
-
-const listenerOptions = supportsPassiveEvents ? { passive: true, capture: true } : true;
 
 let customTemplates = null;
 
@@ -84,39 +80,20 @@ TemplatePicker.propTypes = {
   onClick: PropTypes.func.isRequired,
 };
 
-const TemplatePickerMenu = ({ style, onClose, onPick, pickerButtonRef }) => {
-  const nodeRef = useRef(null);
-
-  useEffect(() => {
-    const handleDocumentClick = e => {
-      if (nodeRef.current && !nodeRef.current.contains(e.target) && !pickerButtonRef.contains(e.target)) {
-        onClose();
-      }
-    };
-
-    document.addEventListener('click', handleDocumentClick, { capture: true });
-    document.addEventListener('touchend', handleDocumentClick, listenerOptions);
-
-    return () => {
-      document.removeEventListener('click', handleDocumentClick, { capture: true });
-      document.removeEventListener('touchend', handleDocumentClick, listenerOptions);
-    };
-  }, [onClose, pickerButtonRef]);
-
+const TemplatePickerMenu = ({ onClose, onPick }) => {
   const handleClick = useCallback(template => {
     onClose();
     onPick(template);
   }, [onClose, onPick]);
 
   return (
-    <div className='template-picker-dropdown__menu' style={style} ref={nodeRef}>
+    <div className='template-picker-dropdown__menu'>
       <TemplatePicker onClick={handleClick} />
     </div>
   );
 };
 
 TemplatePickerMenu.propTypes = {
-  style: PropTypes.object,
   onPick: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };
@@ -124,7 +101,7 @@ TemplatePickerMenu.propTypes = {
 const TemplatePickerDropdown = ({ onPickTemplate }) => {
   const intl = useIntl();
   const [active, setActive] = useState(false);
-  const targetRef = useRef(null);
+  const [target, setTarget] = useState(null);
 
   const onShowDropdown = useCallback(() => {
     setActive(true);
@@ -144,18 +121,10 @@ const TemplatePickerDropdown = ({ onPickTemplate }) => {
     }
   }, [active, onShowDropdown, onHideDropdown]);
 
-  const handleKeyDown = useCallback(e => {
-    if (e.key === 'Escape') {
-      onHideDropdown();
-    }
-  }, [onHideDropdown]);
-
-  const findTarget = useCallback(() => targetRef.current, []);
-
   const title = intl.formatMessage(messages.template);
 
   return (
-    <div className='template-picker-dropdown' onKeyDown={handleKeyDown} ref={targetRef}>
+    <div className='template-picker-dropdown' ref={setTarget}>
       <IconButton
         title={title}
         aria-expanded={active}
@@ -165,19 +134,20 @@ const TemplatePickerDropdown = ({ onPickTemplate }) => {
         inverted
       />
 
-      <Overlay show={active} placement={'bottom'} target={findTarget}>
+      <Popover
+        isOpen={active}
+        reference={target}
+        onClose={onHideDropdown}
+      >
         {({ props, placement }) => (
-          <div {...props} style={{ ...props.style }}>
-            <div className={`dropdown-animation ${placement}`}>
-              <TemplatePickerMenu
-                onPick={onPickTemplate}
-                onClose={onHideDropdown}
-                pickerButtonRef={targetRef.current}
-              />
-            </div>
+          <div {...props} className={`dropdown-animation ${placement}`}>
+            <TemplatePickerMenu
+              onPick={onPickTemplate}
+              onClose={onHideDropdown}
+            />
           </div>
         )}
-      </Overlay>
+      </Popover>
     </div>
   );
 };
