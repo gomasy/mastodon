@@ -1253,7 +1253,6 @@ an:
     next: Proximo
     older: Mas antigo
     prev: Anterior
-    truncate: "&hellip;"
   polls:
     errors:
       already_voted: Ya has votau en esta enqüesta

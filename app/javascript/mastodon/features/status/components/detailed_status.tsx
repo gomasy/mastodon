@@ -79,7 +79,7 @@ export const DetailedStatus: React.FC<{
 }) => {
   const [height, setHeight] = useState(0);
   const [showDespiteFilter, setShowDespiteFilter] = useState(false);
-  const nodeRef = useRef<HTMLDivElement>();
+  const nodeRef = useRef<HTMLDivElement>(null);
 
   const { signedIn } = useIdentity();
 

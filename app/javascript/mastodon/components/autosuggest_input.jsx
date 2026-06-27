@@ -5,42 +5,14 @@ import classNames from 'classnames';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import Overlay from 'react-overlays/Overlay';
-
 import AutosuggestAccountContainer from '../features/compose/containers/autosuggest_account_container';
 
 import AutosuggestAlphabet from './autosuggest_alphabet';
 import { AutosuggestEmoji } from './autosuggest_emoji';
 import { AutosuggestHashtag } from './autosuggest_hashtag';
 import { LocalCustomEmojiProvider } from './emoji/context';
-
-const textAtCursorMatchesToken = (str, caretPosition, searchTokens) => {
-  let word;
-
-  let left  = str.slice(0, caretPosition).search(/\S+$/);
-  let right = str.slice(caretPosition).search(/\s/);
-
-  if (str[caretPosition - 1] && str[caretPosition - 2] === '/') {
-    return [caretPosition - 1, str.slice(caretPosition - 2, caretPosition)];
-  }
-  if (right < 0) {
-    word = str.slice(left);
-  } else {
-    word = str.slice(left, right + caretPosition);
-  }
-
-  if (!word || word.trim().length < 3 || searchTokens.indexOf(word[0]) === -1) {
-    return [null, null];
-  }
-
-  word = word.trim();
-
-  if (word.length > 0) {
-    return [left + 1, word];
-  } else {
-    return [null, null];
-  }
-};
+import { textAtCursorMatchesToken } from './autosuggest/utils';
+import { Popover } from './popover';
 
 export default class AutosuggestInput extends ImmutablePureComponent {
 
@@ -157,6 +129,10 @@ export default class AutosuggestInput extends ImmutablePureComponent {
     this.setState({ focused: true });
   };
 
+  onCloseMenu = () => {
+    this.setState({ suggestionsHidden: true });
+  };
+
   onSuggestionClick = (e) => {
     const suggestion = this.props.suggestions.get(e.currentTarget.getAttribute('data-index'));
     e.preventDefault();
@@ -228,7 +204,12 @@ export default class AutosuggestInput extends ImmutablePureComponent {
         />
 
         <LocalCustomEmojiProvider>
-          <Overlay show={!(suggestionsHidden || suggestions.isEmpty())} offset={[0, 0]} placement='bottom' target={this.input} popperConfig={{ strategy: 'fixed' }}>
+          <Popover
+            reference={this.input}
+            isOpen={!(suggestionsHidden || suggestions.isEmpty())}
+            onClose={this.onCloseMenu}
+            flip={false}
+          >
             {({ props }) => (
               <div {...props}>
                 <div className='autosuggest-textarea__suggestions' style={{ width: this.input?.clientWidth }}>
@@ -236,7 +217,7 @@ export default class AutosuggestInput extends ImmutablePureComponent {
                 </div>
               </div>
             )}
-          </Overlay>
+          </Popover>
         </LocalCustomEmojiProvider>
       </div>
     );

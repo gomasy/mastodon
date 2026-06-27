@@ -1795,7 +1795,6 @@ pt-PT:
     next: Seguinte
     older: Mais antiga
     prev: Anterior
-    truncate: "&hellip;"
   polls:
     errors:
       already_voted: Já votaste nesta sondagem

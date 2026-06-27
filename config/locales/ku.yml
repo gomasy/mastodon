@@ -1251,7 +1251,6 @@ ku:
     next: Pêş
     older: Kevntir
     prev: Paş
-    truncate: "&hellip;"
   polls:
     errors:
       already_voted: Te berê deng dabû vê rapirsîyê

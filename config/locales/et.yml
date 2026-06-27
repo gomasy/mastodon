@@ -1925,7 +1925,6 @@ et:
     next: Järgmine
     older: Vanemad
     prev: Eelm
-    truncate: "&hellip;"
   polls:
     errors:
       already_voted: Oled siin hääletusel juba hääletanud

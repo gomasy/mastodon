@@ -1786,7 +1786,6 @@ sl:
     next: Naprej
     older: Starejše
     prev: Nazaj
-    truncate: "&hellip;"
   polls:
     errors:
       already_voted: Na tej anketi ste že glasovali
