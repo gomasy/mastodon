@@ -5,9 +5,12 @@ import { FormattedMessage } from 'react-intl';
 import PipExitIcon from '@/material-icons/400-24px/pip_exit.svg?react';
 import { removePictureInPicture } from 'mastodon/actions/picture_in_picture';
 import { Icon } from 'mastodon/components/icon';
+import { cropImages } from 'mastodon/initial_state';
 import { useAppDispatch } from 'mastodon/store';
 
-export const PictureInPicturePlaceholder: React.FC = () => {
+export const PictureInPicturePlaceholder: React.FC<{
+  aspectRatio?: string;
+}> = ({ aspectRatio }) => {
   const dispatch = useAppDispatch();
 
   const handleClick = useCallback(() => {
@@ -30,6 +33,7 @@ export const PictureInPicturePlaceholder: React.FC = () => {
       className='picture-in-picture-placeholder'
       role='button'
       tabIndex={0}
+      style={aspectRatio && !cropImages ? { aspectRatio } : undefined}
       onClick={handleClick}
       onKeyDownCapture={handleKeyDown}
     >
