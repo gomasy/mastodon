@@ -172,7 +172,14 @@ export const DetailedStatus: React.FC<{
     status.getIn(['translation', 'language']) || status.get('language');
 
   if (pictureInPicture.get('inUse')) {
-    media = <PictureInPicturePlaceholder />;
+    const attachment = status.getIn(['media_attachments', 0]);
+    const width = attachment?.getIn(['meta', 'original', 'width']);
+    const height = attachment?.getIn(['meta', 'original', 'height']);
+    media = (
+      <PictureInPicturePlaceholder
+        aspectRatio={width && height ? `${width} / ${height}` : undefined}
+      />
+    );
   } else if (status.get('media_attachments').size > 0) {
     if (
       ['image', 'gifv', 'unknown'].includes(
@@ -224,6 +231,8 @@ export const DetailedStatus: React.FC<{
       const description =
         attachment.getIn(['translation', 'description']) ||
         attachment.get('description');
+      const width = attachment.getIn(['meta', 'original', 'width']);
+      const height = attachment.getIn(['meta', 'original', 'height']);
 
       media = (
         <Video
@@ -234,6 +243,7 @@ export const DetailedStatus: React.FC<{
           alt={description}
           lang={language}
           inline
+          aspectRatio={width && height ? `${width} / ${height}` : undefined}
           onOpenVideo={handleOpenVideo}
           sensitive={status.get('sensitive')}
           visible={showMedia}

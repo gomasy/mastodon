@@ -28,7 +28,7 @@ import {
   attachFullscreenListener,
   detachFullscreenListener,
 } from 'mastodon/features/ui/util/fullscreen';
-import { displayMedia, useBlurhash } from 'mastodon/initial_state';
+import { cropImages, displayMedia, useBlurhash } from 'mastodon/initial_state';
 import { playerSettings } from 'mastodon/settings';
 
 import { HotkeyIndicator } from './components/hotkey_indicator';
@@ -182,6 +182,7 @@ export const Video: React.FC<{
   startVolume?: number;
   startMuted?: boolean;
   matchedFilters?: string[];
+  aspectRatio?: string;
 }> = ({
   preview,
   frameRate = '25',
@@ -204,6 +205,7 @@ export const Video: React.FC<{
   startVolume,
   startMuted,
   matchedFilters,
+  aspectRatio,
 }) => {
   const intl = useIntl();
   const [currentTime, setCurrentTime] = useState(0);
@@ -782,7 +784,9 @@ export const Video: React.FC<{
   const playerStyle: { aspectRatio?: string } = {};
 
   if (inline) {
-    playerStyle.aspectRatio = '16 / 9';
+    playerStyle.aspectRatio = cropImages ? '16 / 9' : (aspectRatio ?? '16 / 9');
+  } else if (aspectRatio) {
+    playerStyle.aspectRatio = aspectRatio;
   }
 
   let preload;

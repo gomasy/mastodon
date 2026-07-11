@@ -457,7 +457,10 @@ class Status extends ImmutablePureComponent {
     }
 
     if (pictureInPicture.get('inUse')) {
-      media = <PictureInPicturePlaceholder />;
+      const attachment = status.getIn(['media_attachments', 0]);
+      const width = attachment?.getIn(['meta', 'original', 'width']);
+      const height = attachment?.getIn(['meta', 'original', 'height']);
+      media = <PictureInPicturePlaceholder aspectRatio={width && height ? `${width} / ${height}` : undefined} />;
     } else if (status.get('media_attachments').size > 0) {
       const language = status.getIn(['translation', 'language']) || status.get('language');
 
@@ -516,6 +519,8 @@ class Status extends ImmutablePureComponent {
       } else if (status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const attachment = status.getIn(['media_attachments', 0]);
         const description = attachment.getIn(['translation', 'description']) || attachment.get('description');
+        const width = attachment.getIn(['meta', 'original', 'width']);
+        const height = attachment.getIn(['meta', 'original', 'height']);
 
         media = (
           <Bundle fetchComponent={Video} loading={this.renderLoadingVideoPlayer} key='video'>
@@ -528,6 +533,7 @@ class Status extends ImmutablePureComponent {
                 alt={description}
                 lang={language}
                 inline
+                aspectRatio={width && height ? `${width} / ${height}` : undefined}
                 sensitive={status.get('sensitive')}
                 onOpenVideo={this.handleOpenVideo}
                 deployPictureInPicture={pictureInPicture.get('available') ? this.handleDeployPictureInPicture : undefined}
