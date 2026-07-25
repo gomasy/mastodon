@@ -12,7 +12,7 @@ export const textAtCursorMatchesToken = (
   }
 
   const regex = new RegExp(
-    `[${searchTokens.join('')}${WORD}]+(\\s[${WORD}]+)?$`,
+    `[${searchTokens.join('')}${WORD}+-]+(\\s[${WORD}]+)?$`,
     'iu',
   );
   const left = str.slice(0, caretPosition).search(regex);
