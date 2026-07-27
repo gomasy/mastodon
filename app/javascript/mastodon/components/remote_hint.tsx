@@ -20,7 +20,7 @@ export const RemoteHint: React.FC<RemoteHintProps> = ({
   if (
     !account ||
     !account.url ||
-    account.acct !== account.username ||
+    account.acct === account.username ||
     !domain
   ) {
     return null;
