@@ -9,7 +9,6 @@ import { useAppDispatch } from '@/mastodon/store';
 
 import { FormattedDateWrapper } from '../formatted_date';
 import { NumberFields, NumberFieldsItem } from '../number_fields';
-import { ShortNumber } from '../short_number';
 
 import classes from './styles.module.scss';
 
