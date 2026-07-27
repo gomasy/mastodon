@@ -581,7 +581,7 @@ const fetchComposeSuggestionsPhoneticAlphabets = (dispatch, getState, token) => 
 };
 
 export function fetchComposeSuggestions(token) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     switch (token[0]) {
     case ':':
       void fetchComposeSuggestionsEmojis(dispatch, token);

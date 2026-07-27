@@ -13,34 +13,7 @@ import AutosuggestAlphabet from './autosuggest_alphabet';
 import { AutosuggestEmoji } from './autosuggest_emoji';
 import { AutosuggestHashtag } from './autosuggest_hashtag';
 import { LocalCustomEmojiProvider } from './emoji/context';
-
-const textAtCursorMatchesToken = (str, caretPosition, searchTokens) => {
-  let word;
-
-  let left  = str.slice(0, caretPosition).search(/\S+$/);
-  let right = str.slice(caretPosition).search(/\s/);
-
-  if (str[caretPosition - 1] && str[caretPosition - 2] === '/') {
-    return [caretPosition - 1, str.slice(caretPosition - 2, caretPosition)];
-  }
-  if (right < 0) {
-    word = str.slice(left);
-  } else {
-    word = str.slice(left, right + caretPosition);
-  }
-
-  if (!word || word.trim().length < 3 || searchTokens.indexOf(word[0]) === -1) {
-    return [null, null];
-  }
-
-  word = word.trim();
-
-  if (word.length > 0) {
-    return [left + 1, word];
-  } else {
-    return [null, null];
-  }
-};
+import { textAtCursorMatchesToken } from './autosuggest/utils';
 
 export default class AutosuggestInput extends ImmutablePureComponent {
 
