@@ -578,7 +578,7 @@ const fetchComposeSuggestionsTags = throttle((dispatch, token) => {
   });
 }, 200, { leading: true, trailing: true });
 
-const fetchComposeSuggestionsPhoneticAlphabets = (dispatch, getState, token) => {
+const fetchComposeSuggestionsPhoneticAlphabets = (dispatch, token) => {
   const results = phoneticAlphabetsSearch(token.replace('/', ''));
   dispatch(readyComposeSuggestionsPhoneticAlphabets(token, results));
 };
@@ -594,7 +594,7 @@ export function fetchComposeSuggestions(token) {
       fetchComposeSuggestionsTags(dispatch, token);
       break;
     case '/':
-      fetchComposeSuggestionsPhoneticAlphabets(dispatch, getState, token);
+      fetchComposeSuggestionsPhoneticAlphabets(dispatch, token);
       break;
     default:
       fetchComposeSuggestionsAccounts(dispatch, token);
