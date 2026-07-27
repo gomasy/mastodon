@@ -292,10 +292,10 @@ export function unmuteAccountFail(error) {
 const noOp = () => {};
 
 export function fetchRemoteOutbox(id, done = noOp) {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch(fetchRemoteOutboxRequest(id));
 
-    api(getState).post(`/api/v1/accounts/${id}/fetch_remote`).then(response => {
+    api().post(`/api/v1/accounts/${id}/fetch_remote`).then(response => {
       dispatch(fetchRemoteOutboxSuccess(response.data));
       done();
     }).catch(error => {
@@ -319,9 +319,10 @@ export function fetchRemoteOutboxSuccess(account) {
   };
 }
 
-export function fetchRemoteOutboxFail(error) {
+export function fetchRemoteOutboxFail(id, error) {
   return {
     type: ACCOUNT_FETCH_REMOTE_OUTBOX_FAIL,
+    id,
     error,
   };
 }
