@@ -9,9 +9,7 @@ import {
   unblockAccount,
   unmuteAccount,
   unpinAccount,
-  fetchRemoteOutbox,
 } from '@/mastodon/actions/accounts';
-import { expandAccountTimeline } from '@/mastodon/actions/timelines';
 import { removeAccountFromFollowers } from '@/mastodon/actions/accounts_typed';
 import { showAlert } from '@/mastodon/actions/alerts';
 import { initBlockModal } from '@/mastodon/actions/blocks';
@@ -28,6 +26,7 @@ import {
   canAccountBeAddedByFollowers,
 } from '@/mastodon/features/collections/utils';
 import { useAccount } from '@/mastodon/hooks/useAccount';
+import { useFetchRemoteOutbox } from '@/mastodon/hooks/useFetchRemoteOutbox';
 import { useIdentity } from '@/mastodon/identity_context';
 import type { Account } from '@/mastodon/models/account';
 import type { MenuItem } from '@/mastodon/models/dropdown_menu';
@@ -63,6 +62,7 @@ export const AccountMenu: FC<{ accountId: string }> = ({ accountId }) => {
   const isMe = currentAccountId === accountId;
 
   const dispatch = useAppDispatch();
+  const fetchRemoteOutbox = useFetchRemoteOutbox(accountId);
   const menuItems = useMemo(() => {
     if (!account) {
       return [];
@@ -75,8 +75,18 @@ export const AccountMenu: FC<{ accountId: string }> = ({ accountId }) => {
       intl,
       relationship,
       dispatch,
+      fetchRemoteOutbox,
     });
-  }, [account, signedIn, isMe, permissions, intl, relationship, dispatch]);
+  }, [
+    account,
+    signedIn,
+    isMe,
+    permissions,
+    intl,
+    relationship,
+    dispatch,
+    fetchRemoteOutbox,
+  ]);
   return (
     <Dropdown
       disabled={menuItems.length === 0}
@@ -95,6 +105,7 @@ interface MenuItemsParams {
   intl: ReturnType<typeof useIntl>;
   relationship?: Relationship;
   dispatch: AppDispatch;
+  fetchRemoteOutbox: () => void;
 }
 
 const messages = defineMessages({
@@ -245,6 +256,7 @@ function getMenuItems({
   intl,
   relationship,
   dispatch,
+  fetchRemoteOutbox,
 }: MenuItemsParams): MenuItem[] {
   const items: MenuItem[] = [];
   const isRemote = account.acct !== account.username;
@@ -286,11 +298,7 @@ function getMenuItems({
         text: intl.formatMessage(messages.fetchRemoteOutbox, {
           name: account.username,
         }),
-        action: () => {
-          dispatch(fetchRemoteOutbox(account.id, () => {
-            dispatch(expandAccountTimeline(account.id, { withReplies: true }));
-          }));
-        },
+        action: fetchRemoteOutbox,
       },
     );
   }
