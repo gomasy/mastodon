@@ -25,6 +25,7 @@ import {
   useCurrentAccountId,
 } from '@/mastodon/hooks/useAccountId';
 import { useAccountVisibility } from '@/mastodon/hooks/useAccountVisibility';
+import { useFetchRemoteOutbox } from '@/mastodon/hooks/useFetchRemoteOutbox';
 import { selectTimelineByKey } from '@/mastodon/selectors/timelines';
 import { useAppDispatch, useAppSelector } from '@/mastodon/store';
 
@@ -105,6 +106,8 @@ const InnerTimeline: FC<{ accountId: string; multiColumn: boolean }> = ({
     [accountId, dispatch, key],
   );
 
+  const handleFetchRemoteOutbox = useFetchRemoteOutbox(accountId);
+
   const { isLoading: isPinnedLoading, statusIds: pinnedStatusIds } =
     usePinnedStatusIds({ accountId, tagged, forceEmptyState });
 
@@ -117,7 +120,9 @@ const InnerTimeline: FC<{ accountId: string; multiColumn: boolean }> = ({
       <StatusList
         alwaysPrepend
         prepend={<Prepend accountId={accountId} forceEmpty={forceEmptyState} />}
-        append={<RemoteHint accountId={accountId} />}
+        append={
+          <RemoteHint accountId={accountId} refresh={handleFetchRemoteOutbox} />
+        }
         scrollKey='account_timeline'
         // We want to have this component when timeline is undefined (loading),
         // because if we don't the prepended component will re-render with every filter change.

@@ -6,10 +6,13 @@ import { TimelineHint } from './timeline_hint';
 
 interface RemoteHintProps {
   accountId?: string;
-  refresh?: () => {};
+  refresh?: () => void;
 }
 
-export const RemoteHint: React.FC<RemoteHintProps> = ({ accountId, refresh }) => {
+export const RemoteHint: React.FC<RemoteHintProps> = ({
+  accountId,
+  refresh,
+}) => {
   const account = useAppSelector((state) =>
     accountId ? state.accounts.get(accountId) : undefined,
   );
@@ -41,9 +44,13 @@ export const RemoteHint: React.FC<RemoteHintProps> = ({ accountId, refresh }) =>
           />
         }
       />
-      <div className='timeline-hint'>
-        <button className='button' onClick={refresh}>Outbox をよみにいってみる</button>
-      </div>
+      {refresh && (
+        <div className='timeline-hint'>
+          <button className='button' onClick={refresh}>
+            Outbox をよみにいってみる
+          </button>
+        </div>
+      )}
     </div>
   );
 };
