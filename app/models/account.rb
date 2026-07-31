@@ -43,6 +43,7 @@
 #  private_key                   :text
 #  protocol                      :integer          default("ostatus"), not null
 #  public_key                    :text             default(""), not null
+#  requested_deletion_at         :datetime
 #  requested_review_at           :datetime
 #  reviewed_at                   :datetime
 #  sensitized_at                 :datetime
@@ -54,7 +55,7 @@
 #  suspended_at                  :datetime
 #  suspension_origin             :integer
 #  trendable                     :boolean
-#  uri                           :string           default(""), not null
+#  uri                           :string
 #  url                           :string
 #  username                      :string           default(""), not null
 #  created_at                    :datetime         not null
@@ -122,7 +123,7 @@ class Account < ApplicationRecord
   validates :username, format: { with: USERNAME_ONLY_RE }, length: { maximum: USERNAME_LENGTH_HARD_LIMIT }, if: -> { (remote? || actor_type_application?) && will_save_change_to_username? }
 
   # Remote user validations
-  validates :uri, presence: true, unless: :local?, on: :create
+  validates :uri, presence: true, exclusion: { in: [''] }, uniqueness: true, unless: :local?, on: :create
 
   # Local user validations
   validates :username, format: { with: /\A[a-z0-9_]+\z/i }, length: { maximum: USERNAME_LENGTH_LIMIT }, if: -> { local? && will_save_change_to_username? && !actor_type_application? }
@@ -136,7 +137,7 @@ class Account < ApplicationRecord
     validates :following_url, absence: true
     validates :inbox_url, absence: true
     validates :shared_inbox_url, absence: true
-    validates :uri, absence: true
+    validates :uri, absence: true, exclusion: { in: [''] }
   end
 
   validates :domain, exclusion: { in: [''] }
@@ -283,6 +284,21 @@ class Account < ApplicationRecord
 
   def refresh!
     ResolveAccountService.new.call(acct) unless local?
+  end
+
+  def deleted?
+    requested_deletion_at.present? && !instance_actor?
+  end
+
+  def permanently_deleted?
+    deleted? && deletion_request.nil?
+  end
+
+  def mark_deleted!(date: Time.now.utc)
+    transaction do
+      create_deletion_request!
+      update!(requested_deletion_at: date)
+    end
   end
 
   def memorialize!

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_06_143100) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_28_145507) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -192,6 +192,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_06_143100) do
     t.text "private_key"
     t.integer "protocol", default: 0, null: false
     t.text "public_key", default: "", null: false
+    t.datetime "requested_deletion_at"
     t.datetime "requested_review_at", precision: nil
     t.datetime "reviewed_at", precision: nil
     t.datetime "sensitized_at", precision: nil
@@ -204,14 +205,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_06_143100) do
     t.integer "suspension_origin"
     t.boolean "trendable"
     t.datetime "updated_at", precision: nil, null: false
-    t.string "uri", default: "", null: false
+    t.string "uri"
     t.string "url"
     t.string "username", default: "", null: false
     t.index "(((setweight(to_tsvector('simple'::regconfig, (display_name)::text), 'A'::\"char\") || setweight(to_tsvector('simple'::regconfig, (username)::text), 'B'::\"char\")) || setweight(to_tsvector('simple'::regconfig, (COALESCE(domain, ''::character varying))::text), 'C'::\"char\")))", name: "search_index", using: :gin
     t.index "lower((username)::text), COALESCE(lower((domain)::text), ''::text)", name: "index_accounts_on_username_and_domain_lower", unique: true
     t.index ["domain", "id"], name: "index_accounts_on_domain_and_id"
     t.index ["moved_to_account_id"], name: "index_accounts_on_moved_to_account_id", where: "(moved_to_account_id IS NOT NULL)"
-    t.index ["uri"], name: "index_accounts_on_uri"
+    t.index ["uri"], name: "index_accounts_on_uri", unique: true
     t.index ["url"], name: "index_accounts_on_url", opclass: :text_pattern_ops, where: "(url IS NOT NULL)"
   end
 
@@ -1647,10 +1648,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_06_143100) do
             WHERE ((statuses.account_id = accounts.id) AND (statuses.deleted_at IS NULL) AND (statuses.reblog_of_id IS NULL))
             ORDER BY statuses.id DESC
            LIMIT 20) t0)
-    WHERE ((accounts.suspended_at IS NULL) AND (accounts.silenced_at IS NULL) AND (accounts.moved_to_account_id IS NULL) AND (accounts.discoverable = true) AND (accounts.locked = false))
+    WHERE ((accounts.suspended_at IS NULL) AND (accounts.requested_deletion_at IS NULL) AND (accounts.silenced_at IS NULL) AND (accounts.moved_to_account_id IS NULL) AND (accounts.discoverable = true) AND (accounts.locked = false))
     GROUP BY accounts.id;
   SQL
-  add_index "account_summaries", ["account_id", "language", "sensitive"], name: "idx_on_account_id_language_sensitive_250461e1eb"
   add_index "account_summaries", ["account_id"], name: "index_account_summaries_on_account_id", unique: true
 
   create_view "global_follow_recommendations", materialized: true, sql_definition: <<-SQL
