@@ -291,22 +291,23 @@ function getMenuItems({
 
   // Open on remote page.
   if (isRemote) {
-    items.push(
-      {
-        text: account.invalid_handle
-          ? intl.formatMessage(redesignMessages.openOriginalPageInvalid)
-          : intl.formatMessage(redesignMessages.openOriginalPage, {
-              domain: remoteDomain,
-            }),
-        href: account.url,
-      },
-      {
+    items.push({
+      text: account.invalid_handle
+        ? intl.formatMessage(redesignMessages.openOriginalPageInvalid)
+        : intl.formatMessage(redesignMessages.openOriginalPage, {
+            domain: remoteDomain,
+          }),
+      href: account.url,
+    });
+
+    if (!account.invalid_handle) {
+      items.push({
         text: intl.formatMessage(messages.fetchRemoteOutbox, {
           name: account.username,
         }),
         action: fetchRemoteOutbox,
-      },
-    );
+      });
+    }
   }
 
   // Mention and direct message options
