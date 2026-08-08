@@ -1,7 +1,6 @@
 @use 'theme/base';
 @use 'theme/dark';
 @use 'theme/light';
-@use 'theme/black';
 @use 'theme/utils';
 @use 'shape';
 @use 'type';
@@ -21,12 +20,6 @@ html:not([data-color-scheme]) {
 
   &:not([data-user-theme='black']) {
     @include dark.tokens;
-    @include utils.invert-on-dark;
-  }
-
-  &[data-user-theme='black'] {
-    @include black.palette;
-    @include black.tokens;
     @include utils.invert-on-dark;
   }
 

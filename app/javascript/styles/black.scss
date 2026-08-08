@@ -1,1 +1,20 @@
 @use 'application';
+@use 'mastodon/tokens/theme/black';
+@use 'mastodon/tokens/theme/dark';
+@use 'mastodon/tokens/theme/utils';
+
+// Keep the black tokens in this entrypoint: if it compiled to the same CSS as
+// the default theme, Vite would deduplicate both entries in the manifest.
+[data-color-scheme='dark'],
+html:not([data-color-scheme]) {
+  &[data-user-theme='black'] {
+    @include black.palette;
+    @include black.tokens;
+    @include utils.invert-on-dark;
+
+    &[data-contrast='high'],
+    [data-contrast='high'] & {
+      @include dark.contrast-overrides;
+    }
+  }
+}
