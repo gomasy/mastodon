@@ -1,4 +1,3 @@
-import type React from 'react';
 import {
   createContext,
   use,
@@ -8,7 +7,7 @@ import {
   useState,
 } from 'react';
 
-import type { Merge } from 'type-fest';
+import type { PolymorphicProps } from '@/types/polymorphic';
 
 import { Button } from '../button/redesign';
 
@@ -47,7 +46,7 @@ interface MenuTriggerContextProps {
 }
 
 interface MenuListContextProps {
-  ref: (button: HTMLDivElement | null) => void;
+  ref: (list: HTMLDivElement | null) => void;
   role?: 'menu'; // only for menus of type === 'actions'
   tabIndex: -1;
   id: string;
@@ -76,7 +75,7 @@ export function useMenuContext(): MenuState {
   return context;
 }
 
-function getAllMenuItems(menuListElement: HTMLDivElement) {
+export function getAllMenuItems(menuListElement: HTMLDivElement) {
   return Array.from(
     menuListElement.querySelectorAll<HTMLElement>(
       ':scope [data-menu-item]:not([disabled])',
@@ -92,9 +91,14 @@ interface MenuProps {
    */
   type?: MenuType;
   children: React.ReactNode;
+  noFocus?: boolean;
 }
 
-export const Menu: React.FC<MenuProps> = ({ type = 'actions', children }) => {
+export const Menu: React.FC<MenuProps> = ({
+  type = 'actions',
+  children,
+  noFocus,
+}) => {
   const id = useId();
   const triggerId = `${id}-trigger`;
   const listId = `${id}-list`;
@@ -106,13 +110,13 @@ export const Menu: React.FC<MenuProps> = ({ type = 'actions', children }) => {
     (element: HTMLDivElement | null) => {
       setListElement(element);
 
-      if (element && type === 'actions') {
+      if (element && type === 'actions' && !noFocus) {
         const menuItems = getAllMenuItems(element);
         const elementToFocus = menuItems[0] ?? element;
         elementToFocus.focus();
       }
     },
-    [type],
+    [noFocus, type],
   );
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -243,18 +247,11 @@ export const Menu: React.FC<MenuProps> = ({ type = 'actions', children }) => {
   return <MenuContext value={contextValue}>{children}</MenuContext>;
 };
 
-export type MenuTriggerProps<As extends React.ElementType> = Merge<
-  React.ComponentProps<As>,
-  {
-    as?: As;
-  }
->;
-
-export const MenuTrigger = <As extends React.ElementType>({
+export const MenuTrigger = <As extends React.ElementType = typeof Button>({
   as: asComp,
   children,
   ...props
-}: MenuTriggerProps<As>) => {
+}: PolymorphicProps<object, As>) => {
   const Component = asComp ?? Button;
   const { menuTriggerProps } = useMenuContext();
   return (
@@ -282,7 +279,7 @@ export const MenuList = <As extends React.ElementType>({
       reference={popover.reference}
       popoverElement={popover.popover}
       container={null}
-      {...props}
+      {...(props as React.ComponentPropsWithoutRef<As>)}
       {...menuListProps}
     >
       {type === 'navigation' ? <ul>{children}</ul> : children}
