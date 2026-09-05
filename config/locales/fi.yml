@@ -1580,6 +1580,7 @@ fi:
       content: Valitettavasti jotain meni pieleen meidän päässämme.
       title: Sivu ei ole oikein
     '503': Sivua ei voitu näyttää palvelimen väliaikaisen vian vuoksi.
+    go_home: Siirry kotiin
     noscript_html: Käyttääksesi Mastodonin verkkosovellusta, ota JavaScript käyttöön. Vaihtoehtoisesti voit kokeilla käyttämällesi alustalle kehitettyjä Mastodonin <a href="%{apps_path}">natiivisovelluksia</a>.
   existing_username_validator:
     not_found: paikallista käyttäjää ei löydy kyseisellä käyttäjänimellä
@@ -1712,6 +1713,9 @@ fi:
       bookmarks_html:
         one: Olet aikeissa lisätä kaikkiaan <strong>%{count} julkaisun</strong> tiedostosta <strong>%{filename}</strong><strong>kirjanmerkkeihisi</strong>.
         other: Olet aikeissa lisätä kaikkiaan <strong>%{count} julkaisua</strong> tiedostosta <strong>%{filename}</strong><strong>kirjanmerkkeihisi</strong>.
+      custom_filters_html:
+        one: Olet aikeissa lisätä kaikkiaan <strong>%{count} suodattimen</strong> tiedostosta <strong>%{filename}</strong> <strong>suodattimiisi</strong>.
+        other: Olet aikeissa lisätä kaikkiaan <strong>%{count} suodatinta</strong> tiedostosta <strong>%{filename}</strong> <strong>suodattimiisi</strong>.
       domain_blocking_html:
         one: Olet aikeissa <strong>estää</strong> kaikkiaan <strong>%{count} verkkotunnuksen</strong> tiedostosta <strong>%{filename}</strong>.
         other: Olet aikeissa <strong>estää</strong> kaikkiaan <strong>%{count} verkkotunnusta</strong> tiedostosta <strong>%{filename}</strong>.
