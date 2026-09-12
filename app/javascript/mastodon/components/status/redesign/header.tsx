@@ -1,5 +1,7 @@
 import { useId } from 'react';
 
+import { FormattedMessage } from 'react-intl';
+
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
@@ -15,17 +17,18 @@ import { statusLink } from '../utils';
 import classes from './styles.module.scss';
 
 interface StatusRedesignHeaderProps {
-  status: Pick<AccountStatusShape, 'id' | 'account' | 'created_at'>;
+  status: Pick<
+    AccountStatusShape,
+    'id' | 'account' | 'created_at' | 'visibility'
+  >;
   children?: React.ReactNode;
   className?: string;
-  avatarSize?: number;
 }
 
 export const StatusRedesignHeader: React.FC<StatusRedesignHeaderProps> = ({
   status,
   children,
   className,
-  avatarSize = 40,
 }) => {
   const account = status.account;
   const handle = useAccountHandle(account);
@@ -42,21 +45,40 @@ export const StatusRedesignHeader: React.FC<StatusRedesignHeaderProps> = ({
     'data-hover-card-reference': 'status',
   };
 
+  let displayName = (
+    <Link
+      {...accountLinkProps}
+      className={classes.headerNameLink}
+      aria-describedby={handleId}
+    >
+      <DisplayName account={account} variant='noDomain' />
+    </Link>
+  );
+  if (status.visibility === 'private') {
+    displayName = (
+      <FormattedMessage
+        id='status.header.to_followers'
+        defaultMessage='{displayName} to Followers'
+        tagName='span'
+        values={{ displayName }}
+      />
+    );
+  }
+
   return (
     <header className={classNames(className, classes.header)}>
-      <Link {...accountLinkProps} role='presentation' tabIndex={-1}>
-        <Avatar account={account} size={avatarSize} />
+      <Link
+        {...accountLinkProps}
+        role='presentation'
+        tabIndex={-1}
+        className={classes.headerAvatar}
+      >
+        <Avatar account={account} size={null} />
       </Link>
 
-      <div className={classes.headerNameWrapper}>
+      <div>
         <p className={classes.headerName}>
-          <Link
-            {...accountLinkProps}
-            className={classes.headerNameLink}
-            aria-describedby={handleId}
-          >
-            <DisplayName account={account} variant='noDomain' />
-          </Link>
+          {displayName}
           &bull;
           <Link
             to={{

@@ -70,8 +70,14 @@ function useFollowedHashtags() {
   return { followedHashtags: tags };
 }
 
+const MAX_HASHTAG_COUNT = 5;
+
 export const RedesignNavigationPanel: React.FC<{
   siteName?: string;
+  /**
+   * In 'slide-out' mode (used on smaller viewport sizes), some
+   * menu items are hidden and the design is tweaked slightly
+   */
   mode?: 'static' | 'slide-out';
 }> = ({ siteName, mode = 'static' }) => {
   const intl = useIntl();
@@ -147,6 +153,7 @@ export const RedesignNavigationPanel: React.FC<{
               />
             </NavigationLink>
             <ListSection
+              id='custom-feeds'
               title={
                 <FormattedMessage
                   id='tabs_bar.custom_feeds'
@@ -182,6 +189,7 @@ export const RedesignNavigationPanel: React.FC<{
 
             {followedHashtags.length > 0 && (
               <ListSection
+                id='followed-hashtags'
                 title={
                   <FormattedMessage
                     id='tabs_bar.followed_hashtags'
@@ -189,53 +197,62 @@ export const RedesignNavigationPanel: React.FC<{
                   />
                 }
               >
-                {followedHashtags.slice(0, 4).map((tag) => (
+                {followedHashtags.slice(0, MAX_HASHTAG_COUNT).map((tag) => (
                   <NavigationLink key={tag.name} to={`/tags/${tag.name}`}>
                     #{tag.name}
                   </NavigationLink>
                 ))}
-                <NavigationLink key='view-all' to='/followed_tags'>
-                  <FormattedMessage
-                    id='tabs_bar.followed_tags_view_all'
-                    defaultMessage='View all'
-                  />
-                </NavigationLink>
+                {followedHashtags.length > MAX_HASHTAG_COUNT && (
+                  <NavigationLink key='view-all' to='/followed_tags'>
+                    <FormattedMessage
+                      id='tabs_bar.followed_tags_view_all'
+                      defaultMessage='View all'
+                    />
+                  </NavigationLink>
+                )}
               </ListSection>
             )}
           </ul>
           <footer className={classes.footer} data-stuck={!isScrolledToBottom}>
-            <ul className={classes.footerNav}>
-              <NavigationLink
-                stacked
-                to='/notifications'
-                iconComponent={BellIcon}
-                badgeCount={notificationsCount}
-              >
-                <FormattedMessage
-                  id='tabs_bar.notifications'
-                  defaultMessage='Notifications'
-                />
-              </NavigationLink>
-              <NavigationLink
-                stacked
-                to='/conversations'
-                iconComponent={ChatCircleIcon}
-              >
-                <FormattedMessage
-                  id='tabs_bar.messages'
-                  defaultMessage='Messages'
-                  description='Message refers to a direct message. For languages where this is confusing, "chat" or "direct message" can be used.'
-                />
-              </NavigationLink>
-              <NavigationLink
-                stacked
-                to='/bookmarks'
-                iconComponent={BookmarkSimpleIcon}
-              >
-                <FormattedMessage id='tabs_bar.saved' defaultMessage='Saved' />
-              </NavigationLink>
-            </ul>
-            <NavigationAccountCardAndMenu />
+            {mode !== 'slide-out' && (
+              <>
+                <ul className={classes.footerNav}>
+                  <NavigationLink
+                    stacked
+                    to='/notifications'
+                    iconComponent={BellIcon}
+                    badgeCount={notificationsCount}
+                  >
+                    <FormattedMessage
+                      id='tabs_bar.notifications'
+                      defaultMessage='Notifications'
+                    />
+                  </NavigationLink>
+                  <NavigationLink
+                    stacked
+                    to='/conversations'
+                    iconComponent={ChatCircleIcon}
+                  >
+                    <FormattedMessage
+                      id='tabs_bar.messages'
+                      defaultMessage='Messages'
+                      description='Message refers to a direct message. For languages where this is confusing, "chat" or "direct message" can be used.'
+                    />
+                  </NavigationLink>
+                  <NavigationLink
+                    stacked
+                    to='/bookmarks'
+                    iconComponent={BookmarkSimpleIcon}
+                  >
+                    <FormattedMessage
+                      id='tabs_bar.saved'
+                      defaultMessage='Saved'
+                    />
+                  </NavigationLink>
+                </ul>
+                <NavigationAccountCardAndMenu />
+              </>
+            )}
             <NavigationFooterLinks siteName={siteName} />
           </footer>
         </>
