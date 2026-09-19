@@ -12,6 +12,10 @@
     }
   }
 
+  :global(.emojione) {
+    width: auto;
+  }
+
   :any-link {
     color: var(--color-text-status-links);
 
