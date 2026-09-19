@@ -869,10 +869,7 @@ export const Video: React.FC<{
               onClick={toggleReveal}
               type='button'
             >
-              <FormattedMessage
-                id='media_gallery.hide'
-                defaultMessage='Hide'
-              />
+              <FormattedMessage id='media_gallery.hide' defaultMessage='Hide' />
             </button>
           </div>
         )}
