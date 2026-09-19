@@ -41,7 +41,7 @@ export const RemoteHint: React.FC<RemoteHintProps> = ({
       />
       {refresh && (
         <div className='timeline-hint'>
-          <button className='button' onClick={refresh}>
+          <button type='button' className='button' onClick={refresh}>
             Outbox をよみにいってみる
           </button>
         </div>

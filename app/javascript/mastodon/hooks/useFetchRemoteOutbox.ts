@@ -23,7 +23,7 @@ export function useFetchRemoteOutbox(accountId?: string) {
 
     dispatch(
       fetchRemoteOutbox(accountId, () => {
-        dispatch(
+        void dispatch(
           expandTimelineByParams({
             type: 'account',
             userId: accountId,
