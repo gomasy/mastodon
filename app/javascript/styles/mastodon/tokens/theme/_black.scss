@@ -76,6 +76,12 @@
     var(--color-bg-primary),
     var(--color-bg-secondary) calc(2 * var(--overlay-strength-secondary))
   );
+  --color-bg-blend: color-mix(
+    in srgb,
+    var(--color-bg-primary),
+    var(--color-black) 30%
+  );
+  --color-bg-highlight: #{utils.css-alpha(var(--color-text-primary), 5%)};
 
   // Utility
   --color-bg-ambient: var(--color-bg-primary);
@@ -167,12 +173,19 @@
       var(--color-grey-200),
       var(--border-strength-primary)
     )};
+  --color-border-strong: var(--color-grey-100);
   --color-border-brand: var(--color-text-brand);
   --color-border-brand-soft: #{utils.css-alpha(var(--color-text-brand), 50%)};
   --color-border-error: var(--color-red-500);
   --color-border-error-soft: #{utils.css-alpha(var(--color-border-error), 50%)};
-  --color-border-warning-soft: #{utils.css-alpha(var(--color-text-warning), 50%)};
-  --color-border-success-soft: #{utils.css-alpha(var(--color-text-success), 50%)};
+  --color-border-warning-soft: #{utils.css-alpha(
+      var(--color-text-warning),
+      50%
+    )};
+  --color-border-success-soft: #{utils.css-alpha(
+      var(--color-text-success),
+      50%
+    )};
   --color-border-media: rgb(252 248 255 / 15%);
   --color-border-on-bg-secondary: #{utils.css-alpha(
       var(--color-grey-200),
