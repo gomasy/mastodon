@@ -92,6 +92,7 @@ type TMediaGallery = React.ComponentClass<
     matchedFilters?: (string | null | undefined)[];
     cacheWidth?: () => void;
     defaultWidth?: number;
+    standalone?: boolean;
   },
   { visible: boolean; width?: number }
 >;

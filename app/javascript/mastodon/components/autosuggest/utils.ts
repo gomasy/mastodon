@@ -13,7 +13,10 @@ export function textAtCursorMatchesToken(
   let word: string;
 
   if (str[caretPosition - 1] && str[caretPosition - 2] === '/') {
-    return [caretPosition - 1, str.slice(caretPosition - 2, caretPosition)];
+    return [
+      caretPosition - 1,
+      str.slice(caretPosition - 2, caretPosition),
+    ] as const;
   }
 
   const regex = new RegExp(
