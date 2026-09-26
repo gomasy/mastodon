@@ -11,7 +11,7 @@ import { CollectionPreviewCard } from '@/mastodon/features/collections/component
 import MediaCard from '@/mastodon/features/status/components/card';
 import { useAccount } from '@/mastodon/hooks/useAccount';
 import { useExpandedStatus } from '@/mastodon/hooks/useStatus';
-import { displayMedia } from '@/mastodon/initial_state';
+import { cropImages, displayMedia } from '@/mastodon/initial_state';
 import type {
   CardShape,
   ExpandedStatusShape,
@@ -233,11 +233,16 @@ const MediaAttachments: React.FC<{
     return <PictureInPicturePlaceholder aspectRatio={aspectRatio} />;
   }
 
+  // Non-expanded posts crop their media to 16:9 when the user prefers so.
+  const isDetailed = contextType === 'detailed';
+  const placeholderAspectRatio =
+    cropImages && !isDetailed ? '16 / 9' : aspectRatio;
+
   const wrapperProps = {
     sensitive,
     visible: showMedia,
     onToggle: handleToggleMediaVisibility,
-    aspectRatio,
+    aspectRatio: placeholderAspectRatio,
     mediaFilters,
     wrapperRef,
   } satisfies Omit<
@@ -276,6 +281,7 @@ const MediaAttachments: React.FC<{
           lang={language}
           preview={attachment.preview_url}
           frameRate={original.frame_rate}
+          inline
           aspectRatio={aspectRatio}
           blurhash={attachment.blurhash}
           onOpenVideo={handleOpenVideo}
@@ -292,6 +298,7 @@ const MediaAttachments: React.FC<{
         media={immutableAttachments}
         lang={language}
         height={110}
+        standalone={isDetailed}
         onOpenMedia={handleOpenMedia}
         onToggleVisibility={handleToggleMediaVisibility}
       />

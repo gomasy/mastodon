@@ -33,6 +33,8 @@ export const AutosuggestItem: React.FC<
     suggestComp = <AutosuggestAccount {...suggestion} />;
   } else if (suggestion.type === 'hashtag') {
     suggestComp = <AutosuggestHashtag {...suggestion} />;
+  } else if (suggestion.type === 'alphabet') {
+    suggestComp = <span>{suggestion.item}</span>;
   } else {
     suggestComp = <AutosuggestEmoji {...suggestion} />;
   }

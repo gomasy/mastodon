@@ -88,6 +88,19 @@ export function immutableListToSuggestions(list: Immutable.List<unknown>) {
           id,
           totalUses: tagHistoryToUses(suggestion.history),
         });
+        break;
+      }
+      case 'alphabet': {
+        const item = stringOrUndefined(suggestion.item);
+        if (!item) {
+          continue;
+        }
+
+        suggestions.push({
+          type,
+          id: item,
+          item,
+        });
       }
     }
   }

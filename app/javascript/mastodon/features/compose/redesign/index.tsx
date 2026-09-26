@@ -30,6 +30,7 @@ import { ComposeFooter } from './footer';
 import { ComposeFormHeader } from './header';
 import { ComposeHints } from './hints';
 import { LanguageButton } from './language';
+import { ComposeMarkdownButton } from './markdown';
 import { ComposeReply } from './reply';
 import {
   selectComposeCanSubmit,
@@ -88,6 +89,8 @@ export const RedesignComposeForm: React.FC<
         <ComposeVisibility className={classes.flexGrowWrap} />
 
         <LanguageButton />
+
+        <ComposeMarkdownButton />
 
         <ToggleButton
           size='sm'

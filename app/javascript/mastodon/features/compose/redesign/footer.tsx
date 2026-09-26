@@ -29,6 +29,7 @@ import {
   selectComposeType,
 } from './selectors';
 import classes from './styles.module.scss';
+import { ComposeTemplateButton } from './template';
 
 export const ComposeFooter: React.FC<{ onEmojiPick: OnEmojiPick }> = ({
   onEmojiPick,
@@ -54,6 +55,8 @@ export const ComposeFooter: React.FC<{ onEmojiPick: OnEmojiPick }> = ({
       <ComposeUploadButton disabled={hasQuote} />
 
       <ComposeEmojiButton onPick={onEmojiPick} />
+
+      <ComposeTemplateButton />
 
       <IconButton
         size='sm'

@@ -13,6 +13,7 @@ import { AutosuggestItem } from './items';
 import { AutosuggestMenu } from './list';
 import type {
   AccountSuggestion,
+  AlphabetSuggestion,
   EmojiSuggestion,
   HashtagSuggestion,
   Suggestion,
@@ -31,6 +32,10 @@ const suggestionsMap = {
     { type: 'hashtag', name: 'Testing', id: '1', totalUses: 0 },
     { type: 'hashtag', name: 'Test', id: '2', totalUses: 10 },
   ] satisfies HashtagSuggestion[],
+  alphabet: [
+    { type: 'alphabet', id: '[ɛ]', item: '[ɛ]' },
+    { type: 'alphabet', id: '[ə]', item: '[ə]' },
+  ] satisfies AlphabetSuggestion[],
 } satisfies Record<SuggestTypes, Suggestion[]>;
 
 const fetchCb = fn().mockName('fetching token');
@@ -91,6 +96,9 @@ function tokenToSuggestions(token: string) {
       break;
     case '#':
       suggestions = suggestionsMap.hashtag;
+      break;
+    case '/':
+      suggestions = suggestionsMap.alphabet;
   }
   return suggestions;
 }

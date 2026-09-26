@@ -29,7 +29,7 @@ export async function loadCustomTemplateData() {
   return customTemplates;
 }
 
-const TemplatePicker = ({ onClick }) => {
+export const TemplatePicker = ({ onClick }) => {
   const intl = useIntl();
   const [isLoaded, setIsLoaded] = useState(customTemplates !== null);
 

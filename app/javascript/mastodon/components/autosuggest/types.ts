@@ -21,11 +21,18 @@ export interface HashtagSuggestion {
   totalUses: number;
 }
 
+export interface AlphabetSuggestion {
+  type: 'alphabet';
+  id: string;
+  item: string;
+}
+
 export type Suggestion =
   | AccountSuggestion
   | EmojiSuggestion
   | LocalHashtagSuggestion
-  | HashtagSuggestion;
+  | HashtagSuggestion
+  | AlphabetSuggestion;
 
 export type AutosuggestSourceElements = HTMLInputElement | HTMLTextAreaElement;
 
