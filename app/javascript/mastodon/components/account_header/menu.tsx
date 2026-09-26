@@ -1,7 +1,9 @@
 import { useMemo } from 'react';
 import type { FC } from 'react';
 
-import { defineMessages, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+
+import { DotsThreeIcon } from '@phosphor-icons/react';
 
 import {
   followAccount,
@@ -21,6 +23,13 @@ import {
 import { openModal } from '@/mastodon/actions/modal';
 import { initMuteModal } from '@/mastodon/actions/mutes';
 import { initReport } from '@/mastodon/actions/reports';
+import { IconButton } from '@/mastodon/components/button/redesign';
+import {
+  Menu,
+  MenuList,
+  MenuTrigger,
+  LegacyDropdownMenuItems,
+} from '@/mastodon/components/menu';
 import {
   canAccountBeAdded,
   canAccountBeAddedByFollowers,
@@ -29,7 +38,7 @@ import { useAccount } from '@/mastodon/hooks/useAccount';
 import { useFetchRemoteOutbox } from '@/mastodon/hooks/useFetchRemoteOutbox';
 import { useIdentity } from '@/mastodon/identity_context';
 import type { Account } from '@/mastodon/models/account';
-import type { MenuItem } from '@/mastodon/models/dropdown_menu';
+import type { MenuItem as DropdownMenuItem } from '@/mastodon/models/dropdown_menu';
 import type { Relationship } from '@/mastodon/models/relationship';
 import {
   PERMISSION_MANAGE_FEDERATION,
@@ -88,15 +97,37 @@ export const AccountMenu: FC<{ accountId: string }> = ({ accountId }) => {
     dispatch,
     fetchRemoteOutbox,
   ]);
-  return (
-    <Dropdown
-      disabled={menuItems.length === 0}
-      items={menuItems}
-      icon='ellipsis-v'
-      iconComponent={MoreHorizIcon}
-      className={classes.buttonMenu}
-    />
-  );
+
+  if (isRedesignEnabled()) {
+    return (
+      <Menu>
+        <MenuTrigger
+          as={IconButton}
+          size='sm'
+          icon={DotsThreeIcon}
+          disabled={menuItems.length === 0}
+        >
+          <FormattedMessage
+            id='account.menu.label'
+            defaultMessage='More account options'
+          />
+        </MenuTrigger>
+        <MenuList>
+          <LegacyDropdownMenuItems items={menuItems} />
+        </MenuList>
+      </Menu>
+    );
+  } else {
+    return (
+      <Dropdown
+        disabled={menuItems.length === 0}
+        items={menuItems}
+        icon='ellipsis-v'
+        iconComponent={MoreHorizIcon}
+        className={classes.buttonMenu}
+      />
+    );
+  }
 };
 
 interface MenuItemsParams {
@@ -161,6 +192,10 @@ const messages = defineMessages({
   addToList: {
     id: 'account.menu.add_to_list',
     defaultMessage: 'Add to list…',
+  },
+  addToCustomFeed: {
+    id: 'account.menu.add_to_feed',
+    defaultMessage: 'Add to custom feed…',
   },
   addToCollection: {
     id: 'account.menu.add_to_collection',
@@ -230,8 +265,8 @@ function getMenuItems({
   relationship,
   dispatch,
   fetchRemoteOutbox,
-}: MenuItemsParams): MenuItem[] {
-  const items: MenuItem[] = [];
+}: MenuItemsParams): DropdownMenuItem[] {
+  const items: DropdownMenuItem[] = [];
   const isRemote = account.acct !== account.username;
   const remoteDomain = isRemote ? account.acct.split('@')[1] : null;
 
@@ -318,7 +353,9 @@ function getMenuItems({
   // Add to list
   if (relationship?.following) {
     items.push({
-      text: intl.formatMessage(messages.addToList),
+      text: intl.formatMessage(
+        isRedesignEnabled() ? messages.addToCustomFeed : messages.addToList,
+      ),
       action: () => {
         dispatch(
           openModal({
@@ -399,7 +436,6 @@ function getMenuItems({
         ),
         action: () => {
           dispatch(
-            // @ts-expect-error this action is not typed yet
             followAccount(account.id, {
               reblogs: !relationship.showing_reblogs,
             }),
