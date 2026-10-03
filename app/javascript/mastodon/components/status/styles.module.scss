@@ -182,6 +182,17 @@
   button {
     color: var(--color-text-brand);
   }
+
+  // Keep wide custom emojis at their natural aspect ratio.
+  :global(.emojione) {
+    width: auto;
+    height: 22px;
+    margin: -3px 0 0;
+  }
+
+  .variantPage & :global(.emojione) {
+    height: 24px;
+  }
 }
 
 .contentImage {
