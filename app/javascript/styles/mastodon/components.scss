@@ -5861,7 +5861,7 @@ a.status-card {
 
 .template-picker {
   width: 350px;
-  background: var(--dropdown-background-color);
+  background: var(--color-bg-primary);
   border-radius: 4px;
 
   .template-picker-title {
@@ -5885,7 +5885,7 @@ a.status-card {
         width: calc(100% / 2 - 12px);
 
         &:hover {
-          background-color: var(--dropdown-border-color);
+          background-color: var(--color-bg-secondary);
           border-radius: 4px;
         }
 
