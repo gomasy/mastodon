@@ -27,6 +27,7 @@ import { useAppDispatch, useAppSelector } from '@/mastodon/store';
 import { compareUrls } from '@/mastodon/utils/compare_urls';
 import { decodeIDNA } from '@/mastodon/utils/links';
 
+import AttachmentList from '../attachment_list';
 import { Avatar } from '../avatar';
 import { Button } from '../button/redesign';
 import { Callout } from '../callout/redesign';
@@ -42,7 +43,8 @@ import mainClasses from './styles.module.scss';
 
 export const StatusAttachments: React.FC<{
   statusId: string;
-}> = ({ statusId }) => {
+  muted?: boolean;
+}> = ({ statusId, muted }) => {
   const status = useExpandedStatus(statusId);
 
   if (!status) {
@@ -50,6 +52,10 @@ export const StatusAttachments: React.FC<{
   }
 
   const attachment = status.media_attachments[0];
+  if (attachment && muted) {
+    return <CompactAttachmentList statusId={statusId} />;
+  }
+
   if (attachment) {
     return (
       <MediaAttachments
@@ -69,6 +75,11 @@ export const StatusAttachments: React.FC<{
     return <StatusQuote {...status.quote} parentId={statusId} />;
   }
 
+  // Muted posts don't display the card or collection.
+  if (muted) {
+    return null;
+  }
+
   const card = status.card;
   const collection = card?.url
     ? status.tagged_collections.find(({ url }) => compareUrls(url, card.url))
@@ -82,6 +93,20 @@ export const StatusAttachments: React.FC<{
   }
 
   return null;
+};
+
+const CompactAttachmentList: React.FC<{ statusId: string }> = ({
+  statusId,
+}) => {
+  const immutableAttachments = useAppSelector(
+    (state) =>
+      state.statuses.getIn([
+        statusId,
+        'media_attachments',
+      ]) as Immutable.List<MediaAttachment>,
+  );
+
+  return <AttachmentList compact media={immutableAttachments} />;
 };
 
 type OnOpenMediaCallback = (

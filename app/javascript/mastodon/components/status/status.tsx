@@ -212,7 +212,7 @@ export const StatusRedesign: React.FC<StatusRedesignProps> = ({
               />
             )}
 
-            <StatusAttachments statusId={status.id} />
+            <StatusAttachments statusId={status.id} muted={muted} />
 
             {children}
           </StatusContent>
