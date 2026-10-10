@@ -82,6 +82,7 @@
     var(--color-black) 30%
   );
   --color-bg-highlight: #{utils.css-alpha(var(--color-text-primary), 5%)};
+  --color-bg-desktop: var(--color-bg-blend);
 
   // Utility
   --color-bg-ambient: var(--color-bg-primary);
@@ -174,6 +175,7 @@
       var(--border-strength-primary)
     )};
   --color-border-strong: var(--color-grey-100);
+  --color-border-input: #{utils.css-alpha(var(--color-text-primary), 70%)};
   --color-border-brand: var(--color-text-brand);
   --color-border-brand-soft: #{utils.css-alpha(var(--color-text-brand), 50%)};
   --color-border-error: var(--color-red-500);
@@ -237,4 +239,17 @@
 
   --outline-focus-default: 2px solid var(--color-text-brand);
   --avatar-border-radius: 8px;
+}
+
+@mixin contrast-overrides {
+  /* TEXT TOKENS */
+
+  --color-text-primary: var(--color-grey-50);
+  --color-text-status-links: var(--color-text-brand);
+
+  /* BACKGROUND TOKENS */
+  --color-bg-error-base: var(--color-red-800);
+
+  /* BORDER TOKENS */
+  --color-border-primary: var(--color-grey-600);
 }

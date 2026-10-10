@@ -94,6 +94,7 @@ const initialState = ImmutableMap({
   suggestions: ImmutableList(),
   default_privacy: 'public',
   default_sensitive: false,
+  default_spoiler_field: false,
   default_language: 'en',
   default_markdown: false,
   resetFileKey: Math.floor((Math.random() * 0x10000)),
@@ -138,6 +139,7 @@ function clearAll(state) {
     map.set('in_reply_to', null);
     map.set('privacy', state.get('default_privacy'));
     map.set('sensitive', state.get('default_sensitive'));
+    map.set('spoiler', state.get('default_spoiler_field', false));
     map.set('language', state.get('default_language'));
     map.set('markdown', state.get('default_markdown'));
     map.update('media_attachments', list => list.clear());

@@ -1,6 +1,5 @@
 @use 'application';
 @use 'mastodon/tokens/theme/black';
-@use 'mastodon/tokens/theme/dark';
 @use 'mastodon/tokens/theme/utils';
 
 // Keep the black tokens in this entrypoint: if it compiled to the same CSS as
@@ -14,7 +13,7 @@ html:not([data-color-scheme]) {
 
     &[data-contrast='high'],
     [data-contrast='high'] & {
-      @include dark.contrast-overrides;
+      @include black.contrast-overrides;
     }
   }
 }
