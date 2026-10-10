@@ -18,7 +18,7 @@ import type {
   ApiVideoAttachmentJSON,
 } from '@/mastodon/api_types/media_attachments';
 import { useToggle } from '@/mastodon/hooks/useToggle';
-import { domain } from '@/mastodon/initial_state';
+import { cropImages, domain } from '@/mastodon/initial_state';
 import type {
   AccountStatusShape,
   MediaAttachmentShape,
@@ -171,6 +171,13 @@ const QuotedStatusBody: React.FC<{
       ApiImageAttachmentJSON | ApiGifvAttachmentJSON
     > => attachment.type === 'gifv' || attachment.type === 'image',
   );
+
+  // Quoted posts are never the detailed post, so crop their media to 16:9 when the user prefers so.
+  const aspectRatio = cropImages ? '16 / 9' : undefined;
+  const imageStyle = aspectRatio
+    ? ({ '--aspect': aspectRatio } as React.CSSProperties)
+    : undefined;
+
   const duration = useMemo(() => {
     const duration = mainAttachment?.meta.original.duration;
     if (!duration) {
@@ -280,6 +287,7 @@ const QuotedStatusBody: React.FC<{
         <div className={classNames(classes.media, classes.mediaSingle)}>
           <StatusImage
             className={classes.image}
+            style={imageStyle}
             attachment={mainAttachment}
             sensitive={sensitive}
             aria-label={mainAttachment.description}
@@ -300,11 +308,16 @@ const QuotedStatusBody: React.FC<{
             imageAttachments.length === 1 && classes.mediaSingle,
             imageAttachments.length > 1 && classes.mediaGrid,
           )}
+          // Multiple media are always shown in 16:9, as in MediaGallery.
+          style={
+            imageAttachments.length > 1 ? { aspectRatio: '16 / 9' } : undefined
+          }
           data-number={imageAttachments.length}
         >
           {imageAttachments.map((attachment) => (
             <StatusImage
               className={classes.image}
+              style={imageStyle}
               attachment={attachment}
               sensitive={sensitive}
               key={attachment.id}
