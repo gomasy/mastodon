@@ -41,7 +41,10 @@ export const ComposeMarkdownButton: React.FC = () => {
       active={isMarkdown}
       onClick={handleClick}
       leadingIcon={markdownIcon}
-      title={intl.formatMessage(messages.changeMode)}
+      tooltip={{
+        type: 'description',
+        text: intl.formatMessage(messages.changeMode),
+      }}
     >
       {intl.formatMessage(isMarkdown ? messages.marked : messages.unmarked)}
     </ToggleButton>
