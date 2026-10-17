@@ -244,7 +244,7 @@ fi:
         setting_always_send_emails: Lähetä sähköposti-ilmoitukset aina
         setting_auto_play_gif: Toista GIF-animaatiot automaattisesti
         setting_boost_modal: Hallitse tehostuksen näkyvyyttä
-        setting_color_scheme: Väriteema
+        setting_color_scheme: Tila
         setting_contrast: Kontrasti
         setting_crop_images: Rajaa kuvat avaamattomissa tuuttauksissa 16:9 kuvasuhteeseen
         setting_default_language: Julkaisun kieli
@@ -253,6 +253,7 @@ fi:
         setting_default_sensitive: Merkitse media aina arkaluonteiseksi
         setting_default_spoiler_field: Käytä sisältövaroituksia oletuksena
         setting_delete_modal: Varoita ennen kuin poistan julkaisun
+        setting_density: Tiheys
         setting_disable_hover_cards: Poista käytöstä profiilin esikatselu osoitettaessa
         setting_disable_swiping: Poista pyyhkäisyeleet käytöstä
         setting_display_media: Median näkyminen
@@ -271,6 +272,7 @@ fi:
         setting_system_font_ui: Käytä järjestelmän oletusfonttia
         setting_system_scrollbars_ui: Käytä järjestelmän oletusarvoista vierityspalkkia
         setting_theme: Sivuston teema
+        setting_theme_color: Teemaväri
         setting_trends: Näytä päivän trendit
         setting_unfollow_modal: Kysy vahvistusta ennen seuraamisen lopettamista
         setting_use_blurhash: Käytä värikästä liukusävytystä piilotetulle mediasisällölle
@@ -355,6 +357,7 @@ fi:
         follow: Joku seurasi sinua
         follow_request: Joku pyysi lupaa seurata sinua
         mention: Joku mainitsi sinut
+        moderation_suggestions: Automaattiset moderointiehdotukset ovat saatavilla
         pending_account: Uusi tili tarvitsee tarkastuksen
         quote: Joku lainasi sinua
         reblog: Joku tehosti julkaisuasi
