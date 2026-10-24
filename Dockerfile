@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1.18
 ARG BASE_REGISTRY="docker.io"
 
-ARG RUBY_VERSION="4.0.7"
-ARG NODE_MAJOR_VERSION="24"
+ARG RUBY_VERSION="4.0.8"
+ARG NODE_MAJOR_VERSION="26"
 ARG DEBIAN_VERSION="trixie"
 
 FROM ${BASE_REGISTRY}/ruby:${RUBY_VERSION}-slim-${DEBIAN_VERSION} AS ruby
@@ -43,7 +43,7 @@ RUN apt-get update && \
     bundle config set silence_root_warning true && \
     corepack enable
 
-COPY Gemfile* package.json yarn.lock .yarnrc.yml /opt/mastodon/
+COPY .ruby-version Gemfile* package.json yarn.lock .yarnrc.yml /opt/mastodon/
 COPY streaming/package.json /opt/mastodon/streaming/
 
 RUN bundle install -j"$(nproc)"

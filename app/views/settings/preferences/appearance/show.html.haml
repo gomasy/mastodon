@@ -61,15 +61,6 @@
                    wrapper: :with_label,
                    required: false
       .input.horizontal-options
-        = ff.input :'web.density',
-                   as: :radio_buttons,
-                   collection: user_settings_collection('web.density'),
-                   include_blank: false,
-                   label: I18n.t('simple_form.labels.defaults.setting_density'),
-                   label_method: ->(density) { I18n.t("density.#{density}", default: density) },
-                   wrapper: :with_label,
-                   required: false
-      .input.horizontal-options
         = ff.input :'web.emoji_style',
                    as: :radio_buttons,
                    collection: user_settings_collection('web.emoji_style'),
@@ -106,11 +97,6 @@
 
     .fields-group
       = ff.input :'web.crop_images', wrapper: :with_label, label: I18n.t('simple_form.labels.defaults.setting_crop_images')
-
-    %h2= t 'appearance.discovery'
-
-    .fields-group
-      = ff.input :'web.trends', wrapper: :with_label, label: I18n.t('simple_form.labels.defaults.setting_trends')
 
     %h2= t 'appearance.boosting_preferences'
 

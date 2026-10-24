@@ -166,7 +166,6 @@ module ApplicationHelper
       'data-contrast': contrast.parameterize,
       'data-color-scheme': page_color_scheme.parameterize,
       'data-user-theme': theme.parameterize,
-      'data-density': density.parameterize,
       'data-theme-color': page_theme_color(theme)&.parameterize,
     }.compact
 

@@ -1297,9 +1297,6 @@ gd:
     warning_presets:
       add_new: Cuir fear ùr ris
       delete: Sguab às
-      edit_preset: Deasaich rabhadh ro-shuidhichte
-      empty: Cha do mhìnich thu ro-sheataichean rabhaidhean fhathast.
-      title: Rabhaidhean ro-shocraichte
     webhooks:
       add_new: Cuir puing-dheiridh ris
       delete: Sguab às
@@ -1381,7 +1378,6 @@ gd:
     animations_and_accessibility: Beòthachaidhean agus so-ruigsinneachd
     boosting_preferences: Roghainnean brosnachaidh
     boosting_preferences_info_html: "<strong>Gliocas:</strong> Ge b’ e dè na roghainnean, ma nì thu<kbd>Shift</kbd> + <kbd>Briogadh</kbd> air ìomhaigheag%{icon} a’ bhrosnachaidh, thèid a bhrosnachadh sa bhad."
-    discovery: Rùrachadh
     localization:
       body: Tha Mastodon ’ga eadar-theangachadh le saor-thoilich.
       guide_link: https://crowdin.com/project/mastodon
