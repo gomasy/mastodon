@@ -41,6 +41,7 @@ RUN apt-get update && \
     bundle config set --local deployment 'true' && \
     bundle config set --local without 'development test' && \
     bundle config set silence_root_warning true && \
+    npm install -g corepack && \
     corepack enable
 
 COPY .ruby-version Gemfile* package.json yarn.lock .yarnrc.yml /opt/mastodon/
@@ -95,6 +96,7 @@ RUN apt-get update && \
     patchelf --add-needed libjemalloc.so.2 /usr/local/bin/ruby && \
     apt-get -y purge patchelf && \
     ln -s /opt/mastodon /mastodon && \
+    npm install -g corepack && \
     corepack enable && \
     echo "label ::1/128 0" > /etc/gai.conf
 
