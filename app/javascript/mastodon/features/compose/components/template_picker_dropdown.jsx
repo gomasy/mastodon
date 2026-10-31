@@ -5,10 +5,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import escapeTextContentForBrowser from 'escape-html';
 
-import ContentPasteIcon from '@/material-icons/400-24px/content_paste.svg?react';
 import { EmojiHTML } from '@/mastodon/components/emoji/html';
-import { IconButton } from '@/mastodon/components/icon_button';
-import { Popover } from '@/mastodon/components/popover';
 
 const messages = defineMessages({
   template: { id: 'template_button.label', defaultMessage: 'Insert template' },
@@ -79,81 +76,3 @@ export const TemplatePicker = ({ onClick }) => {
 TemplatePicker.propTypes = {
   onClick: PropTypes.func.isRequired,
 };
-
-const TemplatePickerMenu = ({ onClose, onPick }) => {
-  const handleClick = useCallback(template => {
-    onClose();
-    onPick(template);
-  }, [onClose, onPick]);
-
-  return (
-    <div className='template-picker-dropdown__menu'>
-      <TemplatePicker onClick={handleClick} />
-    </div>
-  );
-};
-
-TemplatePickerMenu.propTypes = {
-  onPick: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
-
-const TemplatePickerDropdown = ({ onPickTemplate }) => {
-  const intl = useIntl();
-  const [active, setActive] = useState(false);
-  const [target, setTarget] = useState(null);
-
-  const onShowDropdown = useCallback(() => {
-    setActive(true);
-  }, []);
-
-  const onHideDropdown = useCallback(() => {
-    setActive(false);
-  }, []);
-
-  const onToggle = useCallback(e => {
-    if (!e.key || e.key === 'Enter') {
-      if (active) {
-        onHideDropdown();
-      } else {
-        onShowDropdown();
-      }
-    }
-  }, [active, onShowDropdown, onHideDropdown]);
-
-  const title = intl.formatMessage(messages.template);
-
-  return (
-    <div className='template-picker-dropdown' ref={setTarget}>
-      <IconButton
-        title={title}
-        aria-expanded={active}
-        active={active}
-        iconComponent={ContentPasteIcon}
-        onClick={onToggle}
-        inverted
-      />
-
-      <Popover
-        isOpen={active}
-        reference={target}
-        onClose={onHideDropdown}
-      >
-        {({ props, placement }) => (
-          <div {...props} className={`dropdown-animation ${placement}`}>
-            <TemplatePickerMenu
-              onPick={onPickTemplate}
-              onClose={onHideDropdown}
-            />
-          </div>
-        )}
-      </Popover>
-    </div>
-  );
-};
-
-TemplatePickerDropdown.propTypes = {
-  onPickTemplate: PropTypes.func.isRequired,
-};
-
-export default TemplatePickerDropdown;

@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.18
 ARG BASE_REGISTRY="docker.io"
 
-ARG RUBY_VERSION="4.0.8"
+ARG RUBY_VERSION="4.0.9"
 ARG NODE_MAJOR_VERSION="26"
 ARG DEBIAN_VERSION="trixie"
 
