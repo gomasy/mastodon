@@ -212,7 +212,7 @@ namespace :admin do
 
   resources :custom_emojis, only: [:index, :new, :create], concerns: :batch
 
-  resources :custom_templates, only: [:index, :new, :create, :update, :destroy] do
+  resources :custom_templates, only: [:index, :new, :create, :destroy] do
     member do
       post :enable
       post :disable

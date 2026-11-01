@@ -251,6 +251,7 @@ en:
         disable_sign_in_token_auth_user: Disable Email Token Authentication for User
         disable_user: Disable User
         enable_custom_emoji: Enable Custom Emoji
+        enable_custom_template: Enable Custom Template
         enable_relay: Enable Relay
         enable_sign_in_token_auth_user: Enable Email Token Authentication for User
         enable_user: Enable User
@@ -326,6 +327,7 @@ en:
         disable_sign_in_token_auth_user_html: "%{name} disabled email token authentication for %{target}"
         disable_user_html: "%{name} disabled login for user %{target}"
         enable_custom_emoji_html: "%{name} enabled emoji %{target}"
+        enable_custom_template_html: "%{name} enabled template"
         enable_relay_html: "%{name} enabled the relay %{target}"
         enable_sign_in_token_auth_user_html: "%{name} enabled email token authentication for %{target}"
         enable_user_html: "%{name} enabled login for user %{target}"

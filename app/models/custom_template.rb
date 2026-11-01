@@ -28,7 +28,7 @@ class CustomTemplate < ApplicationRecord
       if emoji
         codes << emoji
       else
-        codes << content[m.begin(0)..m.end(0)]
+        codes << content[m.begin(0)...m.end(0)]
       end
 
       position = m.end(0)
