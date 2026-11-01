@@ -1,14 +1,22 @@
 - content_for :page_title do
   = t('admin.custom_templates.title')
 
-.table-wrapper
-  %table.table
-    %thead
-      %tr
-        %th= t('admin.custom_templates.preview')
-        %th= t('admin.custom_templates.content')
-    %tbody
-      = render @custom_templates
+- if can?(:create, :custom_template)
+  - content_for :heading_actions do
+    = link_to t('admin.custom_templates.add_new'), new_admin_custom_template_path, class: 'button'
+
+- if @custom_templates.empty?
+  = nothing_here
+- else
+  .table-wrapper
+    %table.table
+      %thead
+        %tr
+          %th= t('admin.custom_templates.preview')
+          %th= t('admin.custom_templates.content')
+          %th
+          %th
+      %tbody
+        = render @custom_templates
 
 = paginate @custom_templates
-= link_to t('admin.custom_templates.add_new'), new_admin_custom_template_path, class: 'button'
