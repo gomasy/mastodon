@@ -6,7 +6,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { TextAaIcon } from '@phosphor-icons/react';
 
 import { changeComposeMarkdown } from '@/mastodon/actions/compose';
-import { ToggleButton } from '@/mastodon/components/button/redesign';
+import { ToggleButton } from '@/mastodon/components/button';
 import { useIconWeight } from '@/mastodon/components/icon';
 import { useAppDispatch, useAppSelector } from '@/mastodon/store';
 

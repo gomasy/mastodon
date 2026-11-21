@@ -36,7 +36,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@/mastodon/store';
 
 import { Avatar } from '../avatar';
-import { Button } from '../button/redesign';
+import { Button } from '../button';
 import { Card, CardBody, CardTitle, PrimaryCardLink } from '../card';
 import { DisplayName } from '../display_name';
 import { DisplayNameSimple } from '../display_name/simple';
@@ -51,7 +51,7 @@ import {
   useStatusContext,
   useStatusHandlers,
 } from './hooks';
-import { StatusGalleryImage, StatusImage } from './image';
+import { StatusImage, StatusImageGrid } from './image';
 import classes from './quote.module.scss';
 import { accountStatusLinkProps, statusLink } from './utils';
 
@@ -160,12 +160,16 @@ export const QuotedStatus: React.FC<{
         {!disableOpen ? (
           <Link
             {...accountStatusLinkProps(status.account)}
-            className={classes.accountLink}
+            className={classNames(classes.accountLink, classes.accountName)}
           >
             <DisplayName account={status.account} variant='noDomain' />
           </Link>
         ) : (
-          <DisplayName account={status.account} variant='noDomain' />
+          <DisplayName
+            account={status.account}
+            variant='noDomain'
+            className={classes.accountName}
+          />
         )}
       </CardTitle>
 
@@ -275,7 +279,6 @@ const QuotedStatusBody: React.FC<{
   }
 
   const text = (status.translation?.contentHtml ?? status.contentHtml).trim();
-  const ImageComp = linkStatus ? StatusGalleryImage : StatusImage;
 
   return (
     <>
@@ -320,9 +323,9 @@ const QuotedStatusBody: React.FC<{
       )}
 
       {mainAttachment?.type === 'video' && (
-        <div className={classNames(classes.media, classes.mediaSingle)}>
-          <ImageComp
-            statusId={status.id}
+        <div className={classes.media}>
+          <StatusImage
+            statusId={linkStatus ? status.id : undefined}
             className={classes.image}
             style={imageStyle}
             attachment={mainAttachment}
@@ -334,36 +337,33 @@ const QuotedStatusBody: React.FC<{
 
               {duration}
             </div>
-          </ImageComp>
+          </StatusImage>
         </div>
       )}
 
       {imageAttachments.length > 0 && (
-        <div
-          className={classNames(
-            classes.media,
-            imageAttachments.length === 1 && classes.mediaSingle,
-            imageAttachments.length > 1 && classes.mediaGrid,
-          )}
+        <StatusImageGrid
+          className={classes.media}
+          count={imageAttachments.length}
           // Multiple media are always shown in 16:9, as in MediaGallery.
           style={
             imageAttachments.length > 1 ? { aspectRatio: '16 / 9' } : undefined
           }
-          data-number={imageAttachments.length}
         >
-          {imageAttachments.map((attachment) => (
-            <ImageComp
+          {imageAttachments.map((attachment, index) => (
+            <StatusImage
               showAlt
-              statusId={status.id}
+              statusId={linkStatus ? status.id : undefined}
               className={classes.image}
               style={imageStyle}
               attachment={attachment}
               sensitive={sensitive}
               key={attachment.id}
               aria-label={attachment.description}
+              index={index}
             />
           ))}
-        </div>
+        </StatusImageGrid>
       )}
     </>
   );

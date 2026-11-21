@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import { ClipboardTextIcon } from '@phosphor-icons/react';
 
 import { insertTemplateCompose } from '@/mastodon/actions/compose';
-import { IconButton } from '@/mastodon/components/button/redesign';
+import { IconButton } from '@/mastodon/components/button';
 import { Popover } from '@/mastodon/components/popover';
 import { TemplatePicker } from '@/mastodon/features/compose/components/template_picker_dropdown';
 import { useToggle } from '@/mastodon/hooks/useToggle';

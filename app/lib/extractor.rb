@@ -33,12 +33,7 @@ module Extractor
   def extract_urls_with_indices(text, options = {})
     options = options.dup
     include_parenthesized = options.delete(:include_parenthesized)
-    entries = UTS58.extract_urls_with_indices(text, options)
-    # TODO: when the UTS58 gem supports not extracting
-    # schema less URLs the following line can be removed again
-    entries = entries.filter do |i|
-      text[i[:indices].first...i[:indices].last] == i[:url]
-    end
+    entries = UTS58.extract_urls_with_indices(text, options.merge({ extract_url_without_protocol: false }))
     return entries if include_parenthesized
 
     # Skip URLs wrapped in parentheses, such as Markdown link targets,

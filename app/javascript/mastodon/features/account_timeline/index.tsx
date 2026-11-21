@@ -14,7 +14,6 @@ import {
 } from '@/mastodon/actions/timelines_typed';
 import { AccountHeader } from '@/mastodon/components/account_header';
 import { Column } from '@/mastodon/components/column';
-import { ColumnBackButton } from '@/mastodon/components/column/back_button';
 import { ColumnHeader } from '@/mastodon/components/column_header';
 import { DisplayNameSimple } from '@/mastodon/components/display_name/simple';
 import { LimitedAccountHint } from '@/mastodon/components/limited_account_hint';
@@ -32,7 +31,6 @@ import { useFetchRemoteOutbox } from '@/mastodon/hooks/useFetchRemoteOutbox';
 import type { Account } from '@/mastodon/models/account';
 import { selectTimelineByKey } from '@/mastodon/selectors/timelines';
 import { useAppDispatch, useAppSelector } from '@/mastodon/store';
-import { isRedesignEnabled } from '@/mastodon/utils/environment';
 
 import { FeaturedTags } from './components/featured_tags';
 import { AccountFilters } from './components/filters';
@@ -121,14 +119,10 @@ const InnerTimeline: FC<{ account: Account; multiColumn: boolean }> = ({
 
   return (
     <Column bindToDocument={!multiColumn}>
-      {isRedesignEnabled() ? (
-        <ColumnHeader
-          withBackButton
-          title={<DisplayNameSimple account={account} />}
-        />
-      ) : (
-        <ColumnBackButton />
-      )}
+      <ColumnHeader
+        withBackButton
+        title={<DisplayNameSimple account={account} />}
+      />
 
       <StatusList
         alwaysPrepend
